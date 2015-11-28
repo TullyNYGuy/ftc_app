@@ -36,12 +36,23 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import org.tullyfirst.FTC8863.lib.JoyStick;
+
 /**
- * TeleOp Mode
+ * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control
+ * methods.
+ * Differential drive - one joystick for both speed and direction - use gamepad1 left joystick
+ * Tank drive - two joysticks, one for left motor speed and one for right - use gamepad2 left
+ *  and right joystick
+ * Turn deadband compensation on or off (toggle) - gamepad1 left bumper
+ *
+ * It also allows the driver to control a repel servo
+ *  gamepad1 a button = down
+ *  gamepad1 y button = up
+ *  gamepad1 x button = .5 (halfway)
  * <p>
- * Enables control of the robot via the gamepad
  */
-public class TestTeleOp extends OpMode {
+public class TestJoyStick extends OpMode {
 
 	/*
 	 * Note: the configuration of the servos is such that
@@ -51,21 +62,27 @@ public class TestTeleOp extends OpMode {
 	// TETRIX VALUES.
 	final static double REPEL_MIN  = 0.0;
 	final static double REPEL_MAX  = 1.0;
+    final static double JOYSTICK_DEADBAND_VALUE = .15;
 
 	// position of the arm servo.
 	double leftRepelServoPosition;
-
-	// amount to change the arm servo position.
-	double leftRepelServoPositionDelta = 0.1;
 
 	DcMotor motorRight;
 	DcMotor motorLeft;
 	Servo leftRepelServo;
 
+    JoyStick driverDiffLeftJoyStickY;
+    JoyStick driverDiffLeftJoyStickX;
+
+    JoyStick driverTankLeftJoyStickY;
+    JoyStick driverTankRightJoyStickY;
+
+    boolean deadBandOn = true;
+
 	/**
 	 * Constructor
 	 */
-	public TestTeleOp() {
+	public TestJoyStick() {
 
 	}
 
@@ -99,8 +116,17 @@ public class TestTeleOp extends OpMode {
 
 		leftRepelServo = hardwareMap.servo.get("leftRepelServo");
 
+        driverDiffLeftJoyStickX = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.NO_INVERT_SIGN);
+        driverDiffLeftJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);
+
+        driverTankLeftJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);
+        driverTankRightJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);
+
 		// assign the starting position of the repel servo
 		leftRepelServoPosition = 0.5;
+
+		// create a new joystick object
+
 	}
 
     @Override
@@ -111,30 +137,52 @@ public class TestTeleOp extends OpMode {
 	@Override
 	public void loop() {
 
-		/*
-		 * Gamepad 1
-		 * 
-		 * Gamepad 1 controls the motors via the left stick, and it controls the
-		 * repel servo via the a,b, x, y buttons
-		 */
+        float right = 0;
+        float left = 0;
+
+        // Gamepad 1
+        // Gamepad 1 controls the motors via the left stick, and it controls the
+        // repel servo via the a,b, x, y buttons
+        // Gamepad1 will be differential drive with 1 joystick controlling speed and direction
 
 		// throttle: left_stick_y ranges from -1 to 1, where -1 is full up, and
 		// 1 is full down
 		// direction: left_stick_x ranges from -1 to 1, where -1 is full left
 		// and 1 is full right
-		float throttle = -gamepad1.left_stick_y;
-		float direction = gamepad1.left_stick_x;
-		float right = throttle - direction;
-		float left = throttle + direction;
+        float yStick = gamepad1.left_stick_y;
+		float throttle = (float)driverDiffLeftJoyStickY.scaleInput(gamepad1.left_stick_y);
+		float direction = (float)driverDiffLeftJoyStickX.scaleInput(gamepad1.left_stick_x);
+		float rightDiff = throttle - direction;
+		float leftDiff = throttle + direction;
 
+        // Gamepad 2
+        // The driver can use gamepad2 to control the drive motors. Gamepad2 will be tank drive.
+        // The left joystick controls the left motor and the right joystick controls the right
+        // motor.
+        float leftTank = (float)driverTankLeftJoyStickY.scaleInput(gamepad2.left_stick_y);
+        float rightTank = (float)driverTankRightJoyStickY.scaleInput(gamepad2.right_stick_y);
+
+        // Now if there is input on gamepad1 use that, if not then see if there is input on
+        // gamepad2 and use that. If neither of the gamepads have input then the motor powers are
+        // set to 0.
+        if (gamepad1.left_stick_x != 0 || gamepad1.left_stick_y != 0) {
+            right = rightDiff;
+            left = leftDiff;
+            yStick = gamepad1.left_stick_y;
+        } else {
+            if (gamepad2.left_stick_y != 0 || gamepad2.right_stick_y != 0) {
+                right = rightTank;
+                left = leftTank;
+                yStick = gamepad2.left_stick_y;
+            } else {
+                right = 0;
+                left = 0;
+                yStick = 0;
+            }
+        }
 		// clip the right/left values so that the values never exceed +/- 1
 		right = Range.clip(right, -1, 1);
 		left = Range.clip(left, -1, 1);
-
-		// scale the joystick value to make it easier to control
-		// the robot more precisely at slower speeds.
-		right = (float)scaleInput(right);
-		left =  (float)scaleInput(left);
 		
 		// write the values to the motors
 		motorRight.setPower(right);
@@ -163,8 +211,13 @@ public class TestTeleOp extends OpMode {
         // clip the position values so that they never exceed their allowed range.
 		leftRepelServoPosition = Range.clip(leftRepelServoPosition, REPEL_MIN, REPEL_MAX);
 
-		// write position values to the wrist and claw servo
+		// write position value to the left repel servo
 		leftRepelServo.setPosition(leftRepelServoPosition);
+
+        // Check to see if the deadband compensation should be toggled on or off
+        if (gamepad1.left_bumper) {
+            deadBandOn = toggleDeadBandValue();
+        }
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -172,10 +225,14 @@ public class TestTeleOp extends OpMode {
 		 * will return a null value. The legacy NXT-compatible motor controllers
 		 * are currently write only.
 		 */
-        telemetry.addData("Text", "*** Robot Data***");
         telemetry.addData("arm", "leftRepel:  " + String.format("%.2f", leftRepelServoPosition));
-        telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
-        telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
+        telemetry.addData("left Y joystick",  "joy Y: " + String.format("%.2f", yStick));
+        telemetry.addData("left Y scaled", "joy Y: " + String.format("%.2f", left));
+        if(deadBandOn) {
+            telemetry.addData("Deadband:", "ON");
+        } else {
+            telemetry.addData("Deadband:", "OFF");
+        }
 
 	}
 
@@ -187,41 +244,27 @@ public class TestTeleOp extends OpMode {
 	@Override
 	public void stop() {
 
-	}
+    }
 
-    	
-	/*
-	 * This method scales the joystick input so for low joystick values, the 
-	 * scaled value is less than linear.  This is to make it easier to drive
-	 * the robot more precisely at slower speeds.
-	 */
-	double scaleInput(double dVal)  {
-		double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
-				0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
-		
-		// get the corresponding index for the scaleInput array.
-		int index = (int) (dVal * 16.0);
-		
-		// index should be positive.
-		if (index < 0) {
-			index = -index;
-		}
+    public boolean toggleDeadBandValue () {
 
-		// index cannot exceed size of array minus 1.
-		if (index > 16) {
-			index = 16;
-		}
+        boolean deadBandOn = true;
 
-		// get value from the array.
-		double dScale = 0.0;
-		if (dVal < 0) {
-			dScale = -scaleArray[index];
-		} else {
-			dScale = scaleArray[index];
-		}
-
-		// return scaled value.
-		return dScale;
-	}
-
+        if(driverDiffLeftJoyStickX.getDeadBand() == 0) {
+            // deadband compensation is currently disabled, enable it
+            driverDiffLeftJoyStickX.setDeadBand(JOYSTICK_DEADBAND_VALUE);
+            driverDiffLeftJoyStickY.setDeadBand(JOYSTICK_DEADBAND_VALUE);
+            driverTankLeftJoyStickY.setDeadBand(JOYSTICK_DEADBAND_VALUE);
+            driverTankRightJoyStickY.setDeadBand(JOYSTICK_DEADBAND_VALUE);
+            deadBandOn = true;
+        } else {
+            // deadband compensation is currenly endableo, disable it
+            driverDiffLeftJoyStickX.setDeadBand(0);
+            driverDiffLeftJoyStickY.setDeadBand(0);
+            driverTankLeftJoyStickY.setDeadBand(0);
+            driverTankRightJoyStickY.setDeadBand(0);
+            deadBandOn = false;
+        }
+        return deadBandOn;
+    }
 }
