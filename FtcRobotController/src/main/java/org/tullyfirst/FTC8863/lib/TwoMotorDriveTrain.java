@@ -5,10 +5,11 @@ import java.util.HashMap;
 /**
  * Created by ball on 11/26/2015.
  */
-public class DriveTrain {
+public class TwoMotorDriveTrain {
 
     private float rightPower = 0;
     private float leftPower = 0;
+    private float cmPerRotation = 0;
 
     public float getRightPower(){
         return this.rightPower;
@@ -26,22 +27,35 @@ public class DriveTrain {
         this.leftPower = power;
     }
 
-    // throttle: left_stick_y ranges from -1 to 1, where -1 is full up, and
-    // 1 is full down
-    // direction: left_stick_x ranges from -1 to 1, where -1 is full left
-    // and 1 is full right
+    public float getCmPerRotation() {
+        return cmPerRotation;
+    }
+
+    public void setCmPerRotation(float cmPerRotation) {
+        this.cmPerRotation = cmPerRotation;
+    }
+
+
+    // Joystick info for reference.
+    // Normally:
+    // y ranges from -1 to 1, where -1 is full up and 1 is full down
+    // x ranges from -1 to 1, where -1 is full left and 1 is full right
+    // The Joystick object allow you to invert the sign on the joystick
+    // I like to think of the Y up as positive so:
+    // All code assumes that joystick y is positive when the joystick is up.
+    // Use the JoyStick object INVERT_SIGN to accomplish that.
 
     // The differentialDrive is meant to use one joystick to control the drive train.
     // Moving the joystick forward and backward controls speed (throttle).
     // Moving the joystick left or right controls direction.
     /**
-     *
-     * @param throttle
-     * @param direction
+     * Differential drive has a master speed that gets applied to both motors. That speed is the
+     * same. Then the speed to the left and right is adjusted up and down, opposite of each other
+     * to turn the robot.
+     * @param throttle Master speed applied to both motors.
+     * @param direction Adjustment applied to the master speed. Add to left. Subtract from right.
      */
     public void differentialDrive(double throttle, double direction){
-        // since up on the joystick is negative, need to adjust the sign
-        throttle = throttle * -1;
 
         // To steer the robot left, the left motor needs to reduce power and the right needs to increase.
         // To steer the robot right, the left motor needs to increase power and the left needs to reduce.
@@ -55,12 +69,13 @@ public class DriveTrain {
     // to control the right drive motor.
 
     /**
+     * The tank drive applies power values to the left and right motors separately.
      *
-     * @param leftJoystick
-     * @param rightJoystick
+     * @param leftValue
+     * @param rightValue
      */
-    public void tankDrive(double leftJoystick, double rightJoystick){
-        this.leftPower = (float)leftJoystick;
-        this.rightPower = (float)rightJoystick;
+    public void tankDrive(double leftValue, double rightValue){
+        this.leftPower = (float)leftValue;
+        this.rightPower = (float)rightValue;
     }
 }

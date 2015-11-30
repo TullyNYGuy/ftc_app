@@ -3,27 +3,62 @@ package org.tullyfirst.FTC8863.lib;
 import com.qualcomm.robotcore.util.Range;
 
 /**
- * Class to implement a joystick
+ * Class to implement a joystick with scaling and deadband compensation
  *
  */
 public class JoyStick {
+
+    // Constants - shguld probably be made into private fields to make it more generic
     final static double JOYSTICK_MIN = -1;
     final static double JOYSTICK_MAX = 1;
     final static double OUTPUT_MIN = -1;
     final static double OUTPUT_MAX = 1;
 
+    /**
+     *  An enum defining which type of scaling method to use.
+     *  LINEAR is a straight line
+     *  SQUARE is a f(x) = x^2
+     */
     public enum JoyStickMode {
         LINEAR, SQUARE
     }
 
+    /**
+     * An enum defining whether the joystick input should be multiplied by -1
+     * For the Y joystick up is negative. I don't think like that so this can be used to change it
+     * to positive.
+     */
     public enum InvertSign {
         INVERT_SIGN, NO_INVERT_SIGN
     }
 
+    //*********************************************************************************************
+    // private data fields that can be accessed only by this class, or by using the public
+    // getter and setter methods
+    //*********************************************************************************************
+
+    /**
+     * The type of scaling to be used.
+     */
     private JoyStickMode joyStickMode;
+    /**
+     * The deadband value to be used. The deadband is when the joystick is moved but the robot does
+     * not respond. Above this value there is a response.
+     */
     private double deadBand;
+    /**
+     * Whether to change the sign of the input.
+     */
     private InvertSign invertSign;
+    /**
+     * The driver sometimes may want to lower the max power, like cut the power in half. This allows
+     * that. Value should be between 0 and 1. 1 is no reduction.
+     */
     private double reductionFactor;
+
+    //*********************************************************************************************
+    //          GETTER and SETTER Methods
+    //*********************************************************************************************
 
     /**
      *
@@ -90,6 +125,10 @@ public class JoyStick {
     public void setReductionFactor(double reductionFactor) {
         this.reductionFactor = reductionFactor;
     }
+
+    //*********************************************************************************************
+    //           CONSTRUCTORS
+    //*********************************************************************************************
 
     /**
      * Constructor
@@ -159,7 +198,16 @@ public class JoyStick {
         this.invertSign = InvertSign.NO_INVERT_SIGN;
         this.reductionFactor = 1;
     }
+    //*********************************************************************************************
+    //          UTILITY METHODS
+    //*********************************************************************************************
 
+    /**
+     * Utility method that checks if the input is to be changed to the opposite sign
+     *
+     * @param joyStickValue
+     * @return If the INVERT_SIGN is set, then returns input * -1
+     */
     public double invertJoyStick(double joyStickValue) {
         if(this.invertSign == InvertSign.INVERT_SIGN) {
             return -joyStickValue;
@@ -168,6 +216,17 @@ public class JoyStick {
         }
     }
 
+    //*********************************************************************************************
+    //          MAIN METHOD TO CALL
+    //*********************************************************************************************
+
+    /**
+     * Wrapper method that calls the proper scaling method. A switch is used in case other scaling
+     * methods are added in the future.
+     *
+     * @param joyStickValue The value to be scaled.
+     * @return The scaled input.
+     */
     public double scaleInput(double joyStickValue) {
         double output = 0;
 
@@ -181,6 +240,10 @@ public class JoyStick {
         }
         return output;
     }
+
+    //*********************************************************************************************
+    //          SCALING METHODS
+    //*********************************************************************************************
 
     // The joystick input will be a value from its min to its max.
     // In order to scale it to a motor power we need to scale it so that the joystick max
@@ -216,6 +279,7 @@ public class JoyStick {
     // another version without the reduction factor (ie reduction factor = 1, full power).
 
     /**
+     * Method that scales the input Linearly, with a default of no power reduction
      *
      * @param joyStickValue
      * @return
