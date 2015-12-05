@@ -19,6 +19,7 @@ public class TeamServo {
     private double upPosition;
     private double downPosition;
     private Servo teamServo;
+    private Servo.Direction direction;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -48,15 +49,25 @@ public class TeamServo {
         this.downPosition = downPosition;
     }
 
+    public Servo.Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Servo.Direction direction) {
+        this.direction = direction;
+    }
+
     //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
 
-    public TeamServo(String servoName, HardwareMap hardwareMap, double homePosition, double upPosition, double downPosition) {
+    public TeamServo(String servoName, HardwareMap hardwareMap, double homePosition, double upPosition, double downPosition, Servo.Direction direction) {
         teamServo = hardwareMap.servo.get(servoName);
         setHomePosition(homePosition);
         setUpPosition(upPosition);
         setDownPosition(downPosition);
+        teamServo.setDirection(direction);
+        setDirection(direction);
     }
 
     //*********************************************************************************************

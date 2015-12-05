@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import org.tullyfirst.FTC8863.lib.TeamServo;
 
@@ -54,6 +55,7 @@ public class TestTeamServo extends OpMode {
     double downPosition = .2;
     double homePosition = .5;
     TeamServo leftRepelServo;
+    TeamServo rightRepelServo;
 	/**
 	 * Constructor
 	 */
@@ -68,12 +70,14 @@ public class TestTeamServo extends OpMode {
 	 */
 	@Override
 	public void init() {
-        leftRepelServo = new TeamServo("leftRepelServo", hardwareMap,homePosition, upPosition, downPosition);
+        leftRepelServo = new TeamServo("leftRepelServo", hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
+        rightRepelServo =new TeamServo("rightRepelServo",hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
 	}
 
     @Override
     public void start() {
-        leftRepelServo.getHomePosition();
+        leftRepelServo.goHome();
+        rightRepelServo.goHome();
     }
 
 	@Override
@@ -82,14 +86,18 @@ public class TestTeamServo extends OpMode {
             // if the A button is pushed on gamepad1, increment the position of
             // the arm servo.
             leftRepelServo.goDown();
+            rightRepelServo.goDown();
             telemetry.addData("leftRepel", "down");
+            telemetry.addData("rightRepel", "down");
         }
 
         if (gamepad1.y) {
             // if the Y button is pushed on gamepad1, decrease the position of
             // the arm servo.
             leftRepelServo.goUp();
+            rightRepelServo.goUp();
             telemetry.addData("leftRepel", "up");
+            telemetry.addData("rightRepel", "up");
         }
 
         // update the position of the left repel servo.
@@ -97,7 +105,9 @@ public class TestTeamServo extends OpMode {
             // if the A button is pushed on gamepad1, increment the position of
             // the arm servo.
             leftRepelServo.goHome();
+            rightRepelServo.goHome();
             telemetry.addData("leftRepel", "home");
+            telemetry.addData("rightRepel", "home");
         }
 	}
 
