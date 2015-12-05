@@ -34,6 +34,7 @@ package org.tullyfirst.FTC8863.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 // only need this import to get access to enums
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 
 import org.tullyfirst.FTC8863.lib.TeamDcMotorWrapper;
 
@@ -63,16 +64,17 @@ public class TestTeamDCMotorWrapper extends OpMode {
 	public void init() {
 
         // Instantiate and initialize a motor
-		motorRight = new TeamDcMotorWrapper("rightDriveMotor");
-
+		motorRight = new TeamDcMotorWrapper("rightDriveMotor", hardwareMap);
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
         // TeamDcMotorWrapper contains a DcMotor object: FTCDcMotor. That object give us access to the
         // motor.
-		motorRight.FTCDcMotor.setDirection(DcMotor.Direction.REVERSE);
+/*		motorRight.FTCDcMotor.setDirection(DcMotor.Direction.REVERSE);
         motorRight.setMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
         motorRight.setCountsPerRevForMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
         motorRight.setCmPerRev(10);
         motorRight.setEncoderTolerance(10);
-        motorRight.setMotorMoveType(TeamDcMotorWrapper.MotorMoveType.RELATIVE);
+        motorRight.setMotorMoveType(TeamDcMotorWrapper.MotorMoveType.RELATIVE);*/
+
 	}
 
     @Override
@@ -86,7 +88,20 @@ public class TestTeamDCMotorWrapper extends OpMode {
 		double motorPower = .5;
 
 		// rotate the motor one revolution and then coast
-        motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotorWrapper.NextMotorState.COAST);
+        //motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotorWrapper.NextMotorState.COAST);
+        if (gamepad1.b) {
+
+            motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            motorRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+            motorRight.setPower(motorPower);
+        }
+        if (gamepad1.a) {
+            // if the A button is pushed on gamepad1, the motor stops
+            motorRight.setPowerFloat();
+            //motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
+        }
+
 
 		/*
 		 * Send telemetry data back to driver station. Note that if we are using
@@ -94,7 +109,7 @@ public class TestTeamDCMotorWrapper extends OpMode {
 		 * will return a null value. The legacy NXT-compatible motor controllers
 		 * are currently write only.
 		 */
-        telemetry.addData("Encoder",  "Encoder: " + String.format("%.2f", motorRight.FTCDcMotor.getCurrentPosition()));
+        telemetry.addData("Encoder",  "Encoder: " + String.format("%d", motorRight.getCurrentPosition()));
         //telemetry.addData("left Y scaled", "joy Y: " + String.format("%.2f", left));
 
 

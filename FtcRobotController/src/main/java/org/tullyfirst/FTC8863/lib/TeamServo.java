@@ -18,6 +18,9 @@ public class TeamServo {
     private double homePosition;
     private double upPosition;
     private double downPosition;
+    private double positionOne;
+    private double positionTwo;
+    private double positionThree;
     private Servo teamServo;
     private Servo.Direction direction;
 
@@ -57,6 +60,30 @@ public class TeamServo {
         this.direction = direction;
     }
 
+    public double getPositionOne() {
+        return positionOne;
+    }
+
+    public void setPositionOne(double positionOne) {
+        this.positionOne = positionOne;
+    }
+
+    public double getPositionTwo() {
+        return positionTwo;
+    }
+
+    public void setPositionTwo(double positionTwo) {
+        this.positionTwo = positionTwo;
+    }
+
+    public double getPositionThree() {
+        return positionThree;
+    }
+
+    public void setPositionThree(double positionThree) {
+        this.positionThree = positionThree;
+    }
+
     //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
@@ -81,7 +108,20 @@ public class TeamServo {
     public void goDown() {
         teamServo.setPosition(getDownPosition());
     }
+
     public void goHome() {
         teamServo.setPosition(getHomePosition());
+    }
+
+    public void goPositionOne() {
+        teamServo.setPosition(getPositionOne());
+    }
+
+    public void goPositionTwo() {
+        teamServo.setPosition(getPositionTwo());
+    }
+
+    public void goPositionThree() {
+        teamServo.setPosition(getPositionThree());
     }
 }

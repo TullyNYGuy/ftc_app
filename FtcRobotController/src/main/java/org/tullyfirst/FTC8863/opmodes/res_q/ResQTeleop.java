@@ -29,11 +29,14 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package org.tullyfirst.FTC8863.opmodes.test;
+package org.tullyfirst.FTC8863.opmodes.res_q;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
+import org.tullyfirst.FTC8863.lib.JoyStick;
 import org.tullyfirst.FTC8863.lib.TeamServo;
 
 /**
@@ -50,7 +53,7 @@ import org.tullyfirst.FTC8863.lib.TeamServo;
  *  gamepad2 x button = .5 (halfway)
  * <p>
  */
-public class TestTeamServo extends OpMode {
+public class ResQTeleop extends OpMode {
     boolean leftRepelServoActive = true;
     double upPosition = .8;
     double downPosition = .2;
@@ -60,10 +63,30 @@ public class TestTeamServo extends OpMode {
     double upperRepelPosition = .1;
     TeamServo leftRepelServo;
     TeamServo rightRepelServo;
+
+    final static double JOYSTICK_DEADBAND_VALUE = .15;
+
+    DcMotor motorRight;
+    DcMotor motorLeft;
+
+    JoyStick driverDiffLeftJoyStickY;
+    JoyStick driverDiffLeftJoyStickX;
+
+    JoyStick driverTankLeftJoyStickY;
+    JoyStick driverTankRightJoyStickY;
+
+    float throttle = 0;
+    float direction = 0;
+
+    float leftTank = 0;
+    float rightTank = 0;
+    float powerReductionFactor = 1;
+
+    boolean useTankDrive = true;
 	/**
 	 * Constructor
 	 */
-	public TestTeamServo() {
+	public ResQTeleop() {
 
 	}
 
@@ -74,15 +97,29 @@ public class TestTeamServo extends OpMode {
 	 */
 	@Override
 	public void init() {
+
         leftRepelServo = new TeamServo("leftRepelServo", hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
         rightRepelServo =new TeamServo("rightRepelServo",hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
+
+
+        driverDiffLeftJoyStickX = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.NO_INVERT_SIGN);
+        driverDiffLeftJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);
+
+        driverTankLeftJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);
+        driverTankRightJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);
+
         leftRepelServo.setPositionOne(lowerRepelPosition);
         leftRepelServo.setPositionTwo(middleRepelPosition);
         leftRepelServo.setPositionThree(upperRepelPosition);
         rightRepelServo.setPositionOne(lowerRepelPosition);
         rightRepelServo.setPositionTwo(middleRepelPosition);
         rightRepelServo.setPositionThree(upperRepelPosition);
-	}
+
+        motorRight = hardwareMap.dcMotor.get("rightDriveMotor");
+        motorLeft = hardwareMap.dcMotor.get("leftDriveMotor");
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
+
+    }
 
     @Override
     public void start() {
@@ -93,12 +130,58 @@ public class TestTeamServo extends OpMode {
 	@Override
 	public void loop() {
 
+        if (gamepad1.left_bumper) {
+            useTankDrive = true;
+        }
+
+        if (gamepad1.right_bumper) {
+            useTankDrive = false;
+        }
+
         if (gamepad2.left_bumper) {
             leftRepelServoActive = true;
         }
 
         if (gamepad2.right_bumper) {
             leftRepelServoActive = false;
+        }
+
+        // write the values to the motors
+        if (useTankDrive) {
+
+            float rightTank = (float)driverTankRightJoyStickY.scaleInput(gamepad1.right_stick_y);
+            float leftTank = (float)driverTankLeftJoyStickY.scaleInput(gamepad1.left_stick_y);
+
+            rightTank = Range.clip(rightTank, -1, 1);
+            leftTank = Range.clip(leftTank, -1, 1);
+
+            motorRight.setPower(rightTank * powerReductionFactor);
+            motorLeft.setPower(leftTank * powerReductionFactor);
+
+        } else {
+            float throttle = (float)driverDiffLeftJoyStickY.scaleInput(gamepad1.left_stick_y);
+            float direction = (float)driverDiffLeftJoyStickX.scaleInput(gamepad1.left_stick_x);
+
+            float rightDiff = throttle - direction;
+            float leftDiff = throttle + direction;
+
+            rightDiff = Range.clip(rightDiff, -1, 1);
+            leftDiff = Range.clip(leftDiff, -1, 1);
+
+            motorRight.setPower(rightDiff * powerReductionFactor);
+            motorLeft.setPower(leftDiff * powerReductionFactor);
+        }
+
+        if (gamepad1.a) {
+            powerReductionFactor = .5f;
+        }
+
+        if (gamepad1.b) {
+            powerReductionFactor = 1f;
+        }
+
+        if (gamepad1.x) {
+            powerReductionFactor = .7f;
         }
 
         if (gamepad2.a) {

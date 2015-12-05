@@ -92,6 +92,16 @@ public class TeamDcMotorWrapper {
      */
     private MotorMoveType motorMoveType = MotorMoveType.RELATIVE;
 
+    /**
+     * Minimum power for this motor
+     */
+    private double minMotorPower = -1;
+
+    /**
+     * Maximum power for this motor
+     */
+    private double maxMotorPower = 1;
+
     //*********************************************************************************************
     //          GETTER and SETTER Methods
     //*********************************************************************************************
@@ -160,12 +170,27 @@ public class TeamDcMotorWrapper {
         this.motorMoveType = motorMoveType;
     }
 
+    public double getMinMotorPower() {
+        return minMotorPower;
+    }
+
+    public void setMinMotorPower(double minMotorPower) {
+        this.minMotorPower = minMotorPower;
+    }
+
+    public double getMaxMotorPower() {
+        return maxMotorPower;
+    }
+
+    public void setMaxMotorPower(double maxMotorPower) {
+        this.maxMotorPower = maxMotorPower;
+    }
+
     //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
 
-    public TeamDcMotorWrapper(String motorName) {
-        HardwareMap hardwareMap = new HardwareMap();
+    public TeamDcMotorWrapper(String motorName, HardwareMap hardwareMap) {
         FTCDcMotor = hardwareMap.dcMotor.get(motorName);
         initMotorDefaults();
     }
@@ -182,6 +207,8 @@ public class TeamDcMotorWrapper {
         setMotorState(MotorState.IDLE);
         setNextMotorState(NextMotorState.COAST);
         setMotorMoveType(MotorMoveType.RELATIVE);
+        setMinMotorPower(-1);
+        setMaxMotorPower(1);
     }
 
     //*********************************************************************************************
@@ -450,4 +477,33 @@ public class TeamDcMotorWrapper {
         FTCDcMotor.setPowerFloat();
         setMotorState(MotorState.IDLE);
     }
+
+    //*********************************************************************************************
+    //          Wrapper Methods
+    //*********************************************************************************************
+    public void setMode(DcMotorController.RunMode mode) {
+        FTCDcMotor.setMode(mode);
+    }
+
+    public void setPower(double power) {
+        power = Range.clip(power, getMinMotorPower(),getMaxMotorPower());
+        FTCDcMotor.setPower(power);
+    }
+
+    public void setPowerFloat() {
+        FTCDcMotor.setPowerFloat();
+    }
+
+    public void setTargetPosition(int position) {
+        FTCDcMotor.setTargetPosition(position);
+    }
+
+    public int getCurrentPosition() {
+        return FTCDcMotor.getCurrentPosition();
+    }
+
+    public void setDirection(DcMotor.Direction direction) {
+        FTCDcMotor.setDirection(direction);
+    }
+
 }
