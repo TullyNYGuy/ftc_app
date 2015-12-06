@@ -31,6 +31,14 @@ public class TeleOP_8863_hardware extends init_lib{
         S_arm2.setPosition(s_position(1));
     }
 
+    @Override
+    public void stop(){
+        L_arm.setPosition(s_position(.8));
+        R_arm.setPosition(s_position(.7));
+        S_arm1.setPosition(s_position(1));
+        S_arm2.setPosition(s_position(1));
+    }
+
 
     public double R_servo_pos(){return R_arm.getPosition();}
     public double L_servo_pos(){return L_arm.getPosition();}
