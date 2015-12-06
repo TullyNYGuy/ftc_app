@@ -14,6 +14,7 @@ public class TeleOP_8863_hardware extends init_lib{
 
     public float speed = 1;
     public float direction = 1;
+    public double drive = 0;
 
 
     public float GP1_LY;
