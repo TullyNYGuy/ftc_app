@@ -15,12 +15,7 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
             R_arm.setPosition(s_position(.25));
         }
 
-        //right servo med
-        if (gamepad2.dpad_right && gamepad2.b){
-            R_arm.setPosition(s_position(.1));
-        }
-
-        //right servo high
+        //right servo med/high
         if (gamepad2.dpad_right && gamepad2.x){
             R_arm.setPosition(s_position(.1));
         }
@@ -30,12 +25,7 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
             L_arm.setPosition(s_position(.25));
         }
 
-        //left servo med
-        if (gamepad2.dpad_left && gamepad2.b){
-            L_arm.setPosition(s_position(.1));
-        }
-
-        //right servo high
+        //left servo med/high
         if (gamepad2.dpad_left && gamepad2.x){
             L_arm.setPosition(s_position(.1));
         }
@@ -44,6 +34,17 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
         if (gamepad2.dpad_up){
             R_arm.setPosition(s_position(.8));
             L_arm.setPosition(s_position(.8));
+        }
+
+        //support servo
+        if (gamepad2.b){
+            S_arm1.setPosition(s_position(.35));
+            S_arm2.setPosition(s_position(.35));
+        }
+
+        if (gamepad2.dpad_down){
+            S_arm1.setPosition(s_position(1));
+            S_arm2.setPosition(s_position(1));
         }
 
         //slow motion
@@ -62,27 +63,12 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
             direction = 1;
         }
 
-        //switches tank drive to stick drive
-        if(gamepad1.dpad_down){
-            drive_switch = 1;
-        }
-        else{
-            drive_switch = 0;
-        }
+        GP1_LY = -gamepad1.left_stick_y;
+        GP1_RY = -gamepad1.right_stick_y;
 
-
-        //drive motors
         //tank drive
-        if(drive_switch == 0){
-            L_motors = ((scale_motor_power(GP1_LY))/speed)*direction;
-            R_motors = ((scale_motor_power(GP1_RY))/speed)*direction;
-        }
-
-        //stick drive forward and backwards only
-        if(drive_switch == 1){
-            L_motors = ((scale_motor_power(GP1_RY))/speed)*direction;
-            R_motors = ((scale_motor_power(GP1_RY))/speed)*direction;
-        }
+        L_motors = ((scale_motor_power(GP1_LY))/speed)*direction;
+        R_motors = ((scale_motor_power(GP1_RY))/speed)*direction;
 
         set_motor(L_motors, R_motors);
 
