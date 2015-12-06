@@ -15,24 +15,26 @@ public class TeleOP_8863_hardware extends init_lib{
     public float speed = 1;
     public float direction = 1;
 
-    public double drive_switch = 0;
 
+    public float GP1_LY;
+    public float GP1_RY;
 
-    public float GP1_LY = -gamepad1.left_stick_y;
-    public float GP1_RY = -gamepad1.right_stick_y;
     public float R_motors;
     public float L_motors;
 
 
     @Override
     public void start(){
-        L_arm.setPosition(s_position(.8));
-        R_arm.setPosition(s_position(.8));
+        L_arm.setPosition(s_position(.85));
+        R_arm.setPosition(s_position(.75));
+        S_arm1.setPosition(s_position(1));
+        S_arm2.setPosition(s_position(1));
     }
 
 
     public double R_servo_pos(){return R_arm.getPosition();}
     public double L_servo_pos(){return L_arm.getPosition();}
+    public double S_servo_pos(){return S_arm1.getPosition();}
 
     public double s_position(double pos){
 
