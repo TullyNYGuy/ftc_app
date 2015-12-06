@@ -55,16 +55,28 @@ import org.tullyfirst.FTC8863.lib.TeamServo;
  */
 public class ResQTeleop extends OpMode {
     boolean leftRepelServoActive = true;
+
     double upPosition = .8;
     double downPosition = .2;
     double homePosition = .8;
+
     double lowerRepelPosition = .25;
     double middleRepelPosition = .1;
     double upperRepelPosition = .1;
+
+    double leftSupportArmPositionHome = 1.0;
+    double leftSupportArmPositionUp = 1.0;
+    double leftSupportArmpositionDown = .35;
+
+
+    double rightSupportArmPositionHome = 1.0;
+    double rightSupportArmPositionUp = 1.0;
+    double rightSupportArmpositionDown = .45;
+
+    TeamServo leftSupportArmServo;
+    TeamServo rightSupportArmServo;
     TeamServo leftRepelServo;
     TeamServo rightRepelServo;
-
-    final static double JOYSTICK_DEADBAND_VALUE = .15;
 
     DcMotor motorRight;
     DcMotor motorLeft;
@@ -74,6 +86,8 @@ public class ResQTeleop extends OpMode {
 
     JoyStick driverTankLeftJoyStickY;
     JoyStick driverTankRightJoyStickY;
+
+    final static double JOYSTICK_DEADBAND_VALUE = .15;
 
     float throttle = 0;
     float direction = 0;
@@ -98,9 +112,11 @@ public class ResQTeleop extends OpMode {
 	@Override
 	public void init() {
 
-        leftRepelServo = new TeamServo("leftRepelServo", hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
-        rightRepelServo =new TeamServo("rightRepelServo",hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
+        leftRepelServo = new TeamServo("leftRepelServo", hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
+        rightRepelServo =new TeamServo("rightRepelServo",hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
 
+        leftSupportArmServo =new TeamServo("leftSupportArmServo",hardwareMap, leftSupportArmPositionHome, leftSupportArmPositionUp, leftSupportArmpositionDown, Servo.Direction.FORWARD);
+        rightSupportArmServo =new TeamServo("rightSupportArmServo",hardwareMap, rightSupportArmPositionHome, rightSupportArmPositionUp, rightSupportArmpositionDown, Servo.Direction.REVERSE);
 
         driverDiffLeftJoyStickX = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.NO_INVERT_SIGN);
         driverDiffLeftJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);
@@ -115,6 +131,12 @@ public class ResQTeleop extends OpMode {
         rightRepelServo.setPositionTwo(middleRepelPosition);
         rightRepelServo.setPositionThree(upperRepelPosition);
 
+        leftSupportArmServo.setUpPosition(leftSupportArmPositionUp);
+        leftSupportArmServo.setDownPosition(leftSupportArmpositionDown);
+
+        rightSupportArmServo.setUpPosition(rightSupportArmPositionUp);
+        rightSupportArmServo.setDownPosition(rightSupportArmpositionDown);
+
         motorRight = hardwareMap.dcMotor.get("rightDriveMotor");
         motorLeft = hardwareMap.dcMotor.get("leftDriveMotor");
         motorRight.setDirection(DcMotor.Direction.REVERSE);
@@ -125,6 +147,9 @@ public class ResQTeleop extends OpMode {
     public void start() {
         leftRepelServo.goHome();
         rightRepelServo.goHome();
+
+        leftSupportArmServo.goUp();
+        rightSupportArmServo.goUp();
     }
 
 	@Override
@@ -240,6 +265,18 @@ public class ResQTeleop extends OpMode {
                 telemetry.addData("leftRepel", "home");
             }
         }
+
+        if (gamepad2.dpad_up) {
+            leftSupportArmServo.goUp();
+            rightSupportArmServo.goUp();
+            telemetry.addData("Suppport arm", "Up");
+        }
+
+        if (gamepad2.dpad_down) {
+            leftSupportArmServo.goDown();
+            rightSupportArmServo.goDown();
+            telemetry.addData("Suppport arm", "Down");
+        }
 	}
 
 	/*
@@ -251,5 +288,8 @@ public class ResQTeleop extends OpMode {
 	public void stop() {
         leftRepelServo.goHome();
         rightRepelServo.goHome();
+
+        leftSupportArmServo.goUp();
+        rightSupportArmServo.goUp();
     }
 }
