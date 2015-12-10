@@ -42,9 +42,17 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
             S_arm2.setPosition(s_position(.35));
         }
 
-        if (gamepad2.dpad_down){
+        if (gamepad2.y){
             S_arm1.setPosition(s_position(1));
             S_arm2.setPosition(s_position(1));
+        }
+
+        //C_srm
+        if(gamepad2.dpad_down){
+            C_arm.setPosition(s_position(.7));
+        }
+        else{
+            C_arm.setPosition(s_position(0));
         }
 
         //speed change
@@ -81,10 +89,11 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
 
         //tank drive
         if (drive == 0) {
-            L_motors = ((scale_motor_power(GP1_LY)) * speed) * direction;
-            R_motors = ((scale_motor_power(GP1_RY)) * speed) * direction;
+            L_motors = ((scale_motor_power(GP1_LY))*speed)*direction;
+            R_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
         }
 
+        //forward/backward
         if(drive == 1){
             L_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
             R_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
@@ -93,5 +102,5 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
 
         set_motor(L_motors, R_motors);
 
-    }
+    }//loop
 }

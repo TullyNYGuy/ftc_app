@@ -111,5 +111,6 @@ public class FtcOpModeRegister implements OpModeRegister {
 
     //ed young's
     manager.register("TeleOP_8863", TeleOP_8863.class);
+    manager.register("Auto_8863", Auto_8863.class);
   }
 }

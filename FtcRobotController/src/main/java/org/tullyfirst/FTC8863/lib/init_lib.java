@@ -2,9 +2,7 @@ package org.tullyfirst.FTC8863.lib;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.tullyfirst.FTC8863.lib.TeleOP_8863_hardware;
 
 public class init_lib extends OpMode{
 
@@ -15,6 +13,7 @@ public class init_lib extends OpMode{
     public Servo L_arm;
     public Servo S_arm1;
     public Servo S_arm2;
+    public Servo C_arm;
 
 
     @Override
@@ -25,8 +24,7 @@ public class init_lib extends OpMode{
         motor_RF = hardwareMap.dcMotor.get("motor_RF");
         motor_LF = hardwareMap.dcMotor.get("motor_LF");
         motor_RF.setDirection(com.qualcomm.robotcore.hardware.DcMotor.Direction.REVERSE);
-        motor_RF.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motor_LF.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+
 
         //servo init
         R_arm = hardwareMap.servo.get("R_arm");
@@ -37,11 +35,13 @@ public class init_lib extends OpMode{
         S_arm2 = hardwareMap.servo.get("S_arm2");
         S_arm2.setDirection(Servo.Direction.REVERSE);
 
-    }
+        C_arm = hardwareMap.servo.get("C_arm");
+
+    }//init
 
     @Override
     public void loop(){
 
-    }
+    }//loop
 
 }
