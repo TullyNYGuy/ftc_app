@@ -33,6 +33,7 @@ package org.tullyfirst.FTC8863.opmodes.res_q;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -53,7 +54,7 @@ import org.tullyfirst.FTC8863.lib.TeamServo;
  *  gamepad2 x button = .5 (halfway)
  * <p>
  */
-public class ResQTeleop extends OpMode {
+public class ResQTeleopWithPop extends OpMode {
     boolean leftRepelServoActive = true;
 
     double upPosition = .8;
@@ -80,6 +81,9 @@ public class ResQTeleop extends OpMode {
 
     DcMotor motorRight;
     DcMotor motorLeft;
+    DcMotor motorPop;
+
+    boolean motorPopDown = false;
 
     JoyStick driverDiffLeftJoyStickY;
     JoyStick driverDiffLeftJoyStickX;
@@ -100,7 +104,7 @@ public class ResQTeleop extends OpMode {
 	/**
 	 * Constructor
 	 */
-	public ResQTeleop() {
+	public ResQTeleopWithPop() {
 
 	}
 
@@ -141,6 +145,8 @@ public class ResQTeleop extends OpMode {
         motorLeft = hardwareMap.dcMotor.get("leftDriveMotor");
         motorRight.setDirection(DcMotor.Direction.REVERSE);
 
+        motorPop = hardwareMap.dcMotor.get("popMotor");
+
     }
 
     @Override
@@ -150,6 +156,11 @@ public class ResQTeleop extends OpMode {
 
         leftSupportArmServo.goUp();
         rightSupportArmServo.goUp();
+
+        motorPop.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        motorPop.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        motorPop.setTargetPosition(0);
+        motorPop.setPower(.8);
     }
 
 	@Override
@@ -276,6 +287,22 @@ public class ResQTeleop extends OpMode {
             leftSupportArmServo.goDown();
             rightSupportArmServo.goDown();
             telemetry.addData("Suppport arm", "Down");
+        }
+
+        if (gamepad2.dpad_left) {
+            if (!motorPopDown){
+                motorPop.setTargetPosition(186);
+                motorPop.setPower(.8);
+                telemetry.addData("Pop arm", "Down");
+                motorPopDown = true;
+            } else {
+                motorPop.setTargetPosition(0);
+                motorPop.setPower(.8);
+                telemetry.addData("Pop arm", "Up");
+                motorPopDown = false;
+            }
+
+
         }
 	}
 

@@ -1,5 +1,10 @@
 package org.tullyfirst.FTC8863.lib;
 
+import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.tullyfirst.FTC8863.lib.TeamDcMotorWrapper;
+
 import java.util.HashMap;
 
 /**
@@ -10,6 +15,9 @@ public class TwoMotorDriveTrain {
     private float rightPower = 0;
     private float leftPower = 0;
     private float cmPerRotation = 0;
+
+    public TeamDcMotorWrapper rightDriveMotor;
+    public TeamDcMotorWrapper leftDriveMotor;
 
     public float getRightPower(){
         return this.rightPower;
@@ -35,7 +43,41 @@ public class TwoMotorDriveTrain {
         this.cmPerRotation = cmPerRotation;
     }
 
+    public TwoMotorDriveTrain(HardwareMap hardwareMap) {
+        leftDriveMotor = new TeamDcMotorWrapper("leftDriveMotor", hardwareMap);
+        rightDriveMotor = new TeamDcMotorWrapper("rightDriveMotor", hardwareMap);
 
+        rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveMotor.setMaxMotorPower(1);
+        rightDriveMotor.setMinMotorPower(-1);
+        rightDriveMotor.setMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
+        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
+        rightDriveMotor.setMotorMoveType(TeamDcMotorWrapper.MotorMoveType.RELATIVE);
+        rightDriveMotor.setEncoderTolerance(5);
+        rightDriveMotor.setCmPerRev(10);
+
+        rightDriveMotor.setMaxMotorPower(1);
+        rightDriveMotor.setMinMotorPower(-1);
+        rightDriveMotor.setMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
+        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
+        rightDriveMotor.setMotorMoveType(TeamDcMotorWrapper.MotorMoveType.RELATIVE);
+        rightDriveMotor.setEncoderTolerance(5);
+        rightDriveMotor.setCmPerRev(10);
+    }
+
+    public void rotateToDistance(double power, double distance){
+        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotorWrapper.NextMotorState.HOLD);
+        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotorWrapper.NextMotorState.HOLD);
+    }
+
+    public boolean isRotationComplete() {
+        if (rightDriveMotor.isRotationComplete() && leftDriveMotor.isRotationComplete()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
     // Joystick info for reference.
     // Normally:
     // y ranges from -1 to 1, where -1 is full up and 1 is full down

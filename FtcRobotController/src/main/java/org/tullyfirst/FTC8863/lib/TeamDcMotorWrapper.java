@@ -280,13 +280,23 @@ public class TeamDcMotorWrapper {
     }
 
     /**
+     * Gets the number of encoder counts for a certian number of revolutions.
+     *
+     * @param revs number of revolutions
+     * @return encoder counts
+     */
+    public int getEncoderCountForRevs(double revs) {
+        return (int)(getCountsPerRev() * revs);
+    }
+
+    /**
      * If the motor is set for relative movement, the encoder will be reset. But if the motor
      * is set for absolute movement, the encoder needs to keep track of where the motor is, so
      * it cannot be reset.
      */
     public void resetEncoder(){
         if (getMotorMoveType() == MotorMoveType.RELATIVE) {
-            FTCDcMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            setMode(DcMotorController.RunMode.RESET_ENCODERS);
         }
     }
 
@@ -299,7 +309,7 @@ public class TeamDcMotorWrapper {
      */
     public void resetEncoder(boolean override){
         if (override) {
-            FTCDcMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            setMode(DcMotorController.RunMode.RESET_ENCODERS);
         } else {
             resetEncoder();
         }
@@ -344,20 +354,31 @@ public class TeamDcMotorWrapper {
             // reset the encoder
             resetEncoder();
             // set the desired encoder position
-            FTCDcMotor.setTargetPosition(encoderCount);
+            setTargetPosition(encoderCount);
             // set the run mode
-            FTCDcMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             // clip the power so that it does not exceed 80% of max. The reason for this is that the
             // PID controller inside the core motor controller needs to have some room to increase
             // the power when it makes its PID adjustments. If you set the power to 100% then there is
             // no room to increase the power if needed and PID control will not work.
             power = Range.clip(power, -.8, .8);
-            FTCDcMotor.setPower(power);
+            setPower(power);
             setMotorState(MotorState.MOVING);
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * Makes the motor rotate to a certain amount of revolutions.
+     * @param power The power at which the motor moves
+     * @param revs The amount of revolutions you want it to go.
+     * @param afterCompletion Whether it holds or floats after completion.
+     * @return If return is true then it actually did it.
+     */
+    public boolean rotateToRev(double power, double revs, NextMotorState afterCompletion){
+        return rotateToEncoderCount(power, getEncoderCountForRevs(revs), afterCompletion);
     }
 
     /**
@@ -371,13 +392,13 @@ public class TeamDcMotorWrapper {
      */
     public boolean isRotationComplete() {
         // get the current encoder position
-        int currentEncoderCount = FTCDcMotor.getCurrentPosition();
+        int currentEncoderCount = getCurrentPosition();
 
         // is the current position within the tolderance limit of the desired position
-        if (Math.abs(this.desiredEncoderCount - currentEncoderCount) <getEncoderTolerance()) {
+        if (Math.abs(getDesiredEncoderCount() - currentEncoderCount) <getEncoderTolerance()) {
             // movement is complete. See what to do next
             if(getNextMotorState() == NextMotorState.COAST) {
-                FTCDcMotor.setPower(0);
+                setPowerFloat();
                 setMotorState(MotorState.IDLE);
             } else {
                 // we want to actively hold position
