@@ -85,11 +85,13 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
                 //pops robot
                 robot.goPopperMotorPop();
                 popperPosition = PopperPosition.DOWN;
+                poperPositionMessage = "down";
             }
             else{//robot is poped
                 //popper go home
                 robot.goPopperMotorHome();
                 popperPosition = PopperPosition.HOME;
+                poperPositionMessage = "home";
             }
             popperMotorTogglePressed = true;
         }
