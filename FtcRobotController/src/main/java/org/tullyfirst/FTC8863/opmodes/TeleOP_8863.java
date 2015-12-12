@@ -9,52 +9,53 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
         //telemetry
         update_telemetry();
 
-
+        //gamepad 2
         //right servo low
         if (gamepad2.dpad_right && gamepad2.a){
-            R_arm.setPosition(s_position(.25));
+            rightZipServoArm.setPosition(s_position(.25));
         }
 
         //right servo med/high
         if (gamepad2.dpad_right && gamepad2.x){
-            R_arm.setPosition(s_position(.1));
+            rightZipServoArm.setPosition(s_position(.1));
         }
 
         //left servo low
         if (gamepad2.dpad_left && gamepad2.a){
-            L_arm.setPosition(s_position(.25));
+            leftZipServoArm.setPosition(s_position(.25));
         }
 
         //left servo med/high
         if (gamepad2.dpad_left && gamepad2.x){
-            L_arm.setPosition(s_position(.1));
+            leftZipServoArm.setPosition(s_position(.1));
         }
 
         //both servos up
         if (gamepad2.dpad_up){
-            R_arm.setPosition(s_position(.75));
-            L_arm.setPosition(s_position(.85));
+            rightZipServoArm.setPosition(s_position(.75));
+            leftZipServoArm.setPosition(s_position(.85));
         }
 
         //support servo
         if (gamepad2.b){
-            S_arm1.setPosition(s_position(.35));
-            S_arm2.setPosition(s_position(.35));
+            helperServoArm1.setPosition(s_position(.35));
+            helperServoArm2.setPosition(s_position(.35));
         }
 
         if (gamepad2.y){
-            S_arm1.setPosition(s_position(1));
-            S_arm2.setPosition(s_position(1));
+            helperServoArm1.setPosition(s_position(1));
+            helperServoArm2.setPosition(s_position(1));
         }
 
         //C_srm
         if(gamepad2.dpad_down){
-            C_arm.setPosition(s_position(.7));
+            climberServoArm.setPosition(s_position(.7));
         }
         else{
-            C_arm.setPosition(s_position(0));
+            climberServoArm.setPosition(s_position(0));
         }
 
+        //gamepad 1
         //speed change
         if(gamepad1.a){
             speed = .5f;
@@ -66,35 +67,47 @@ public class TeleOP_8863 extends org.tullyfirst.FTC8863.lib.TeleOP_8863_Telemetr
             speed = .7f;
         }
 
-
-        //reverse drive direction
-        if (gamepad1.dpad_down){
-            direction = -1;
+        //direction toggle
+        if(gamepad1.right_bumper && !directionTogglePressed){
+            if(directionToggle){
+                directionToggle = false;
+            }
+            else if(!directionToggle){
+                directionToggle = true;
+            }
+            directionTogglePressed = true;
         }
-        if (gamepad1.dpad_up){
+
+        if(directionToggle){
             direction = 1;
         }
+        if(!directionToggle){
+            direction = -1;
+        }
 
-        if (gamepad1.left_bumper){
-            drive = 1;
+        //drive toggle
+        if(gamepad1.left_bumper && !driveTogglePressed){
+            if(driveToggle){
+                driveToggle = false;
+            }
+            else if(!driveToggle){
+                driveToggle = true;
+            }
+            driveTogglePressed = true;
         }
-        if (gamepad1.right_bumper){
-            drive = 0;
-        }
+
 
         GP1_LY = -gamepad1.left_stick_y;
         GP1_RY = -gamepad1.right_stick_y;
 
-
-
         //tank drive
-        if (drive == 0) {
+        if (driveToggle) {
             L_motors = ((scale_motor_power(GP1_LY))*speed)*direction;
             R_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
         }
 
         //forward/backward
-        if(drive == 1){
+        if(!driveToggle){
             L_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
             R_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
         }
