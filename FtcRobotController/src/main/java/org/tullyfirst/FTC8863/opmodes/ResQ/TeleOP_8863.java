@@ -12,29 +12,40 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 
         //gamepad 2
         //right servo low
-        if (gamepad2.dpad_right && gamepad2.a){
+
+
+        if(gamepad2.left_bumper){
+            servoSide = ServoSide.LEFT_SIDE;
+            servoSideMessage = "left side";
+        }
+        if(gamepad2.right_bumper){
+            servoSide = ServoSide.RIGHT_SIDE;
+            servoSideMessage = "right side";
+        }
+
+        if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.a){
             rightZipServoArm.setPosition(s_position(.25));
         }
 
         //right servo med/high
-        if (gamepad2.dpad_right && gamepad2.x){
+        if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.x){
             rightZipServoArm.setPosition(s_position(.1));
         }
 
         //left servo low
-        if (gamepad2.dpad_left && gamepad2.a){
+        if (servoSide == ServoSide.LEFT_SIDE && gamepad2.a){
             leftZipServoArm.setPosition(s_position(.25));
         }
 
         //left servo med/high
-        if (gamepad2.dpad_left && gamepad2.x){
+        if (servoSide == ServoSide.LEFT_SIDE && gamepad2.x){
             leftZipServoArm.setPosition(s_position(.1));
         }
 
         //both servos up
         if (gamepad2.dpad_up){
             rightZipServoArm.setPosition(s_position(.75));
-            leftZipServoArm.setPosition(s_position(.85));
+            leftZipServoArm.setPosition(s_position(.8));
         }
 
         //support servo
@@ -61,12 +72,14 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         if(gamepad1.a){
             speed = .5f;
         }
-        if (gamepad1.b){
+        if(gamepad1.b){
             speed = 1f;
         }
-        if (gamepad1.x){
+        if(gamepad1.x){
             speed = .7f;
         }
+
+
 
         //direction of robot drive toggle
         if(gamepad1.right_bumper && !directionTogglePressed){
@@ -74,11 +87,13 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
                 //fliping direction to reverse
                 direction = -1;
                 driveDirection = DriveDirection.REVERSE;
+                directionMessage = "reverse";
             }
             else{//drive is reverse
                 //flip to forwards
                 direction = 1;
                 driveDirection = DriveDirection.FORWARD;
+                directionMessage = "forward";
             }
             directionTogglePressed = true;
         }
@@ -91,9 +106,11 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         if(gamepad1.left_bumper && !driveTogglePressed){
             if(driveToggle){
                 driveToggle = false;
+                driveTypeMessage = "joystick";
             }
             else{
                 driveToggle = true;
+                driveTypeMessage = "tank";
             }
             driveTogglePressed = true;
         }

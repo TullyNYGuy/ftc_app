@@ -8,6 +8,10 @@ public class TeleOP_8863_hardware extends init_lib {
     public enum DriveDirection{
         FORWARD, REVERSE
     }
+
+    public enum ServoSide{
+        LEFT_SIDE, RIGHT_SIDE
+    }
     
     public static final float MIN_DCMOTOR_POSITION = -1;
     public static final float MAX_DCMOTOR_POSITION = 1;
@@ -15,11 +19,18 @@ public class TeleOP_8863_hardware extends init_lib {
     public static final double MIN_SERVO_POSITION = 0;
     public static final double MAX_SERVO_POSITION = 1;
 
+    public String servoSideMessage;
+    public String driveTypeMessage;
+    public String directionMessage;
+
     public float speed = 1;
     public float direction = 1;
     public double drive = 0;
 
+    public ServoSide servoSide;
+
     public DriveDirection driveDirection = DriveDirection.FORWARD;
+
     public boolean driveToggle;
     public boolean directionTogglePressed = false;
     public boolean driveTogglePressed = false;
@@ -33,7 +44,7 @@ public class TeleOP_8863_hardware extends init_lib {
 
     @Override
     public void start(){
-        leftZipServoArm.setPosition(s_position(.85));
+        leftZipServoArm.setPosition(s_position(.8));
         rightZipServoArm.setPosition(s_position(.75));
         helperServoArm1.setPosition(s_position(1));
         helperServoArm2.setPosition(s_position(1));
@@ -42,17 +53,12 @@ public class TeleOP_8863_hardware extends init_lib {
 
     @Override
     public void stop(){
-        leftZipServoArm.setPosition(s_position(.85));
+        leftZipServoArm.setPosition(s_position(.8));
         rightZipServoArm.setPosition(s_position(.75));
         helperServoArm1.setPosition(s_position(1));
         helperServoArm2.setPosition(s_position(1));
         climberServoArm.setPosition(s_position(0));
     }//stop
-
-
-    public double R_servo_pos(){return rightZipServoArm.getPosition();}
-    public double L_servo_pos(){return leftZipServoArm.getPosition();}
-    public double S_servo_pos(){return helperServoArm1.getPosition();}
 
     public double s_position(double pos){
 
@@ -94,13 +100,4 @@ public class TeleOP_8863_hardware extends init_lib {
         leftDriveMotor.setPower(left_power);
         rightDriveMotor.setPower(right_power);
     }
-
-    public double left_motor_power(){
-        return leftDriveMotor.getPower();
-    }
-
-    public double right_motor_power(){
-        return rightDriveMotor.getPower();
-    }
-
 }
