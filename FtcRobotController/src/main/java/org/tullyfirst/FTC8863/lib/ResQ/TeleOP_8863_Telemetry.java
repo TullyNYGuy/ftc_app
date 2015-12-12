@@ -1,4 +1,6 @@
-package org.tullyfirst.FTC8863.lib;
+package org.tullyfirst.FTC8863.lib.ResQ;
+
+import org.tullyfirst.FTC8863.lib.ResQ.TeleOP_8863_hardware;
 
 public class TeleOP_8863_Telemetry extends TeleOP_8863_hardware {
 

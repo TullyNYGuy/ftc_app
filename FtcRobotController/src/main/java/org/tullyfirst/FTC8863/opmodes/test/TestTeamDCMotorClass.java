@@ -34,7 +34,7 @@ package org.tullyfirst.FTC8863.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.tullyfirst.FTC8863.lib.TeamDcMotor;
+import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
 
 // only need this import to get access to enums
 

@@ -33,8 +33,8 @@ package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
-import org.tullyfirst.FTC8863.lib.TeamServo;
+
+import org.tullyfirst.FTC8863.lib.FTCLib.TeamServo;
 
 /**
  * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control

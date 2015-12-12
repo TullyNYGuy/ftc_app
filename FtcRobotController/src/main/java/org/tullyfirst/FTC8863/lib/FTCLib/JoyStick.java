@@ -1,4 +1,4 @@
-package org.tullyfirst.FTC8863.lib;
+package org.tullyfirst.FTC8863.lib.FTCLib;
 
 import com.qualcomm.robotcore.util.Range;
 

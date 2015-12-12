@@ -29,16 +29,15 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package org.tullyfirst.FTC8863.opmodes.res_q;
+package org.tullyfirst.FTC8863.opmodes.ResQ;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import org.tullyfirst.FTC8863.lib.JoyStick;
-import org.tullyfirst.FTC8863.lib.TeamServo;
+import org.tullyfirst.FTC8863.lib.FTCLib.JoyStick;
+import org.tullyfirst.FTC8863.lib.FTCLib.TeamServo;
 
 /**
  * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control
@@ -54,7 +53,7 @@ import org.tullyfirst.FTC8863.lib.TeamServo;
  *  gamepad2 x button = .5 (halfway)
  * <p>
  */
-public class ResQTeleopWithPop extends OpMode {
+public class ResQTeleop extends OpMode {
     boolean leftRepelServoActive = true;
 
     double upPosition = .8;
@@ -81,9 +80,6 @@ public class ResQTeleopWithPop extends OpMode {
 
     DcMotor motorRight;
     DcMotor motorLeft;
-    DcMotor motorPop;
-
-    boolean motorPopDown = false;
 
     JoyStick driverDiffLeftJoyStickY;
     JoyStick driverDiffLeftJoyStickX;
@@ -104,7 +100,7 @@ public class ResQTeleopWithPop extends OpMode {
 	/**
 	 * Constructor
 	 */
-	public ResQTeleopWithPop() {
+	public ResQTeleop() {
 
 	}
 
@@ -145,8 +141,6 @@ public class ResQTeleopWithPop extends OpMode {
         motorLeft = hardwareMap.dcMotor.get("leftDriveMotor");
         motorRight.setDirection(DcMotor.Direction.REVERSE);
 
-        motorPop = hardwareMap.dcMotor.get("popMotor");
-
     }
 
     @Override
@@ -156,11 +150,6 @@ public class ResQTeleopWithPop extends OpMode {
 
         leftSupportArmServo.goUp();
         rightSupportArmServo.goUp();
-
-        motorPop.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        motorPop.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        motorPop.setTargetPosition(0);
-        motorPop.setPower(.8);
     }
 
 	@Override
@@ -287,22 +276,6 @@ public class ResQTeleopWithPop extends OpMode {
             leftSupportArmServo.goDown();
             rightSupportArmServo.goDown();
             telemetry.addData("Suppport arm", "Down");
-        }
-
-        if (gamepad2.dpad_left) {
-            if (!motorPopDown){
-                motorPop.setTargetPosition(186);
-                motorPop.setPower(.8);
-                telemetry.addData("Pop arm", "Down");
-                motorPopDown = true;
-            } else {
-                motorPop.setTargetPosition(0);
-                motorPop.setPower(.8);
-                telemetry.addData("Pop arm", "Up");
-                motorPopDown = false;
-            }
-
-
         }
 	}
 

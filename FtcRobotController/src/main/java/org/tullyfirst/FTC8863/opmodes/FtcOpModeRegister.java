@@ -34,11 +34,8 @@ package org.tullyfirst.FTC8863.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
-import org.tullyfirst.FTC8863.opmodes.res_q.ResQTeleop;
-import org.tullyfirst.FTC8863.opmodes.test.TestJoyStick;
-import org.tullyfirst.FTC8863.opmodes.test.TestTeamDCMotorClass;
-import org.tullyfirst.FTC8863.opmodes.test.TestTeamDCMotorWrapper;
-import org.tullyfirst.FTC8863.opmodes.test.TestTeamServo;
+import org.tullyfirst.FTC8863.opmodes.ResQ.ResQTeleop;
+import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP_8863;
 
 /**
  * Register Op Modes
@@ -112,5 +109,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     //ed young's
     manager.register("TeleOP_8863", TeleOP_8863.class);
     manager.register("Auto_8863", Auto_8863.class);
+    manager.register("ResQTeleop", ResQTeleop.class);
+
   }
 }

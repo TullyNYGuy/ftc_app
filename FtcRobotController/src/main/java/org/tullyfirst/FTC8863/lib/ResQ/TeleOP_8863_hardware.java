@@ -1,9 +1,11 @@
-package org.tullyfirst.FTC8863.lib;
+package org.tullyfirst.FTC8863.lib.ResQ;
 
 
 import com.qualcomm.robotcore.util.Range;
 
-public class TeleOP_8863_hardware extends init_lib{
+import org.tullyfirst.FTC8863.lib.ResQ.init_lib;
+
+public class TeleOP_8863_hardware extends init_lib {
 
 
     public static final float MIN_DCMOTOR_POSITION = -1;

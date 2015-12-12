@@ -32,9 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.tullyfirst.FTC8863.lib.TwoMotorDriveTrain;
+import org.tullyfirst.FTC8863.lib.FTCLib.TwoMotorDriveTrain;
 
 /**
  * A simple example of a linear op mode that will approach an IR beacon

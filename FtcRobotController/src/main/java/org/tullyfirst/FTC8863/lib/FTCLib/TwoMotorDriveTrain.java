@@ -1,11 +1,9 @@
-package org.tullyfirst.FTC8863.lib;
+package org.tullyfirst.FTC8863.lib.FTCLib;
 
 import com.qualcomm.robotcore.hardware.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.tullyfirst.FTC8863.lib.TeamDcMotorWrapper;
-
-import java.util.HashMap;
+import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorWrapper;
 
 /**
  * Created by ball on 11/26/2015.

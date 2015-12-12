@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 
-import org.tullyfirst.FTC8863.lib.TeamDcMotorWrapper;
+import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorWrapper;
 
 
 /**

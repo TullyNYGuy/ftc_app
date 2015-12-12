@@ -1,13 +1,13 @@
-package org.tullyfirst.FTC8863.lib;
+package org.tullyfirst.FTC8863.lib.FTCLib;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
+//import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * Created by ball on 11/28/2015.
  */
-public class TeamDcMotorWrapper {
+public class DcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
 
     /**
      * Defines the type of motor.
@@ -52,7 +52,7 @@ public class TeamDcMotorWrapper {
     // can be accessed only by this class, or by using the public
     // getter and setter methods
     //*********************************************************************************************
-    public com.qualcomm.robotcore.hardware.DcMotor FTCDcMotor;
+
     /**
      * Type of motor. Controls the encoder counts per revolution
      */
@@ -91,16 +91,6 @@ public class TeamDcMotorWrapper {
      * Relative or absolute movements
      */
     private MotorMoveType motorMoveType = MotorMoveType.RELATIVE;
-
-    /**
-     * Minimum power for this motor
-     */
-    private double minMotorPower = -1;
-
-    /**
-     * Maximum power for this motor
-     */
-    private double maxMotorPower = 1;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -170,28 +160,17 @@ public class TeamDcMotorWrapper {
         this.motorMoveType = motorMoveType;
     }
 
-    public double getMinMotorPower() {
-        return minMotorPower;
-    }
-
-    public void setMinMotorPower(double minMotorPower) {
-        this.minMotorPower = minMotorPower;
-    }
-
-    public double getMaxMotorPower() {
-        return maxMotorPower;
-    }
-
-    public void setMaxMotorPower(double maxMotorPower) {
-        this.maxMotorPower = maxMotorPower;
-    }
-
     //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
 
-    public TeamDcMotorWrapper(String motorName, HardwareMap hardwareMap) {
-        FTCDcMotor = hardwareMap.dcMotor.get(motorName);
+    public  DcMotor(DcMotorController controller, int portNumber) {
+        super(controller, portNumber);
+        initMotorDefaults();
+    }
+
+    public DcMotor(DcMotorController controller, int portNumber, Direction direction) {
+        super(controller, portNumber, direction);
         initMotorDefaults();
     }
 
@@ -207,8 +186,6 @@ public class TeamDcMotorWrapper {
         setMotorState(MotorState.IDLE);
         setNextMotorState(NextMotorState.COAST);
         setMotorMoveType(MotorMoveType.RELATIVE);
-        setMinMotorPower(-1);
-        setMaxMotorPower(1);
     }
 
     //*********************************************************************************************
@@ -277,16 +254,6 @@ public class TeamDcMotorWrapper {
      */
     public int getEncoderCountForDistance(double distance){
         return (int)((double)getCountsPerRev() * getRevsForDistance(distance));
-    }
-
-    /**
-     * Gets the number of encoder counts for a certian number of revolutions.
-     *
-     * @param revs number of revolutions
-     * @return encoder counts
-     */
-    public int getEncoderCountForRevs(double revs) {
-        return (int)(getCountsPerRev() * revs);
     }
 
     /**
@@ -371,17 +338,6 @@ public class TeamDcMotorWrapper {
     }
 
     /**
-     * Makes the motor rotate to a certain amount of revolutions.
-     * @param power The power at which the motor moves
-     * @param revs The amount of revolutions you want it to go.
-     * @param afterCompletion Whether it holds or floats after completion.
-     * @return If return is true then it actually did it.
-     */
-    public boolean rotateToRev(double power, double revs, NextMotorState afterCompletion){
-        return rotateToEncoderCount(power, getEncoderCountForRevs(revs), afterCompletion);
-    }
-
-    /**
      * Checks to see if the rotation to encoder count has completed. If it has then it sets the
      * motor to hold that encoder count or it sets the motor so that it can move freely, depending
      * on the NextMotorState being set to HOLD or COAST.
@@ -395,10 +351,10 @@ public class TeamDcMotorWrapper {
         int currentEncoderCount = getCurrentPosition();
 
         // is the current position within the tolderance limit of the desired position
-        if (Math.abs(getDesiredEncoderCount() - currentEncoderCount) <getEncoderTolerance()) {
+        if (Math.abs(this.desiredEncoderCount - currentEncoderCount) <getEncoderTolerance()) {
             // movement is complete. See what to do next
             if(getNextMotorState() == NextMotorState.COAST) {
-                setPowerFloat();
+                setPower(0);
                 setMotorState(MotorState.IDLE);
             } else {
                 // we want to actively hold position
@@ -433,8 +389,8 @@ public class TeamDcMotorWrapper {
             // reset the encoder
             resetEncoder();
             // set the run mode
-             FTCDcMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-             FTCDcMotor.setPower(power);
+            setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+            setPower(power);
             setMotorState(MotorState.MOVING);
             return true;
         } else {
@@ -462,7 +418,7 @@ public class TeamDcMotorWrapper {
             // reset the encoder
             resetEncoder();
             // set the run mode
-            FTCDcMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+            setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
             setMotorState(MotorState.MOVING);
             return true;
         } else {
@@ -485,7 +441,7 @@ public class TeamDcMotorWrapper {
 
         if (getNextMotorState() == NextMotorState.HOLD) {
             setMotorState(MotorState.HOLD);
-            rotateToEncoderCount(FTCDcMotor.getPower(), FTCDcMotor.getCurrentPosition(), NextMotorState.HOLD);
+            rotateToEncoderCount(getPower(), getCurrentPosition(), NextMotorState.HOLD);
         } else {
             stopMotor();
         }
@@ -495,36 +451,7 @@ public class TeamDcMotorWrapper {
      * Stop the motor. It will just coast, ie rotate freely.
      */
     public void stopMotor() {
-        FTCDcMotor.setPowerFloat();
+        setPowerFloat();
         setMotorState(MotorState.IDLE);
     }
-
-    //*********************************************************************************************
-    //          Wrapper Methods
-    //*********************************************************************************************
-    public void setMode(DcMotorController.RunMode mode) {
-        FTCDcMotor.setMode(mode);
-    }
-
-    public void setPower(double power) {
-        power = Range.clip(power, getMinMotorPower(),getMaxMotorPower());
-        FTCDcMotor.setPower(power);
-    }
-
-    public void setPowerFloat() {
-        FTCDcMotor.setPowerFloat();
-    }
-
-    public void setTargetPosition(int position) {
-        FTCDcMotor.setTargetPosition(position);
-    }
-
-    public int getCurrentPosition() {
-        return FTCDcMotor.getCurrentPosition();
-    }
-
-    public void setDirection(DcMotor.Direction direction) {
-        FTCDcMotor.setDirection(direction);
-    }
-
 }

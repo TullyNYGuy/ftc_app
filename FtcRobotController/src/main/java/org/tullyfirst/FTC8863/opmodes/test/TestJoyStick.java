@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import org.tullyfirst.FTC8863.lib.JoyStick;
+import org.tullyfirst.FTC8863.lib.FTCLib.JoyStick;
 
 /**
  * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control

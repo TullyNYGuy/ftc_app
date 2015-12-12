@@ -1,10 +1,12 @@
-package org.tullyfirst.FTC8863.lib;
+package org.tullyfirst.FTC8863.lib.ResQ;
 
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
 
+import org.tullyfirst.FTC8863.lib.ResQ.init_lib;
 
-public class Auto_8863_hardware extends init_lib{
+
+public class Auto_8863_hardware extends init_lib {
 
     public static final double MIN_SERVO_POSITION = 0;
     public static final double MAX_SERVO_POSITION = 1;
