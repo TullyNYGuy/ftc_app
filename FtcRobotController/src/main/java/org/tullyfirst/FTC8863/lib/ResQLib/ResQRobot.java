@@ -33,8 +33,23 @@ public class ResQRobot {
         popperMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
         popperMotor.setUnitsPerRev(360);
         popperMotor.setEncoderTolerance(5);
+        popperMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
         popperMotor.setMinMotorPower(-1);
         popperMotor.setMaxMotorPower(1);
+        setPopperMotorHome();
+    }
+
+    public void setPopperMotorHome() {
+        popperMotor.resetEncoder();
+    }
+
+    public void goPopperMotorHome() {
+        popperMotor.rotateToDistance(-.8, -45, TeamDcMotor.NextMotorState.HOLD)
+    }
+
+
+    public void goPopperMotorPop() {
+        popperMotor.rotateToDistance(.8, 45, TeamDcMotor.NextMotorState.HOLD);
     }
 
 //*********************************************************************************************

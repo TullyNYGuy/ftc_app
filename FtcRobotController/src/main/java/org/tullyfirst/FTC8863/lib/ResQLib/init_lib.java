@@ -16,10 +16,13 @@ public class init_lib extends OpMode{
     public Servo helperServoArm2;
     public Servo climberServoArm;
 
+    public ResQRobot robot;
 
     @Override
     public void init(){
 
+
+        robot = new ResQRobot(hardwareMap);
 
         //motor init
         rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
