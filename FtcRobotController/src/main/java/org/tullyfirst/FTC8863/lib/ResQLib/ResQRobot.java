@@ -1,5 +1,6 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
@@ -36,6 +37,7 @@ public class ResQRobot {
         popperMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
         popperMotor.setMinMotorPower(-1);
         popperMotor.setMaxMotorPower(1);
+        popperMotor.setDirection(DcMotor.Direction.REVERSE);
         setPopperMotorHome();
     }
 

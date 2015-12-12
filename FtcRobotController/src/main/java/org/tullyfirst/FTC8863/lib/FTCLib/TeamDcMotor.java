@@ -101,6 +101,11 @@ public class TeamDcMotor {
      */
     private double maxMotorPower = 1;
 
+    /**
+     * motor direction
+     */
+    private DcMotor.Direction direction = com.qualcomm.robotcore.hardware.DcMotor.Direction.FORWARD;
+
     //*********************************************************************************************
     //          GETTER and SETTER Methods
     //*********************************************************************************************
@@ -185,7 +190,11 @@ public class TeamDcMotor {
         this.maxMotorPower = maxMotorPower;
     }
 
-    //*********************************************************************************************
+    public DcMotor.Direction getDirection() {
+        return direction;
+    }
+
+//*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
 
@@ -524,6 +533,7 @@ public class TeamDcMotor {
 
     public void setDirection(org.tullyfirst.FTC8863.lib.FTCLib.DcMotor.Direction direction) {
         FTCDcMotor.setDirection(direction);
+        this.direction = direction;
     }
 
 }
