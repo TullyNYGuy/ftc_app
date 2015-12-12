@@ -44,9 +44,8 @@ public class ResQRobot {
     }
 
     public void goPopperMotorHome() {
-        popperMotor.rotateToDistance(-.8, -45, TeamDcMotor.NextMotorState.HOLD)
+        popperMotor.rotateToDistance(-.8, -45, TeamDcMotor.NextMotorState.HOLD);
     }
-
 
     public void goPopperMotorPop() {
         popperMotor.rotateToDistance(.8, 45, TeamDcMotor.NextMotorState.HOLD);

@@ -12,6 +12,10 @@ public class TeleOP_8863_hardware extends init_lib {
     public enum ServoSide{
         LEFT_SIDE, RIGHT_SIDE
     }
+
+    public enum PopperPosition{
+        DOWN, HOME
+    }
     
     public static final float MIN_DCMOTOR_POSITION = -1;
     public static final float MAX_DCMOTOR_POSITION = 1;
@@ -34,6 +38,9 @@ public class TeleOP_8863_hardware extends init_lib {
     public boolean driveToggle;
     public boolean directionTogglePressed = false;
     public boolean driveTogglePressed = false;
+
+    public boolean popperMotorTogglePressed = false;
+    public PopperPosition popperPosition = PopperPosition.HOME;
 
     public float GP1_LY;
     public float GP1_RY;

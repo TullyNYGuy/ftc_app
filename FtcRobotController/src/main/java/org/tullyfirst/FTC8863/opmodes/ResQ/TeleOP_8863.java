@@ -81,6 +81,25 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
             speed = .7f;
         }
 
+        //popper motor button toggle
+        if(gamepad1.y && !popperMotorTogglePressed){
+            if(popperPosition == PopperPosition.HOME){
+                //pops robot
+                robot.goPopperMotorPop();
+                popperPosition = PopperPosition.DOWN;
+            }
+            else{//robot is poped
+                //popper go home
+                robot.goPopperMotorHome();
+                popperPosition = PopperPosition.HOME;
+            }
+            popperMotorTogglePressed = true;
+        }
+        //if let off bumper reset toggle
+        if(!gamepad1.y && popperMotorTogglePressed){
+            popperMotorTogglePressed = false;
+        }
+
 
 
         //direction of robot drive toggle
