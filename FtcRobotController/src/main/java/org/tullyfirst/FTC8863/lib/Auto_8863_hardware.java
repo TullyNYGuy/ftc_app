@@ -13,20 +13,20 @@ public class Auto_8863_hardware extends init_lib{
 
     @Override
     public void start(){
-        L_arm.setPosition(s_position(.85));
-        R_arm.setPosition(s_position(.75));
-        S_arm1.setPosition(s_position(1));
-        S_arm2.setPosition(s_position(1));
-        C_arm.setPosition(s_position(0));
+        leftZipServoArm.setPosition(s_position(.85));
+        rightZipServoArm.setPosition(s_position(.75));
+        helperServoArm1.setPosition(s_position(1));
+        helperServoArm2.setPosition(s_position(1));
+        climberServoArm.setPosition(s_position(0));
     }//start
 
     @Override
     public void stop(){
-        L_arm.setPosition(s_position(.85));
-        R_arm.setPosition(s_position(.75));
-        S_arm1.setPosition(s_position(1));
-        S_arm2.setPosition(s_position(1));
-        C_arm.setPosition(s_position(0));
+        leftZipServoArm.setPosition(s_position(.85));
+        rightZipServoArm.setPosition(s_position(.75));
+        helperServoArm1.setPosition(s_position(1));
+        helperServoArm2.setPosition(s_position(1));
+        climberServoArm.setPosition(s_position(0));
     }//stop
 
     public double s_position(double pos){
@@ -38,8 +38,8 @@ public class Auto_8863_hardware extends init_lib{
     double L_drive_power(){
         double l_return = 0.0;
 
-        if(motor_LF != null){
-            l_return = motor_LF.getPower ();
+        if(leftDriveMotor != null){
+            l_return = leftDriveMotor.getPower ();
         }
 
         return l_return;
@@ -48,32 +48,32 @@ public class Auto_8863_hardware extends init_lib{
     double R_drive_power(){
         double l_return = 0.0;
 
-        if(motor_RF != null){
-            l_return = motor_LF.getPower ();
+        if(rightDriveMotor != null){
+            l_return = leftDriveMotor.getPower ();
         }
 
         return l_return;
     }
 
     void set_drive_power(double left_power, double right_power){
-        if(motor_LF != null){
-            motor_LF.setPower(left_power);
+        if(leftDriveMotor != null){
+            leftDriveMotor.setPower(left_power);
         }
-        if(motor_RF != null){
-            motor_RF.setPower(right_power);
+        if(rightDriveMotor != null){
+            rightDriveMotor.setPower(right_power);
         }
     }
 
 
     public void L_motor_using_encoder(){
-        if(motor_LF != null){
-            motor_LF.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        if(leftDriveMotor != null){
+            leftDriveMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
     }
 
     public void R_motor_using_encoder(){
-        if(motor_RF != null){
-            motor_RF.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        if(rightDriveMotor != null){
+            rightDriveMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
     }
 
@@ -84,17 +84,17 @@ public class Auto_8863_hardware extends init_lib{
 
 
     public void L_motor_without_encoder(){
-        if(motor_LF != null){
-            if(motor_LF.getMode() == DcMotorController.RunMode.RESET_ENCODERS){
-                motor_LF.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        if(leftDriveMotor != null){
+            if(leftDriveMotor.getMode() == DcMotorController.RunMode.RESET_ENCODERS){
+                leftDriveMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
             }
         }
     }
 
     public void R_motor_without_encoder(){
-        if(motor_RF != null){
-            if(motor_RF.getMode() == DcMotorController.RunMode.RESET_ENCODERS){
-                motor_RF.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        if(rightDriveMotor != null){
+            if(rightDriveMotor.getMode() == DcMotorController.RunMode.RESET_ENCODERS){
+                rightDriveMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
             }
         }
     }
@@ -106,14 +106,14 @@ public class Auto_8863_hardware extends init_lib{
 
 
     public void L_motor_reset(){
-        if(motor_LF != null){
-            motor_LF.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        if(leftDriveMotor != null){
+            leftDriveMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         }
     }
 
     public void R_motor_reset(){
-        if(motor_RF != null){
-            motor_RF.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        if(rightDriveMotor != null){
+            rightDriveMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         }
     }
 
@@ -126,8 +126,8 @@ public class Auto_8863_hardware extends init_lib{
     int L_encoder_count(){
         int l_return = 0;
 
-        if(motor_LF != null){
-            l_return = motor_LF.getCurrentPosition ();
+        if(leftDriveMotor != null){
+            l_return = leftDriveMotor.getCurrentPosition ();
         }
 
         return l_return;
@@ -136,8 +136,8 @@ public class Auto_8863_hardware extends init_lib{
     int R_encoder_count(){
         int l_return = 0;
 
-        if(motor_RF != null){
-            l_return = motor_RF.getCurrentPosition ();
+        if(rightDriveMotor != null){
+            l_return = rightDriveMotor.getCurrentPosition ();
         }
         return l_return;
     }
@@ -145,9 +145,9 @@ public class Auto_8863_hardware extends init_lib{
     boolean if_L_encoder_reached(double p_count){
         boolean l_return = false;
 
-        if(motor_LF != null){
+        if(leftDriveMotor != null){
             // TODO Implement stall code using these variables.
-            if(Math.abs (motor_LF.getCurrentPosition()) > p_count){
+            if(Math.abs (leftDriveMotor.getCurrentPosition()) > p_count){
                 l_return = true;
             }
         }
@@ -157,9 +157,9 @@ public class Auto_8863_hardware extends init_lib{
     boolean if_R_encoder_reached(double p_count){
         boolean l_return = false;
 
-        if(motor_RF != null){
+        if(rightDriveMotor != null){
             // TODO Implement stall code using these variables.
-            if(Math.abs (motor_RF.getCurrentPosition()) > p_count){
+            if(Math.abs (rightDriveMotor.getCurrentPosition()) > p_count){
                 l_return = true;
             }
         }

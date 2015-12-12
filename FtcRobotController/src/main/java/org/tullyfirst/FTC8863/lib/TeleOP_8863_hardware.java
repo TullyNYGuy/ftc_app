@@ -16,6 +16,10 @@ public class TeleOP_8863_hardware extends init_lib{
     public float direction = 1;
     public double drive = 0;
 
+    public boolean directionToggle = true;
+    public boolean driveToggle = true;
+    public boolean directionTogglePressed = false;
+    public boolean driveTogglePressed = false;
 
     public float GP1_LY;
     public float GP1_RY;
@@ -26,26 +30,26 @@ public class TeleOP_8863_hardware extends init_lib{
 
     @Override
     public void start(){
-        L_arm.setPosition(s_position(.85));
-        R_arm.setPosition(s_position(.75));
-        S_arm1.setPosition(s_position(1));
-        S_arm2.setPosition(s_position(1));
-        C_arm.setPosition(s_position(0));
+        leftZipServoArm.setPosition(s_position(.85));
+        rightZipServoArm.setPosition(s_position(.75));
+        helperServoArm1.setPosition(s_position(1));
+        helperServoArm2.setPosition(s_position(1));
+        climberServoArm.setPosition(s_position(0));
     }//start
 
     @Override
     public void stop(){
-        L_arm.setPosition(s_position(.85));
-        R_arm.setPosition(s_position(.75));
-        S_arm1.setPosition(s_position(1));
-        S_arm2.setPosition(s_position(1));
-        C_arm.setPosition(s_position(0));
+        leftZipServoArm.setPosition(s_position(.85));
+        rightZipServoArm.setPosition(s_position(.75));
+        helperServoArm1.setPosition(s_position(1));
+        helperServoArm2.setPosition(s_position(1));
+        climberServoArm.setPosition(s_position(0));
     }//stop
 
 
-    public double R_servo_pos(){return R_arm.getPosition();}
-    public double L_servo_pos(){return L_arm.getPosition();}
-    public double S_servo_pos(){return S_arm1.getPosition();}
+    public double R_servo_pos(){return rightZipServoArm.getPosition();}
+    public double L_servo_pos(){return leftZipServoArm.getPosition();}
+    public double S_servo_pos(){return helperServoArm1.getPosition();}
 
     public double s_position(double pos){
 
@@ -84,16 +88,16 @@ public class TeleOP_8863_hardware extends init_lib{
     }
 
     public void set_motor(double left_power, double right_power) {
-        motor_LF.setPower(left_power);
-        motor_RF.setPower(right_power);
+        leftDriveMotor.setPower(left_power);
+        rightDriveMotor.setPower(right_power);
     }
 
     public double left_motor_power(){
-        return motor_LF.getPower();
+        return leftDriveMotor.getPower();
     }
 
     public double right_motor_power(){
-        return motor_RF.getPower();
+        return rightDriveMotor.getPower();
     }
 
 }

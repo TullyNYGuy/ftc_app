@@ -21,8 +21,8 @@ public class Auto_8863 extends Auto_8863_hardware{
                 break;
 
             case 1:
-                drive_using_encoders(1,1,2000,2000);
-                if(drive_using_encoders(1,1,2000,2000)){
+                drive_using_encoders(1,1,1120,1120);
+                if(drive_using_encoders(1,1,1120,1120)){
                     step++;
                     t_message = "case 1";
                 }
@@ -36,32 +36,32 @@ public class Auto_8863 extends Auto_8863_hardware{
                 break;
 
             case 3:
-                R_arm.setPosition(s_position(.25));
-                L_arm.setPosition(s_position(.25));
+                rightZipServoArm.setPosition(s_position(.25));
+                leftZipServoArm.setPosition(s_position(.25));
                 step++;
                 t_message = "case 3";
                 break;
 
-            case 4:
-                drive_using_encoders(1,1,2000,-2000);
-                if(drive_using_encoders(1,1,2000,-2000)){
+            /*case 4:
+                drive_using_encoders(1,-1,2000,-2000);
+                if(drive_using_encoders(1,-1,2000,-2000)){
                     step++;
                     t_message = "case 4";
                 }
                 break;
 
-            /*case 5:
-
-                step++;
-                break;
-
-            case 6:
+            case 5:
                 if(if_encoders_reset()){
                     step++;
                 }
                 break;
 
-            case 7:
+            case 6:
+                leftZipServoArm.setPosition(s_position(.85));
+                rightZipServoArm.setPosition(s_position(.75));
+                break;
+
+            /*case 7:
                 step++;
                 break;
 
