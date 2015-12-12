@@ -4,18 +4,31 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 import com.qualcomm.robotcore.util.Range;
 
 public class TeleOP_8863_hardware extends init_lib {
-    
+
+    public enum DriveType{
+        TANK, JOYSTICK
+    }
+    public DriveType driveType = DriveType.TANK;
+    public boolean driveTogglePressed = false;
+    public String driveTypeMessage;
+
     public enum DriveDirection{
         FORWARD, REVERSE
     }
+    public DriveDirection driveDirection = DriveDirection.FORWARD;
+    public boolean directionTogglePressed = false;
+    public String directionMessage;
 
     public enum ServoSide{
         LEFT_SIDE, RIGHT_SIDE
     }
+    public ServoSide servoSide;
+    public String servoSideMessage;
 
     public enum PopperPosition{
         DOWN, HOME
     }
+    public String poperPositionMessage;
     
     public static final float MIN_DCMOTOR_POSITION = -1;
     public static final float MAX_DCMOTOR_POSITION = 1;
@@ -23,22 +36,12 @@ public class TeleOP_8863_hardware extends init_lib {
     public static final double MIN_SERVO_POSITION = 0;
     public static final double MAX_SERVO_POSITION = 1;
 
-    public String servoSideMessage;
-    public String driveTypeMessage;
-    public String directionMessage;
-    public String poperPositionMessage;
-
     public float speed = 1;
     public float direction = 1;
     public double drive = 0;
 
-    public ServoSide servoSide;
-
-    public DriveDirection driveDirection = DriveDirection.FORWARD;
-
     public boolean driveToggle;
-    public boolean directionTogglePressed = false;
-    public boolean driveTogglePressed = false;
+
 
     public boolean popperMotorTogglePressed = false;
     public PopperPosition popperPosition = PopperPosition.HOME;

@@ -7,7 +7,7 @@ public class TeleOP_8863_Telemetry extends TeleOP_8863_hardware {
         telemetry.addData("02", "servo: " + servoSideMessage);
         telemetry.addData("03", "drive type: " + driveTypeMessage);
         telemetry.addData("04", "direction: " + directionMessage);
-        telemetry.addData("04", "popper pos: " + poperPositionMessage);
+        telemetry.addData("05", "popper pos: " + poperPositionMessage);
 
     }
 

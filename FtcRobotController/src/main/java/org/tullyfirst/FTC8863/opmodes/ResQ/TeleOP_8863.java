@@ -125,12 +125,12 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 
         //type of drive toggle
         if(gamepad1.left_bumper && !driveTogglePressed){
-            if(driveToggle){
-                driveToggle = false;
+            if(driveType == DriveType.TANK){
+                driveType = DriveType.JOYSTICK;
                 driveTypeMessage = "joystick";
             }
             else{
-                driveToggle = true;
+                driveType = DriveType.TANK;
                 driveTypeMessage = "tank";
             }
             driveTogglePressed = true;
@@ -144,13 +144,13 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         GP1_RY = -gamepad1.right_stick_y;
 
         //tank drive
-        if (driveToggle) {
+        if(driveType == DriveType.TANK) {
             leftMotors = ((scale_motor_power(GP1_LY))*speed)*direction;
             rightMotors = ((scale_motor_power(GP1_RY))*speed)*direction;
         }
 
         //forward/backward
-        if(!driveToggle){
+        if(driveType == DriveType.JOYSTICK){
             leftMotors = ((scale_motor_power(GP1_RY))*speed)*direction;
             rightMotors = ((scale_motor_power(GP1_RY))*speed)*direction;
         }

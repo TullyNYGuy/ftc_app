@@ -20,14 +20,12 @@ public class init_lib extends OpMode{
     @Override
     public void init(){
 
-
         robot = new ResQRobot(hardwareMap);
 
         //motor init
         rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
         leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
         rightDriveMotor.setDirection(com.qualcomm.robotcore.hardware.DcMotor.Direction.REVERSE);
-
 
         //servo init
         rightZipServoArm = hardwareMap.servo.get("rightZipServoArm");
