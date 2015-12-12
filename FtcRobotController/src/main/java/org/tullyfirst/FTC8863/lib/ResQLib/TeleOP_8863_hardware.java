@@ -26,6 +26,7 @@ public class TeleOP_8863_hardware extends init_lib {
     public String servoSideMessage;
     public String driveTypeMessage;
     public String directionMessage;
+    public String poperPositionMessage;
 
     public float speed = 1;
     public float direction = 1;

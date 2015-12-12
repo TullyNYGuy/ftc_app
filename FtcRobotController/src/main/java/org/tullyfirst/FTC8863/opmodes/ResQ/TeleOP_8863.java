@@ -13,9 +13,6 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         update_telemetry();
 
         //gamepad 2
-        //right servo low
-
-
         if(gamepad2.left_bumper){
             servoSide = ServoSide.LEFT_SIDE;
             servoSideMessage = "left side";
@@ -25,6 +22,7 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
             servoSideMessage = "right side";
         }
 
+        //right servo low
         if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.a){
             rightZipServoArm.setPosition(s_position(.25));
         }
@@ -81,19 +79,19 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
             speed = .7f;
         }
 
-        // a bogus comment
-
         //popper motor button toggle
         if(gamepad1.y && !popperMotorTogglePressed){
             if(popperPosition == PopperPosition.HOME){
                 //pops robot
                 robot.goPopperMotorPop();
                 popperPosition = PopperPosition.DOWN;
+                poperPositionMessage = "down";
             }
             else{//robot is poped
                 //popper go home
                 robot.goPopperMotorHome();
                 popperPosition = PopperPosition.HOME;
+                poperPositionMessage = "home";
             }
             popperMotorTogglePressed = true;
         }

@@ -57,7 +57,7 @@ public class Auto_8863 extends Auto_8863_hardware{
                 break;
 
             case 6:
-                leftZipServoArm.setPosition(s_position(.85));
+                leftZipServoArm.setPosition(s_position(.8));
                 rightZipServoArm.setPosition(s_position(.75));
                 break;
 
