@@ -50,7 +50,7 @@ public class TwoMotorDriveTrain {
         rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
         rightDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
         rightDriveMotor.setEncoderTolerance(5);
-        rightDriveMotor.setCmPerRev(10);
+        rightDriveMotor.setUnitsPerRev(10);
 
         rightDriveMotor.setMaxMotorPower(1);
         rightDriveMotor.setMinMotorPower(-1);
@@ -58,7 +58,7 @@ public class TwoMotorDriveTrain {
         rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
         rightDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
         rightDriveMotor.setEncoderTolerance(5);
-        rightDriveMotor.setCmPerRev(10);
+        rightDriveMotor.setUnitsPerRev(10);
     }
 
     public void rotateToDistance(double power, double distance){

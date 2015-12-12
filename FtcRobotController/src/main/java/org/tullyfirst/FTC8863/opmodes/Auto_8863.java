@@ -1,6 +1,6 @@
 package org.tullyfirst.FTC8863.opmodes;
 
-import org.tullyfirst.FTC8863.lib.ResQ.Auto_8863_hardware;
+import org.tullyfirst.FTC8863.lib.ResQLib.Auto_8863_hardware;
 
 
 public class Auto_8863 extends Auto_8863_hardware{

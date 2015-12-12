@@ -1,7 +1,7 @@
 package org.tullyfirst.FTC8863.opmodes.ResQ;
 
 
-import org.tullyfirst.FTC8863.lib.ResQ.TeleOP_8863_Telemetry;
+import org.tullyfirst.FTC8863.lib.ResQLib.TeleOP_8863_Telemetry;
 
 public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 

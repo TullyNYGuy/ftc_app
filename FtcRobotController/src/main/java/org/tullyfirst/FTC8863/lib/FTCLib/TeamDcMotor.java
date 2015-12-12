@@ -64,7 +64,7 @@ public class TeamDcMotor {
     /**
      *  Number of cm moved for each motor shaft revolution
      */
-    private double cmPerRev = 0;
+    private double UnitsPerRev = 0;
 
     /**
      * Hold the desired enocoder count for RUN_TO_POSITION
@@ -121,12 +121,12 @@ public class TeamDcMotor {
         this.countsPerRev = countsPerRev;
     }
 
-    public double getCmPerRev() {
-        return cmPerRev;
+    public double getUnitsPerRev() {
+        return UnitsPerRev;
     }
 
-    public void setCmPerRev(double cmPerRev) {
-        this.cmPerRev = cmPerRev;
+    public void setUnitsPerRev(double UnitsPerRev) {
+        this.UnitsPerRev = UnitsPerRev;
     }
 
     public int getDesiredEncoderCount() {
@@ -200,7 +200,7 @@ public class TeamDcMotor {
     private void initMotorDefaults(){
         setMotorType(MotorType.ANDYMARK_40);
         setCountsPerRevForMotorType(MotorType.ANDYMARK_40);
-        setCmPerRev(0);
+        setUnitsPerRev(0);
         setDesiredEncoderCount(0);
         setEncoderTolerance(10);
         setMotorState(MotorState.IDLE);
@@ -255,19 +255,19 @@ public class TeamDcMotor {
 
     /**
      * Calculate the number or motor revolutions needed to move whatever is attached to the motor
-     * a certain distance. It uses the cmPerRev value for the calculation.
+     * a certain distance. It uses the UnitsPerRev value for the calculation.
      *
      * @param distance The amount to move whatever is attached. Although "distance" implies a
      *                 distance, it could be angles, distance or any other units.
      * @return Number of motor revolutions to turn.
      */
     public double getRevsForDistance(double distance){
-        return distance / getCmPerRev();
+        return distance / getUnitsPerRev();
     }
 
     /**
      * Calculate the number of encoder counts needed to move whatever is attached to the motor
-     * a certain distance. It uses the cmPerRev value and number of encoder counts per revolution
+     * a certain distance. It uses the UnitsPerRev value and number of encoder counts per revolution
      * for the calculation. The number of encoder counts per rev is dependent on the motor type.
      *
      * @param distance The amount to move whatever is attached. Although "distance" implies a

@@ -1,9 +1,7 @@
-package org.tullyfirst.FTC8863.lib.ResQ;
+package org.tullyfirst.FTC8863.lib.ResQLib;
 
 
 import com.qualcomm.robotcore.util.Range;
-
-import org.tullyfirst.FTC8863.lib.ResQ.init_lib;
 
 public class TeleOP_8863_hardware extends init_lib {
 
