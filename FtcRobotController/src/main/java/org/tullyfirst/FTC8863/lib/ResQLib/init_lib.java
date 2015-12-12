@@ -8,7 +8,6 @@ public class init_lib extends OpMode{
 
     public DcMotor rightDriveMotor;
     public DcMotor leftDriveMotor;
-    //public DcMotor popperMotor;
 
     public Servo rightZipServoArm;
     public Servo leftZipServoArm;
@@ -28,8 +27,6 @@ public class init_lib extends OpMode{
         rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
         leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
         rightDriveMotor.setDirection(com.qualcomm.robotcore.hardware.DcMotor.Direction.REVERSE);
-
-        //popperMotor = hardwareMap.dcMotor.get("popMotor");
 
 
         //servo init
