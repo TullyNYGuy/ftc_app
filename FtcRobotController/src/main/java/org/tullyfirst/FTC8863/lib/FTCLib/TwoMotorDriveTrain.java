@@ -3,8 +3,6 @@ package org.tullyfirst.FTC8863.lib.FTCLib;
 import com.qualcomm.robotcore.hardware.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorWrapper;
-
 /**
  * Created by ball on 11/26/2015.
  */
@@ -14,8 +12,8 @@ public class TwoMotorDriveTrain {
     private float leftPower = 0;
     private float cmPerRotation = 0;
 
-    public TeamDcMotorWrapper rightDriveMotor;
-    public TeamDcMotorWrapper leftDriveMotor;
+    public TeamDcMotor rightDriveMotor;
+    public TeamDcMotor leftDriveMotor;
 
     public float getRightPower(){
         return this.rightPower;
@@ -42,30 +40,30 @@ public class TwoMotorDriveTrain {
     }
 
     public TwoMotorDriveTrain(HardwareMap hardwareMap) {
-        leftDriveMotor = new TeamDcMotorWrapper("leftDriveMotor", hardwareMap);
-        rightDriveMotor = new TeamDcMotorWrapper("rightDriveMotor", hardwareMap);
+        leftDriveMotor = new TeamDcMotor("leftDriveMotor", hardwareMap);
+        rightDriveMotor = new TeamDcMotor("rightDriveMotor", hardwareMap);
 
         rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
         rightDriveMotor.setMaxMotorPower(1);
         rightDriveMotor.setMinMotorPower(-1);
-        rightDriveMotor.setMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
-        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
-        rightDriveMotor.setMotorMoveType(TeamDcMotorWrapper.MotorMoveType.RELATIVE);
+        rightDriveMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        rightDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
         rightDriveMotor.setEncoderTolerance(5);
         rightDriveMotor.setCmPerRev(10);
 
         rightDriveMotor.setMaxMotorPower(1);
         rightDriveMotor.setMinMotorPower(-1);
-        rightDriveMotor.setMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
-        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
-        rightDriveMotor.setMotorMoveType(TeamDcMotorWrapper.MotorMoveType.RELATIVE);
+        rightDriveMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        rightDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
         rightDriveMotor.setEncoderTolerance(5);
         rightDriveMotor.setCmPerRev(10);
     }
 
     public void rotateToDistance(double power, double distance){
-        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotorWrapper.NextMotorState.HOLD);
-        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotorWrapper.NextMotorState.HOLD);
+        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotor.NextMotorState.HOLD);
+        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotor.NextMotorState.HOLD);
     }
 
     public boolean isRotationComplete() {

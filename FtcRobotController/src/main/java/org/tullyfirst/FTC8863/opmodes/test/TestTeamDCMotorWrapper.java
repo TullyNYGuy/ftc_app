@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorWrapper;
+import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
 
 
 /**
@@ -45,8 +45,8 @@ import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorWrapper;
  */
 public class TestTeamDCMotorWrapper extends OpMode {
 
-    // This declaration refers to my TeamDcMotorWrapper class
-    TeamDcMotorWrapper motorRight;
+    // This declaration refers to my TeamDcMotor class
+    TeamDcMotor motorRight;
 
 	/**
 	 * Constructor
@@ -64,16 +64,16 @@ public class TestTeamDCMotorWrapper extends OpMode {
 	public void init() {
 
         // Instantiate and initialize a motor
-		motorRight = new TeamDcMotorWrapper("rightDriveMotor", hardwareMap);
+		motorRight = new TeamDcMotor("rightDriveMotor", hardwareMap);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
-        // TeamDcMotorWrapper contains a DcMotor object: FTCDcMotor. That object give us access to the
+        // TeamDcMotor contains a DcMotor object: FTCDcMotor. That object give us access to the
         // motor.
 /*		motorRight.FTCDcMotor.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
-        motorRight.setCountsPerRevForMotorType(TeamDcMotorWrapper.MotorType.ANDYMARK_40);
+        motorRight.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        motorRight.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
         motorRight.setCmPerRev(10);
         motorRight.setEncoderTolerance(10);
-        motorRight.setMotorMoveType(TeamDcMotorWrapper.MotorMoveType.RELATIVE);*/
+        motorRight.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);*/
 
 	}
 
@@ -88,7 +88,7 @@ public class TestTeamDCMotorWrapper extends OpMode {
 		double motorPower = .5;
 
 		// rotate the motor one revolution and then coast
-        //motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotorWrapper.NextMotorState.COAST);
+        //motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotor.NextMotorState.COAST);
         if (gamepad1.b) {
 
             motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);

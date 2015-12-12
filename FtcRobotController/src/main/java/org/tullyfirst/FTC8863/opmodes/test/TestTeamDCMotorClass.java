@@ -34,7 +34,7 @@ package org.tullyfirst.FTC8863.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
+import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorOld;
 
 // only need this import to get access to enums
 
@@ -45,8 +45,8 @@ import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
  */
 public class TestTeamDCMotorClass extends OpMode {
 
-    // This declaration refers to my TeamDcMotor class
-	TeamDcMotor motorRight;
+    // This declaration refers to my TeamDcMotorOld class
+	TeamDcMotorOld motorRight;
 
     // setup a state variable
     int state = 0;
@@ -67,15 +67,15 @@ public class TestTeamDCMotorClass extends OpMode {
 	public void init() {
 
         // Instantiate a motor using the static "constructor" method
-		motorRight = TeamDcMotor.getTeamDcMotor(hardwareMap, "rightDriveMotor");
+		motorRight = TeamDcMotorOld.getTeamDcMotor(hardwareMap, "rightDriveMotor");
 
 		// Initialize the motor
 		motorRight.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        motorRight.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        motorRight.setMotorType(TeamDcMotorOld.MotorType.ANDYMARK_40);
+        motorRight.setCountsPerRevForMotorType(TeamDcMotorOld.MotorType.ANDYMARK_40);
         motorRight.setCmPerRev(10);
         motorRight.setEncoderTolerance(10);
-        motorRight.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
+        motorRight.setMotorMoveType(TeamDcMotorOld.MotorMoveType.RELATIVE);
 
 	}
 
@@ -91,7 +91,7 @@ public class TestTeamDCMotorClass extends OpMode {
         // set motorPower to 50%
         double motorPower = .5;
         // rotate the motor one revolution and then coast
-        motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotor.NextMotorState.COAST);
+        motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotorOld.NextMotorState.COAST);
         telemetry.addData("Motor", "Sate: " + motorRight.getMotorState().toString());
         telemetry.addData("Encoder", "Encoder: " + String.format("%1$d", motorRight.getCurrentPosition()));
         if (motorRight.isRotationComplete()) {
@@ -106,7 +106,7 @@ public class TestTeamDCMotorClass extends OpMode {
                 // set motorPower to 50%
                 double motorPower = .5;
                 // rotate the motor one revolution and then coast
-                motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotor.NextMotorState.COAST);
+                motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotorOld.NextMotorState.COAST);
                 telemetry.addData("Motor", "Sate: " + motorRight.getMotorState().toString());
                 state++;
                 break;

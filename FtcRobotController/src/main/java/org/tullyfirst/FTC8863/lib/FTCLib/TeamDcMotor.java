@@ -1,14 +1,12 @@
 package org.tullyfirst.FTC8863.lib.FTCLib;
 
 import com.qualcomm.robotcore.hardware.*;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
-//import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * Created by ball on 11/28/2015.
  */
-public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
+public class TeamDcMotor {
 
     /**
      * Defines the type of motor.
@@ -26,7 +24,7 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
      *    motor movement was interupted before it completed
      */
     public enum MotorState {
-        IDLE, MOVING, INTERUPTED, HOLD, COMPLETE
+        IDLE, HOLD, INTERUPTED, MOVING
     }
 
     /**
@@ -53,7 +51,7 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
     // can be accessed only by this class, or by using the public
     // getter and setter methods
     //*********************************************************************************************
-
+    public com.qualcomm.robotcore.hardware.DcMotor FTCDcMotor;
     /**
      * Type of motor. Controls the encoder counts per revolution
      */
@@ -92,6 +90,16 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
      * Relative or absolute movements
      */
     private MotorMoveType motorMoveType = MotorMoveType.RELATIVE;
+
+    /**
+     * Minimum power for this motor
+     */
+    private double minMotorPower = -1;
+
+    /**
+     * Maximum power for this motor
+     */
+    private double maxMotorPower = 1;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -161,54 +169,29 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
         this.motorMoveType = motorMoveType;
     }
 
+    public double getMinMotorPower() {
+        return minMotorPower;
+    }
+
+    public void setMinMotorPower(double minMotorPower) {
+        this.minMotorPower = minMotorPower;
+    }
+
+    public double getMaxMotorPower() {
+        return maxMotorPower;
+    }
+
+    public void setMaxMotorPower(double maxMotorPower) {
+        this.maxMotorPower = maxMotorPower;
+    }
+
     //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
 
-    /**
-     * Constructor for this class. Note that it is private so that the user cannot call the
-     * constructor. The user must use getTeamDcMotor to create an instance of this class.
-     *
-     * @param controller The controller associated with the motorName.
-     * @param portNumber The portNumber on the controller that the motor is connected to.
-     */
-    private TeamDcMotor(DcMotorController controller, int portNumber) {
-        super(controller, portNumber);
+    public TeamDcMotor(String motorName, HardwareMap hardwareMap) {
+        FTCDcMotor = hardwareMap.dcMotor.get(motorName);
         initMotorDefaults();
-    }
-
-    /**
-     * This function is kind of like the constructor for this class. I could not use the real
-     * constructor since the first statement in it has to be the super call to the DcMotor
-     * constructor. I can't do that until I know the associated controller object and port number.
-     * So this method gets the controller and port number associated with the motorName and then
-     * calls the constructor using that info. The object created is passed back to the user.
-     *
-     * Bottom line: call this method in order to create a TeamDCMotor object.
-     *
-     * @param hardwareMap The hardwareMap from the opmode you are running.
-     * @param motorName The name of the motor from the config file.
-     * @return A TeamDcMotor object
-     */
-    public static TeamDcMotor getTeamDcMotor(HardwareMap hardwareMap, String motorName) {
-        DcMotor dcMotor;
-        DcMotorController controller;
-        int portNumber;
-        TeamDcMotor teamDCMotor;
-
-        // Get the dcMotor object associated with the motorName
-        // From the dcMotor object get the controller and port the motor is connected to
-        // This is the only way I can figure to get this information for the motor in question
-
-        dcMotor = hardwareMap.dcMotor.get(motorName);
-        controller = dcMotor.getController();
-        portNumber = dcMotor.getPortNumber();
-
-        // Now that I have the controller object and the port number, use it to construct my object.
-        // Call my constructor, which will call the DcMotor constructor
-        teamDCMotor = new TeamDcMotor(controller, portNumber);
-        // return the TeamDCMotor to the user
-        return teamDCMotor;
     }
 
     /**
@@ -223,6 +206,8 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
         setMotorState(MotorState.IDLE);
         setNextMotorState(NextMotorState.COAST);
         setMotorMoveType(MotorMoveType.RELATIVE);
+        setMinMotorPower(-1);
+        setMaxMotorPower(1);
     }
 
     //*********************************************************************************************
@@ -294,6 +279,16 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
     }
 
     /**
+     * Gets the number of encoder counts for a certian number of revolutions.
+     *
+     * @param revs number of revolutions
+     * @return encoder counts
+     */
+    public int getEncoderCountForRevs(double revs) {
+        return (int)(getCountsPerRev() * revs);
+    }
+
+    /**
      * If the motor is set for relative movement, the encoder will be reset. But if the motor
      * is set for absolute movement, the encoder needs to keep track of where the motor is, so
      * it cannot be reset.
@@ -301,7 +296,6 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
     public void resetEncoder(){
         if (getMotorMoveType() == MotorMoveType.RELATIVE) {
             setMode(DcMotorController.RunMode.RESET_ENCODERS);
-            setMotorState(MotorState.IDLE);
         }
     }
 
@@ -321,7 +315,7 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
     }
 
     //*********************************************************************************************
-    //          Methods for rotating the motor to a desired position or encoder count
+    //          Methods for rotating the motor to a desired encoder count
     //*********************************************************************************************
 
     /**
@@ -376,6 +370,17 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
     }
 
     /**
+     * Makes the motor rotate to a certain amount of revolutions.
+     * @param power The power at which the motor moves
+     * @param revs The amount of revolutions you want it to go.
+     * @param afterCompletion Whether it holds or floats after completion.
+     * @return If return is true then it actually did it.
+     */
+    public boolean rotateToRev(double power, double revs, NextMotorState afterCompletion){
+        return rotateToEncoderCount(power, getEncoderCountForRevs(revs), afterCompletion);
+    }
+
+    /**
      * Checks to see if the rotation to encoder count has completed. If it has then it sets the
      * motor to hold that encoder count or it sets the motor so that it can move freely, depending
      * on the NextMotorState being set to HOLD or COAST.
@@ -389,11 +394,11 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
         int currentEncoderCount = getCurrentPosition();
 
         // is the current position within the tolderance limit of the desired position
-        if (Math.abs(this.desiredEncoderCount - currentEncoderCount) <getEncoderTolerance()) {
+        if (Math.abs(getDesiredEncoderCount() - currentEncoderCount) <getEncoderTolerance()) {
             // movement is complete. See what to do next
             if(getNextMotorState() == NextMotorState.COAST) {
                 setPowerFloat();
-                setMotorState(MotorState.COMPLETE);
+                setMotorState(MotorState.IDLE);
             } else {
                 // we want to actively hold position
                 // this is the default so don't do anything but set the state
@@ -427,8 +432,8 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
             // reset the encoder
             resetEncoder();
             // set the run mode
-            setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            setPower(power);
+             FTCDcMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+             FTCDcMotor.setPower(power);
             setMotorState(MotorState.MOVING);
             return true;
         } else {
@@ -456,7 +461,7 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
             // reset the encoder
             resetEncoder();
             // set the run mode
-            setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+            FTCDcMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
             setMotorState(MotorState.MOVING);
             return true;
         } else {
@@ -479,7 +484,7 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
 
         if (getNextMotorState() == NextMotorState.HOLD) {
             setMotorState(MotorState.HOLD);
-            rotateToEncoderCount(getPower(), getCurrentPosition(), NextMotorState.HOLD);
+            rotateToEncoderCount(FTCDcMotor.getPower(), FTCDcMotor.getCurrentPosition(), NextMotorState.HOLD);
         } else {
             stopMotor();
         }
@@ -489,7 +494,36 @@ public class TeamDcMotor extends com.qualcomm.robotcore.hardware.DcMotor {
      * Stop the motor. It will just coast, ie rotate freely.
      */
     public void stopMotor() {
-        setPowerFloat();
+        FTCDcMotor.setPowerFloat();
         setMotorState(MotorState.IDLE);
     }
+
+    //*********************************************************************************************
+    //          Wrapper Methods
+    //*********************************************************************************************
+    public void setMode(DcMotorController.RunMode mode) {
+        FTCDcMotor.setMode(mode);
+    }
+
+    public void setPower(double power) {
+        power = Range.clip(power, getMinMotorPower(),getMaxMotorPower());
+        FTCDcMotor.setPower(power);
+    }
+
+    public void setPowerFloat() {
+        FTCDcMotor.setPowerFloat();
+    }
+
+    public void setTargetPosition(int position) {
+        FTCDcMotor.setTargetPosition(position);
+    }
+
+    public int getCurrentPosition() {
+        return FTCDcMotor.getCurrentPosition();
+    }
+
+    public void setDirection(org.tullyfirst.FTC8863.lib.FTCLib.DcMotor.Direction direction) {
+        FTCDcMotor.setDirection(direction);
+    }
+
 }
