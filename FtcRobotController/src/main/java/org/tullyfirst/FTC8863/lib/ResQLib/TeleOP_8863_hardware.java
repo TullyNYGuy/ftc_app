@@ -4,8 +4,11 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 import com.qualcomm.robotcore.util.Range;
 
 public class TeleOP_8863_hardware extends init_lib {
-
-
+    
+    public enum DriveDirection{
+        FORWARD, REVERSE
+    }
+    
     public static final float MIN_DCMOTOR_POSITION = -1;
     public static final float MAX_DCMOTOR_POSITION = 1;
 
@@ -16,16 +19,16 @@ public class TeleOP_8863_hardware extends init_lib {
     public float direction = 1;
     public double drive = 0;
 
-    public boolean directionToggle = true;
-    public boolean driveToggle = true;
+    public DriveDirection driveDirection = DriveDirection.FORWARD;
+    public boolean driveToggle;
     public boolean directionTogglePressed = false;
     public boolean driveTogglePressed = false;
 
     public float GP1_LY;
     public float GP1_RY;
 
-    public float R_motors;
-    public float L_motors;
+    public float rightMotors;
+    public float leftMotors;
 
 
     @Override

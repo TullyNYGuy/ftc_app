@@ -13,7 +13,7 @@ public class Auto_8863 extends Auto_8863_hardware{
 
     @Override
     public void loop(){
-        switch(step){
+        switch(step) {
             case 0:
                 motor_encoder_reset();
                 step++;
@@ -21,15 +21,15 @@ public class Auto_8863 extends Auto_8863_hardware{
                 break;
 
             case 1:
-                drive_using_encoders(1,1,1120,1120);
-                if(drive_using_encoders(1,1,1120,1120)){
+                drive_using_encoders(1, 1, 1120, 1120);
+                if (drive_using_encoders(1, 1, 1120, 1120)) {
                     step++;
                     t_message = "case 1";
                 }
                 break;
 
             case 2:
-                if(if_encoders_reset()){
+                if (if_encoders_reset()) {
                     step++;
                     t_message = "case 2";
                 }
@@ -76,6 +76,7 @@ public class Auto_8863 extends Auto_8863_hardware{
 
                 break;
         }
+        telemetry.addData("01", t_message);
     }
 
     @Override

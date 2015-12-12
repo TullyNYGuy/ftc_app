@@ -68,33 +68,37 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
             speed = .7f;
         }
 
-        //direction toggle
+        //direction of robot drive toggle
         if(gamepad1.right_bumper && !directionTogglePressed){
-            if(directionToggle){
-                directionToggle = false;
+            if(driveDirection == DriveDirection.FORWARD){
+                //fliping direction to reverse
+                direction = -1;
+                driveDirection = DriveDirection.REVERSE;
             }
-            else if(!directionToggle){
-                directionToggle = true;
+            else{//drive is reverse
+                //flip to forwards
+                direction = 1;
+                driveDirection = DriveDirection.FORWARD;
             }
             directionTogglePressed = true;
         }
-
-        if(directionToggle){
-            direction = 1;
-        }
-        if(!directionToggle){
-            direction = -1;
+        //if let off bumper reset toggle
+        if(!gamepad1.right_bumper && directionTogglePressed){
+            directionTogglePressed = false;
         }
 
-        //drive toggle
+        //type of drive toggle
         if(gamepad1.left_bumper && !driveTogglePressed){
             if(driveToggle){
                 driveToggle = false;
             }
-            else if(!driveToggle){
+            else{
                 driveToggle = true;
             }
             driveTogglePressed = true;
+        }
+        if(!gamepad1.left_bumper){
+            driveTogglePressed = false;
         }
 
 
@@ -103,18 +107,18 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 
         //tank drive
         if (driveToggle) {
-            L_motors = ((scale_motor_power(GP1_LY))*speed)*direction;
-            R_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
+            leftMotors = ((scale_motor_power(GP1_LY))*speed)*direction;
+            rightMotors = ((scale_motor_power(GP1_RY))*speed)*direction;
         }
 
         //forward/backward
         if(!driveToggle){
-            L_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
-            R_motors = ((scale_motor_power(GP1_RY))*speed)*direction;
+            leftMotors = ((scale_motor_power(GP1_RY))*speed)*direction;
+            rightMotors = ((scale_motor_power(GP1_RY))*speed)*direction;
         }
 
 
-        set_motor(L_motors, R_motors);
+        set_motor(leftMotors, rightMotors);
 
     }//loop
 }

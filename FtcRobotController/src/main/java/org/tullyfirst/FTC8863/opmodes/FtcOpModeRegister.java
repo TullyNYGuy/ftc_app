@@ -65,7 +65,7 @@ public class FtcOpModeRegister implements OpModeRegister {
       //manager.register("TestJoyStick", TestJoyStick.class);
       //manager.register("TestTeamServo", TestTeamServo.class);
       //manager.register("TestTeamDCMotorWrapper", TestTeamDCMotorWrapper.class);
-      manager.register("ResQTeleop", ResQTeleop.class);
+
     //manager.register("K9Line", K9Line.class);
     //manager.register ("PushBotAuto", PushBotAuto.class);
     //manager.register ("PushBotManual", PushBotManual.class);
@@ -110,6 +110,5 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("TeleOP_8863", TeleOP_8863.class);
     manager.register("Auto_8863", Auto_8863.class);
     manager.register("ResQTeleop", ResQTeleop.class);
-
   }
 }

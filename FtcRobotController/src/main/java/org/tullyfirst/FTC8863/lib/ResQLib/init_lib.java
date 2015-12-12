@@ -8,6 +8,7 @@ public class init_lib extends OpMode{
 
     public DcMotor rightDriveMotor;
     public DcMotor leftDriveMotor;
+    //public DcMotor popperMotor;
 
     public Servo rightZipServoArm;
     public Servo leftZipServoArm;
@@ -21,21 +22,23 @@ public class init_lib extends OpMode{
 
 
         //motor init
-        rightDriveMotor = hardwareMap.dcMotor.get("motor_RF");
-        leftDriveMotor = hardwareMap.dcMotor.get("motor_LF");
+        rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
+        leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
         rightDriveMotor.setDirection(com.qualcomm.robotcore.hardware.DcMotor.Direction.REVERSE);
+
+        //popperMotor = hardwareMap.dcMotor.get("popMotor");
 
 
         //servo init
-        rightZipServoArm = hardwareMap.servo.get("R_arm");
-        leftZipServoArm = hardwareMap.servo.get("L_arm");
+        rightZipServoArm = hardwareMap.servo.get("rightZipServoArm");
+        leftZipServoArm = hardwareMap.servo.get("leftZipServoArm");
         leftZipServoArm.setDirection(Servo.Direction.REVERSE);
 
-        helperServoArm1 = hardwareMap.servo.get("S_arm1");
-        helperServoArm2 = hardwareMap.servo.get("S_arm2");
+        helperServoArm1 = hardwareMap.servo.get("helperServoArm1");
+        helperServoArm2 = hardwareMap.servo.get("helperServoArm2");
         helperServoArm2.setDirection(Servo.Direction.REVERSE);
 
-        climberServoArm = hardwareMap.servo.get("C_arm");
+        climberServoArm = hardwareMap.servo.get("climberServoArm");
 
     }//init
 
