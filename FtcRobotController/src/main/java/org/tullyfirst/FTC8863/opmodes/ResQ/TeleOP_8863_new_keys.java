@@ -32,7 +32,7 @@ public class TeleOP_8863_new_keys extends TeleOP_8863_Telemetry {
 
         //right servo med/high
         if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.x){
-            rightZipServoArm.setPosition(s_position(.1));
+            rightZipServoArm.setPosition(s_position(0));
         }
 
         //left servo low
@@ -42,7 +42,7 @@ public class TeleOP_8863_new_keys extends TeleOP_8863_Telemetry {
 
         //left servo med/high
         if (servoSide == ServoSide.LEFT_SIDE && gamepad2.x){
-            leftZipServoArm.setPosition(s_position(.1));
+            leftZipServoArm.setPosition(s_position(0));
         }
 
         //both zipline servos up
