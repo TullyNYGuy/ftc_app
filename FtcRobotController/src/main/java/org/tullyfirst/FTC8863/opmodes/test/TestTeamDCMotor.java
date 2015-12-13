@@ -40,10 +40,10 @@ import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
 
 
 /**
- * TestTeamDCMotorWrapper is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
+ * TestTeamDCMotor is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
  * <p>
  */
-public class TestTeamDCMotorWrapper extends OpMode {
+public class TestTeamDCMotor extends OpMode {
 
     // This declaration refers to my TeamDcMotor class
     TeamDcMotor motorRight;
@@ -51,8 +51,7 @@ public class TestTeamDCMotorWrapper extends OpMode {
 	/**
 	 * Constructor
 	 */
-	public TestTeamDCMotorWrapper() {
-
+	public TestTeamDCMotor() {
 	}
 
 	/*
@@ -64,8 +63,15 @@ public class TestTeamDCMotorWrapper extends OpMode {
 	public void init() {
 
         // Instantiate and initialize a motor
-		motorRight = new TeamDcMotor("rightDriveMotor", hardwareMap);
+        motorRight = new TeamDcMotor("rightDriveMotor", hardwareMap);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
+        motorRight.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        motorRight.setUnitsPerRev(360);
+        motorRight.setEncoderTolerance(5);
+        motorRight.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
+        motorRight.setMinMotorPower(-1);
+        motorRight.setMaxMotorPower(1);
+
         // TeamDcMotor contains a DcMotor object: FTCDcMotor. That object give us access to the
         // motor.
 /*		motorRight.FTCDcMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -91,14 +97,17 @@ public class TestTeamDCMotorWrapper extends OpMode {
         //motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotor.NextMotorState.COAST);
         if (gamepad1.b) {
 
-            motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-            motorRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            motorRight.setPower(motorPower);
+//            motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+//            motorRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+//            motorRight.setPower(motorPower);
+
+            motorRight.rotateToDistance(motorPower, -360, TeamDcMotor.NextMotorState.HOLD);
         }
         if (gamepad1.a) {
             // if the A button is pushed on gamepad1, the motor stops
-            motorRight.setPowerFloat();
+            //motorRight.setPowerFloat();
             //motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            motorRight.resetEncoder(true);
 
         }
 
@@ -109,6 +118,11 @@ public class TestTeamDCMotorWrapper extends OpMode {
 		 * will return a null value. The legacy NXT-compatible motor controllers
 		 * are currently write only.
 		 */
+        if (motorRight.isRotationComplete()){
+            telemetry.addData("Status",  "rotation complete");
+        } else {
+            telemetry.addData("Status",  "still going");
+        }
         telemetry.addData("Encoder",  "Encoder: " + String.format("%d", motorRight.getCurrentPosition()));
         //telemetry.addData("left Y scaled", "joy Y: " + String.format("%.2f", left));
 

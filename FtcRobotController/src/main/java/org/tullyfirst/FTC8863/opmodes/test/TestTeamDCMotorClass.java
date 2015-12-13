@@ -40,7 +40,7 @@ import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorOld;
 
 
 /**
- * TestTeamDCMotorWrapper is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
+ * TestTeamDCMotor is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
  * <p>
  */
 public class TestTeamDCMotorClass extends OpMode {

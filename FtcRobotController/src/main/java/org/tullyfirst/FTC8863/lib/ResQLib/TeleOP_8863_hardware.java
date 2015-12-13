@@ -60,6 +60,8 @@ public class TeleOP_8863_hardware extends init_lib {
         helperServoArm1.setPosition(s_position(1));
         helperServoArm2.setPosition(s_position(1));
         climberServoArm.setPosition(s_position(0));
+
+        //robot.setPopperMotorHome();
     }//start
 
     @Override

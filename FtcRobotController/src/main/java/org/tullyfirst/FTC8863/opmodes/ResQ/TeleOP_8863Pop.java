@@ -1,11 +1,16 @@
 package org.tullyfirst.FTC8863.opmodes.ResQ;
 
 
-import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+
 import org.tullyfirst.FTC8863.lib.ResQLib.TeleOP_8863_Telemetry;
 
-public class TeleOP_8863 extends TeleOP_8863_Telemetry {
-    
+public class TeleOP_8863Pop extends TeleOP_8863_Telemetry {
+    public enum PopState {
+        HOME, MOVING_TO_DOWN, DOWN, DOWN_DELAY, MOVING_TO_HOME
+    }
+
+    public PopState popState = PopState.HOME;
 
     public void loop(){
 
@@ -79,6 +84,47 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
             speed = .7f;
         }
 
+/*        switch (popState) {
+            case HOME:
+                if(gamepad1.y) {
+                    //robot.popperMotor.isRotationComplete();
+                    robot.popperMotor.resetEncoder(true);
+                    elapsedTime.reset();
+                    robot.popperMotor.setTargetPosition(280);
+                    robot.popperMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+                    robot.popperMotor.setPower(.95);
+                    //robot.goPopperMotorPop();
+                    popState = PopState.MOVING_TO_DOWN;
+                }
+                break;
+            case MOVING_TO_DOWN:
+                //if (robot.popperMotor.isRotationComplete() && elapsedTime.time() > 2.0) {
+                if (elapsedTime.time() > .5) {
+                    popState = PopState.DOWN;
+                }
+                break;
+            case DOWN:
+                robot.popperMotor.resetEncoder(true);
+                elapsedTime.reset();
+                popState = PopState.DOWN_DELAY;
+                break;
+            case DOWN_DELAY:
+                if (elapsedTime.time() > .5) {
+                    robot.popperMotor.setTargetPosition(-280);
+                    robot.popperMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+                    robot.popperMotor.setPower(.95);
+                    //robot.goPopperMotorHome();
+                    popState = PopState.HOME;
+                }
+                break;
+*//*            case MOVING_TO_HOME:
+                if (robot.popperMotor.isRotationComplete()) {
+                    popState = PopState.HOME;
+                }
+                break;*//*
+        }*/
+//        telemetry.addData("Pop State",  popState.toString());
+//        telemetry.addData("Encoder", "Encoder: " + String.format("%d", robot.popperMotor.getCurrentPosition()));
 /*
         //popper motor button toggle
         if(gamepad1.y && !popperMotorTogglePressed){

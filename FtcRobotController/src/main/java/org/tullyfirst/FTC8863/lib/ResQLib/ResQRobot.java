@@ -14,15 +14,15 @@ public class ResQRobot {
 //           DATA FIELDS
 //*********************************************************************************************
 
-    public TeamDcMotor popperMotor;
+    //public TeamDcMotor popperMotor;
 
 //*********************************************************************************************
 //           CONSTRUCTOR
 //*********************************************************************************************
 
     ResQRobot(HardwareMap hardwareMap) {
-        popperMotor = new TeamDcMotor("popperMotor", hardwareMap);
-        initPopperMotor();
+       // popperMotor = new TeamDcMotor("popperMotor", hardwareMap);
+        //initPopperMotor();
     }
 
 
@@ -30,7 +30,7 @@ public class ResQRobot {
 //           METHODS
 //*********************************************************************************************
 
-    public void initPopperMotor() {
+/*    public void initPopperMotor() {
         popperMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
         popperMotor.setUnitsPerRev(360);
         popperMotor.setEncoderTolerance(5);
@@ -38,50 +38,53 @@ public class ResQRobot {
         popperMotor.setMinMotorPower(-1);
         popperMotor.setMaxMotorPower(1);
         popperMotor.setDirection(DcMotor.Direction.REVERSE);
-        setPopperMotorHome();
+
     }
 
     public void setPopperMotorHome() {
-        popperMotor.resetEncoder();
+        //popperMotor.resetEncoder(true);
+        popperMotor.rotateToDistance(.5, 0,TeamDcMotor.NextMotorState.HOLD );
     }
 
     public void goPopperMotorHome() {
-        popperMotor.rotateToDistance(-.95, -80, TeamDcMotor.NextMotorState.HOLD);
+        popperMotor.resetEncoder(true);
+        popperMotor.rotateToDistance(.95, -80, TeamDcMotor.NextMotorState.HOLD);
     }
 
     public void goPopperMotorPop() {
+        popperMotor.resetEncoder(true);
         popperMotor.rotateToDistance(.95, 80, TeamDcMotor.NextMotorState.HOLD);
-    }
+    }*/
 
 //*********************************************************************************************
 //           NESTED CLASSES
 //*********************************************************************************************
 
-    public class ObjectNameMapping {
+/*    public class ObjectNameMapping {
 
 
-        //*********************************************************************************************
+        /*//*********************************************************************************************
         //           DATA FIELDS
-        //*********************************************************************************************
+        /*//*********************************************************************************************
         protected String popperMotorName = "popperMotor";
 
-        //*********************************************************************************************
+        /*//*********************************************************************************************
         //           GETTERS AND SETTERS
-        //*********************************************************************************************
+        /*//*********************************************************************************************
         public String getPopperMotorName() {
             return popperMotorName;
         }
-        //*********************************************************************************************
+        /*//*********************************************************************************************
         //           CONSTRUCTOR
-        //*********************************************************************************************
+        /*//*********************************************************************************************
 
         ObjectNameMapping() {
         }
 
-        //*********************************************************************************************
+        /*//*********************************************************************************************
         //           METHODS
-        //*********************************************************************************************
+        /*//*********************************************************************************************
 
-    }
+    }*/
 }
 

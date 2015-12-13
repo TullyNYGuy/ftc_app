@@ -406,7 +406,7 @@ public class TeamDcMotor {
         if (Math.abs(getDesiredEncoderCount() - currentEncoderCount) <getEncoderTolerance()) {
             // movement is complete. See what to do next
             if(getNextMotorState() == NextMotorState.COAST) {
-                setPowerFloat();
+                setMode(DcMotorController.RunMode.RESET_ENCODERS);
                 setMotorState(MotorState.IDLE);
             } else {
                 // we want to actively hold position
@@ -503,7 +503,7 @@ public class TeamDcMotor {
      * Stop the motor. It will just coast, ie rotate freely.
      */
     public void stopMotor() {
-        FTCDcMotor.setPowerFloat();
+        resetEncoder(true);
         setMotorState(MotorState.IDLE);
     }
 

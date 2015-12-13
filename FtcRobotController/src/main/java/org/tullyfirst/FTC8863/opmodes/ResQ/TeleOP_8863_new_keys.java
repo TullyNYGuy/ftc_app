@@ -1,10 +1,9 @@
 package org.tullyfirst.FTC8863.opmodes.ResQ;
 
 
-import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 import org.tullyfirst.FTC8863.lib.ResQLib.TeleOP_8863_Telemetry;
 
-public class TeleOP_8863 extends TeleOP_8863_Telemetry {
+public class TeleOP_8863_new_keys extends TeleOP_8863_Telemetry {
     
 
     public void loop(){
@@ -21,6 +20,10 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
             servoSide = ServoSide.RIGHT_SIDE;
             servoSideMessage = "right side";
         }
+
+        //*****************************************************************************************
+        //      ZIPLINE SERVOS
+        //*****************************************************************************************
 
         //right servo low
         if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.a){
@@ -42,25 +45,34 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
             leftZipServoArm.setPosition(s_position(.1));
         }
 
-        //both servos up
-        if (gamepad2.dpad_up){
+        //both zipline servos up
+        if (gamepad2.b){
             rightZipServoArm.setPosition(s_position(.75));
             leftZipServoArm.setPosition(s_position(.8));
         }
 
-        //support servo
-        if (gamepad2.b){
+        //*****************************************************************************************
+        //      SPEAR SERVOS
+        //*****************************************************************************************
+
+        //support servo (spears) down
+        if (gamepad2.dpad_up){
             helperServoArm1.setPosition(s_position(.35));
             helperServoArm2.setPosition(s_position(.35));
         }
 
-        if (gamepad2.y){
+        //support servo (spears) up
+        if (gamepad2.dpad_down){
             helperServoArm1.setPosition(s_position(1));
             helperServoArm2.setPosition(s_position(1));
         }
 
-        //C_srm
-        if(gamepad2.dpad_down){
+        //*****************************************************************************************
+        //      CLIMBER DUMP SERVOS
+        //*****************************************************************************************
+
+        //climber servo arm
+        if(gamepad2.dpad_left){
             climberServoArm.setPosition(s_position(.7));
         }
         else{
