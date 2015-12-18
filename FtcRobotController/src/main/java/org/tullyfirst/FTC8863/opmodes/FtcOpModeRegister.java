@@ -34,11 +34,9 @@ package org.tullyfirst.FTC8863.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
-import org.tullyfirst.FTC8863.opmodes.ResQ.ResQTeleop;
+import org.tullyfirst.FTC8863.opmodes.ResQ.Auto_8863;
 import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP_8863;
-import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP_8863Pop;
 import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP_8863_new_keys;
-import org.tullyfirst.FTC8863.opmodes.test.TestTeamDCMotor;
 
 /**
  * Register Op Modes
@@ -107,14 +105,11 @@ public class FtcOpModeRegister implements OpModeRegister {
     //manager.register("PushBotDriveTouch", PushBotDriveTouch.java);
     //manager.register("PushBotIrSeek", PushBotIrSeek.java);
     //manager.register("PushBotSquare", PushBotSquare.java);
-
-
-    //ed young's
-    manager.register("TeleOP_8863", TeleOP_8863.class);
     manager.register("TeleOP_8863_new_keys", TeleOP_8863_new_keys.class);
-    //manager.register("TeleOP_8863Pop", TeleOP_8863Pop.class);
-    //manager.register("Auto_8863", Auto_8863.class);
-    //manager.register("ResQTeleop", ResQTeleop.class);
-    //manager.register("TestTeamDCMotor", TestTeamDCMotor.class);
+
+
+    /** ed young's */
+    manager.register("TeleOP_8863", TeleOP_8863.class);
+    manager.register("Auto_8863", Auto_8863.class);
   }
 }

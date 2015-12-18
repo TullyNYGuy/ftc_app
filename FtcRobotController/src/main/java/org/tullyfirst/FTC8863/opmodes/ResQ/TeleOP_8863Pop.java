@@ -1,8 +1,6 @@
 package org.tullyfirst.FTC8863.opmodes.ResQ;
 
 
-import com.qualcomm.robotcore.hardware.DcMotorController;
-
 import org.tullyfirst.FTC8863.lib.ResQLib.TeleOP_8863_Telemetry;
 
 public class TeleOP_8863Pop extends TeleOP_8863_Telemetry {
@@ -207,4 +205,5 @@ public class TeleOP_8863Pop extends TeleOP_8863_Telemetry {
         set_motor(leftMotors, rightMotors);
 
     }//loop
+
 }

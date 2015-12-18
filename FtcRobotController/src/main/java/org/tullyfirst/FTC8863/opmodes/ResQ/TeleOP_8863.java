@@ -1,12 +1,21 @@
 package org.tullyfirst.FTC8863.opmodes.ResQ;
 
-
-import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 import org.tullyfirst.FTC8863.lib.ResQLib.TeleOP_8863_Telemetry;
 
 public class TeleOP_8863 extends TeleOP_8863_Telemetry {
-    
 
+
+    @Override
+    public void start(){
+        leftZipServoArm.setPosition(s_position(.8));
+        rightZipServoArm.setPosition(s_position(.75));
+        helperServoArm1.setPosition(s_position(1));
+        helperServoArm2.setPosition(s_position(1));
+        climberServoArm.setPosition(s_position(0));
+    }//start
+
+
+    @Override
     public void loop(){
 
         //telemetry
@@ -29,7 +38,7 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 
         //right servo med/high
         if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.x){
-            rightZipServoArm.setPosition(s_position(.1));
+            rightZipServoArm.setPosition(s_position(0));
         }
 
         //left servo low
@@ -39,28 +48,28 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 
         //left servo med/high
         if (servoSide == ServoSide.LEFT_SIDE && gamepad2.x){
-            leftZipServoArm.setPosition(s_position(.1));
+            leftZipServoArm.setPosition(s_position(0));
         }
 
         //both servos up
-        if (gamepad2.dpad_up){
+        if (gamepad2.b){
             rightZipServoArm.setPosition(s_position(.75));
             leftZipServoArm.setPosition(s_position(.8));
         }
 
         //support servo
-        if (gamepad2.b){
+        if (gamepad2.dpad_down){
             helperServoArm1.setPosition(s_position(.35));
             helperServoArm2.setPosition(s_position(.35));
         }
 
-        if (gamepad2.y){
+        if (gamepad2.dpad_up){
             helperServoArm1.setPosition(s_position(1));
             helperServoArm2.setPosition(s_position(1));
         }
 
         //C_srm
-        if(gamepad2.dpad_down){
+        if(gamepad2.dpad_left){
             climberServoArm.setPosition(s_position(.7));
         }
         else{
@@ -78,30 +87,6 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         if(gamepad1.x){
             speed = .7f;
         }
-
-/*
-        //popper motor button toggle
-        if(gamepad1.y && !popperMotorTogglePressed){
-            if(popperPosition == PopperPosition.HOME){
-                //pops robot
-                robot.goPopperMotorPop();
-                popperPosition = PopperPosition.DOWN;
-                poperPositionMessage = "down";
-            }
-            else{//robot is popped
-                //popper go home
-                robot.goPopperMotorHome();
-                popperPosition = PopperPosition.HOME;
-                poperPositionMessage = "home";
-            }
-            popperMotorTogglePressed = true;
-        }
-        //if let off bumper reset toggle
-        if(!gamepad1.y && popperMotorTogglePressed){
-            popperMotorTogglePressed = false;
-        }
-*/
-
 
 
         //direction of robot drive toggle
@@ -124,6 +109,7 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         if(!gamepad1.right_bumper && directionTogglePressed){
             directionTogglePressed = false;
         }
+
 
         //type of drive toggle
         if(gamepad1.left_bumper && !driveTogglePressed){
@@ -161,4 +147,15 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         set_motor(leftMotors, rightMotors);
 
     }//loop
+
+
+    @Override
+    public void stop(){
+        leftZipServoArm.setPosition(s_position(.8));
+        rightZipServoArm.setPosition(s_position(.75));
+        helperServoArm1.setPosition(s_position(1));
+        helperServoArm2.setPosition(s_position(1));
+        climberServoArm.setPosition(s_position(0));
+    }//stop
+
 }

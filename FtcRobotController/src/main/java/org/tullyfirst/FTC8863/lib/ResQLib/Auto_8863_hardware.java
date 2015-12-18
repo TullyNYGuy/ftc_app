@@ -65,13 +65,13 @@ public class Auto_8863_hardware extends init_lib {
     }
 
 
-    public void L_motor_using_encoder(){
+    void L_motor_using_encoder(){
         if(leftDriveMotor != null){
             leftDriveMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
     }
 
-    public void R_motor_using_encoder(){
+    void R_motor_using_encoder(){
         if(rightDriveMotor != null){
             rightDriveMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
@@ -83,7 +83,7 @@ public class Auto_8863_hardware extends init_lib {
     }
 
 
-    public void L_motor_without_encoder(){
+    void L_motor_without_encoder(){
         if(leftDriveMotor != null){
             if(leftDriveMotor.getMode() == DcMotorController.RunMode.RESET_ENCODERS){
                 leftDriveMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -91,7 +91,7 @@ public class Auto_8863_hardware extends init_lib {
         }
     }
 
-    public void R_motor_without_encoder(){
+    void R_motor_without_encoder(){
         if(rightDriveMotor != null){
             if(rightDriveMotor.getMode() == DcMotorController.RunMode.RESET_ENCODERS){
                 rightDriveMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -99,25 +99,25 @@ public class Auto_8863_hardware extends init_lib {
         }
     }
 
-    public void run_without_encoder(){
+    public void runWithoutEncoder(){
         R_motor_without_encoder();
         L_motor_without_encoder();
     }
 
 
-    public void L_motor_reset(){
+    void L_motor_reset(){
         if(leftDriveMotor != null){
             leftDriveMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         }
     }
 
-    public void R_motor_reset(){
+    void R_motor_reset(){
         if(rightDriveMotor != null){
             rightDriveMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         }
     }
 
-    public void motor_encoder_reset(){
+    public void motorEncoderReset(){
         R_motor_reset();
         L_motor_reset();
     }
@@ -166,7 +166,7 @@ public class Auto_8863_hardware extends init_lib {
         return l_return;
     }
 
-    public boolean if_encoders_reached(double p_left_count, double p_right_count){
+    public boolean ifEncodersReached(double p_left_count, double p_right_count){
         boolean l_return = false;
 
         if(if_L_encoder_reached(p_left_count) && if_R_encoder_reached(p_right_count)){
@@ -177,13 +177,13 @@ public class Auto_8863_hardware extends init_lib {
 
     }
 
-    public boolean drive_using_encoders(double p_left_power, double p_right_power, double p_left_count, double p_right_count){
+    public boolean driveUsingEncoders(double p_left_power, double p_right_power, double p_left_count, double p_right_count){
         boolean l_return = false;
         run_using_encoder();
         set_drive_power (p_left_power, p_right_power);
 
-        if(if_encoders_reached(p_left_count, p_right_count)){
-            motor_encoder_reset();
+        if(ifEncodersReached(p_left_count, p_right_count)){
+            motorEncoderReset();
             set_drive_power (0.0f, 0.0f);
             l_return = true;
         }
@@ -212,7 +212,7 @@ public class Auto_8863_hardware extends init_lib {
         return l_return;
     }
 
-    public boolean if_encoders_reset(){
+    public boolean ifEncodersReset(){
         boolean l_return = false;
 
         if(if_L_encoder_reset() && if_R_encoder_reset()){
@@ -222,4 +222,7 @@ public class Auto_8863_hardware extends init_lib {
 
         return l_return;
     }
+
+
+
 }

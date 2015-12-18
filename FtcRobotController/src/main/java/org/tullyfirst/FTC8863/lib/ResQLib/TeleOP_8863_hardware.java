@@ -5,12 +5,14 @@ import com.qualcomm.robotcore.util.Range;
 
 public class TeleOP_8863_hardware extends init_lib {
 
+
     public enum DriveType{
         TANK, JOYSTICK
     }
     public DriveType driveType = DriveType.TANK;
     public boolean driveTogglePressed = false;
     public String driveTypeMessage;
+
 
     public enum DriveDirection{
         FORWARD, REVERSE
@@ -19,16 +21,12 @@ public class TeleOP_8863_hardware extends init_lib {
     public boolean directionTogglePressed = false;
     public String directionMessage;
 
+
     public enum ServoSide{
         LEFT_SIDE, RIGHT_SIDE
     }
     public ServoSide servoSide;
     public String servoSideMessage;
-
-    public enum PopperPosition{
-        DOWN, HOME
-    }
-    public String poperPositionMessage;
     
     public static final float MIN_DCMOTOR_POSITION = -1;
     public static final float MAX_DCMOTOR_POSITION = 1;
@@ -36,47 +34,25 @@ public class TeleOP_8863_hardware extends init_lib {
     public static final double MIN_SERVO_POSITION = 0;
     public static final double MAX_SERVO_POSITION = 1;
 
+
     public float speed = 1;
     public float direction = 1;
     public double drive = 0;
 
-    public boolean driveToggle;
-
-
-    public boolean popperMotorTogglePressed = false;
-    public PopperPosition popperPosition = PopperPosition.HOME;
 
     public float GP1_LY;
     public float GP1_RY;
+
 
     public float rightMotors;
     public float leftMotors;
 
 
-    @Override
-    public void start(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
-
-        //robot.setPopperMotorHome();
-    }//start
-
-    @Override
-    public void stop(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
-    }//stop
-
     public double s_position(double pos){
 
         return Range.clip(pos, MIN_SERVO_POSITION, MAX_SERVO_POSITION);
     }
+
 
     //motor scale
     public float scale_motor_power (float p_power) {
@@ -113,4 +89,24 @@ public class TeleOP_8863_hardware extends init_lib {
         leftDriveMotor.setPower(left_power);
         rightDriveMotor.setPower(right_power);
     }
+
+
+    /*public void toggleButton(boolean button, float switching, float state1, float state2){
+
+        boolean pressed = false;
+
+        if(button && !pressed){
+            if(switching == state1){
+                switching = state2;
+            }
+            else{
+                switching = state1;
+            }
+            pressed = true;
+        }
+        if(!button && pressed){
+            pressed = false;
+        }
+    }*/
+
 }
