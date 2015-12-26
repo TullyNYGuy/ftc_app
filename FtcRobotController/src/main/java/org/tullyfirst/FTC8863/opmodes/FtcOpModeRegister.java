@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 import org.tullyfirst.FTC8863.opmodes.ResQ.Auto_8863;
 import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP_8863;
 import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP_8863_new_keys;
+import org.tullyfirst.FTC8863.opmodes.test.SweeperTest;
 
 /**
  * Register Op Modes
@@ -111,5 +112,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     /** ed young's */
     manager.register("TeleOP_8863", TeleOP_8863.class);
     manager.register("Auto_8863", Auto_8863.class);
+    manager.register("SweeperTest", SweeperTest.class);
+
   }
 }
