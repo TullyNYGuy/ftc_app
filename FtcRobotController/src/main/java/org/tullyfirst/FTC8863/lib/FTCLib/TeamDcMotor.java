@@ -24,7 +24,7 @@ public class TeamDcMotor {
      *    motor movement was interupted before it completed
      */
     public enum MotorState {
-        IDLE, HOLD, INTERUPTED, MOVING
+        IDLE, HOLDING, INTERRUPTED, MOVING, STALLED, FLOATING
     }
 
     /**
@@ -33,7 +33,7 @@ public class TeamDcMotor {
      * HOLD = motor is powered and actively holding a position under PID control
      */
     public enum NextMotorState {
-        COAST, HOLD
+        FLOAT, HOLD
     }
 
     /**
@@ -79,12 +79,12 @@ public class TeamDcMotor {
     /**
      * The current state of the motor.
      */
-    private MotorState motorState = MotorState.IDLE;
+    private MotorState currentMotorState = MotorState.IDLE;
 
     /**
      * The desired state of the motor after the rotation is finished.
      */
-    private NextMotorState nextMotorState = NextMotorState.COAST;
+    private NextMotorState nextMotorState = NextMotorState.FLOAT;
 
     /**
      * Relative or absolute movements
@@ -151,11 +151,11 @@ public class TeamDcMotor {
     }
 
     public MotorState getMotorState() {
-        return motorState;
+        return currentMotorState;
     }
 
-    protected void setMotorState(MotorState motorState) {
-        this.motorState = motorState;
+    protected void setMotorState(MotorState currentMotorState) {
+        this.currentMotorState = currentMotorState;
     }
 
     public NextMotorState getNextMotorState() {
@@ -194,7 +194,7 @@ public class TeamDcMotor {
         return direction;
     }
 
-//*********************************************************************************************
+    //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
 
@@ -213,7 +213,7 @@ public class TeamDcMotor {
         setDesiredEncoderCount(0);
         setEncoderTolerance(10);
         setMotorState(MotorState.IDLE);
-        setNextMotorState(NextMotorState.COAST);
+        setNextMotorState(NextMotorState.FLOAT);
         setMotorMoveType(MotorMoveType.RELATIVE);
         setMinMotorPower(-1);
         setMaxMotorPower(1);
@@ -304,7 +304,7 @@ public class TeamDcMotor {
      */
     public void resetEncoder(){
         if (getMotorMoveType() == MotorMoveType.RELATIVE) {
-            setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            this.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         }
     }
 
@@ -317,7 +317,7 @@ public class TeamDcMotor {
      */
     public void resetEncoder(boolean override){
         if (override) {
-            setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            this.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         } else {
             resetEncoder();
         }
@@ -337,7 +337,7 @@ public class TeamDcMotor {
      * @return true if successfully completed
      */
     public boolean rotateToDistance(double power, double distance, NextMotorState afterCompletion ) {
-        if(this.motorState != MotorState.MOVING) {
+        if(this.currentMotorState != MotorState.MOVING) {
             int encoderCountForDistance = getEncoderCountForDistance(distance);
             return rotateToEncoderCount(power, encoderCountForDistance, afterCompletion);
         } else {
@@ -345,38 +345,6 @@ public class TeamDcMotor {
         }
     }
 
-    /**
-     * Rotate the motor so the encoder gets to a certain count.
-     *
-     * @param power Power input for the motor. Note that it will be clipped to less than +/-0.8.
-     * @param encoderCount Motor will be rotated so that it results in a movement of this distance.
-     * @param afterCompletion  What to do after this movement is completed: HOLD or COAST
-     * @return true if successfully completed
-     */
-    public boolean rotateToEncoderCount(double power, int encoderCount, NextMotorState afterCompletion) {
-        if(getMotorState() != MotorState.MOVING) {
-            // set the field holding the desired rotation
-            setDesiredEncoderCount(encoderCount);
-            // set what to do after the rotation completes
-            setNextMotorState(afterCompletion);
-            // reset the encoder
-            resetEncoder();
-            // set the desired encoder position
-            setTargetPosition(encoderCount);
-            // set the run mode
-            setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            // clip the power so that it does not exceed 80% of max. The reason for this is that the
-            // PID controller inside the core motor controller needs to have some room to increase
-            // the power when it makes its PID adjustments. If you set the power to 100% then there is
-            // no room to increase the power if needed and PID control will not work.
-            power = Range.clip(power, -.8, .8);
-            setPower(power);
-            setMotorState(MotorState.MOVING);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Makes the motor rotate to a certain amount of revolutions.
@@ -390,6 +358,38 @@ public class TeamDcMotor {
     }
 
     /**
+     * Rotate the motor so the encoder gets to a certain count.
+     *
+     * @param power Power input for the motor. Note that it will be clipped to less than +/-0.8.
+     * @param encoderCount Motor will be rotated so that it results in a movement of this distance.
+     * @param afterCompletion  What to do after this movement is completed: HOLD or COAST
+     * @return true if successfully completed
+     */
+    public boolean rotateToEncoderCount(double power, int encoderCount, NextMotorState afterCompletion) {
+        if(getMotorState() != MotorState.MOVING) {
+            // set what to do after the rotation completes
+            setNextMotorState(afterCompletion);
+            // reset the encoder
+            resetEncoder();
+            // set the desired encoder position
+            this.setTargetPosition(encoderCount);
+            // set the run mode
+            this.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            // clip the power so that it does not exceed 80% of max. The reason for this is that the
+            // PID controller inside the core motor controller needs to have some room to increase
+            // the power when it makes its PID adjustments. If you set the power to 100% then there is
+            // no room to increase the power if needed and PID control will not work.
+            power = Range.clip(power, -.8, .8);
+            this.setPower(power);
+            setMotorState(MotorState.MOVING);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
      * Checks to see if the rotation to encoder count has completed. If it has then it sets the
      * motor to hold that encoder count or it sets the motor so that it can move freely, depending
      * on the NextMotorState being set to HOLD or COAST.
@@ -400,24 +400,18 @@ public class TeamDcMotor {
      */
     public boolean isRotationComplete() {
         // get the current encoder position
-        int currentEncoderCount = getCurrentPosition();
-
-        // is the current position within the tolderance limit of the desired position
+        int currentEncoderCount = this.getCurrentPosition();
+        // is the current position within the tolerance limit of the desired position
         if (Math.abs(getDesiredEncoderCount() - currentEncoderCount) <getEncoderTolerance()) {
             // movement is complete. See what to do next
-            if(getNextMotorState() == NextMotorState.COAST) {
-                setMode(DcMotorController.RunMode.RESET_ENCODERS);
-                setMotorState(MotorState.IDLE);
-            } else {
-                // we want to actively hold position
-                // this is the default so don't do anything but set the state
-                setMotorState(MotorState.HOLD);
-            }
             return true;
-
         } else {
             return false;
         }
+    }
+
+    public boolean isStalled() {
+        return false;
     }
 
     //*********************************************************************************************
@@ -430,20 +424,16 @@ public class TeamDcMotor {
      * the PID not being able to control the motor.
      *
      * @param power Power input for the motor.
-     * @param afterCompletion What to do after this movement is completed: HOLD or COAST
      * @return true if successfully completed
      */
-     public boolean runUsingEncoder(double power, NextMotorState afterCompletion) {
+     public boolean runsUsingEncoder(double power) {
          if(getMotorState() != MotorState.MOVING) {
-            // set what to do after the rotation completes. Completion can only occur with a stop or
-            // interrupt
-            setNextMotorState(afterCompletion);
             // reset the encoder
-            resetEncoder();
+            this.resetEncoder();
             // set the run mode
-             FTCDcMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-             FTCDcMotor.setPower(power);
-            setMotorState(MotorState.MOVING);
+             this.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+             this.setMotorState(MotorState.MOVING);
+             this.setPower(power);
             return true;
         } else {
             return false;
@@ -459,19 +449,16 @@ public class TeamDcMotor {
      * drop.
      *
      * @param power Power input for the motor.
-     * @param afterCompletion What to do after this movement is completed: HOLD or COAST
      * @return true if successfully completed
      */
-     public boolean runWithoutEncoder(double power, NextMotorState afterCompletion) {
+     public boolean runWithoutEncoder(double power) {
         if(getMotorState() != MotorState.MOVING) {
-            // set what to do after the rotation completes. Completion can only occur with a stop or
-            // interrupt
-            setNextMotorState(afterCompletion);
             // reset the encoder
-            resetEncoder();
+            this.resetEncoder();
             // set the run mode
-            FTCDcMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-            setMotorState(MotorState.MOVING);
+            this.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+            this.setMotorState(MotorState.MOVING);
+            this.setPower(power);
             return true;
         } else {
             return false;
@@ -492,7 +479,7 @@ public class TeamDcMotor {
     public void interruptMotor() {
 
         if (getNextMotorState() == NextMotorState.HOLD) {
-            setMotorState(MotorState.HOLD);
+            setMotorState(MotorState.HOLDING);
             rotateToEncoderCount(FTCDcMotor.getPower(), FTCDcMotor.getCurrentPosition(), NextMotorState.HOLD);
         } else {
             stopMotor();
@@ -508,9 +495,45 @@ public class TeamDcMotor {
     }
 
     //*********************************************************************************************
+    //          Control Methods
+    //*********************************************************************************************
+
+    public MotorState updateMotor() {
+        switch(currentMotorState) {
+            case IDLE:
+                break;
+            case MOVING:
+                if (isStalled()) {
+                    setMotorState(MotorState.STALLED);
+                }
+                if (isRotationComplete()) {
+                    if (getNextMotorState()== NextMotorState.FLOAT) {
+                        setMotorState(MotorState.FLOATING);
+                        this.setPowerFloat();
+                    } else {
+                        setMotorState(MotorState.HOLDING);
+                    }
+                }
+                break;
+            case STALLED:
+                break;
+            case INTERRUPTED:
+                break;
+            case HOLDING:
+                break;
+            case FLOATING:
+                break;
+        }
+        return currentMotorState;
+    }
+
+    //*********************************************************************************************
     //          Wrapper Methods
     //*********************************************************************************************
     public void setMode(DcMotorController.RunMode mode) {
+        if (mode == DcMotorController.RunMode.RESET_ENCODERS) {
+            this.setMotorState(MotorState.IDLE);
+        }
         FTCDcMotor.setMode(mode);
     }
 
@@ -524,6 +547,8 @@ public class TeamDcMotor {
     }
 
     public void setTargetPosition(int position) {
+        // set the field holding the desired rotation
+        setDesiredEncoderCount(position);
         FTCDcMotor.setTargetPosition(position);
     }
 
