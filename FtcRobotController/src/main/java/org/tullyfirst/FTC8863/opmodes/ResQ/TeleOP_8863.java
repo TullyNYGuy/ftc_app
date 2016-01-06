@@ -7,74 +7,23 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 
     @Override
     public void start(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
+
     }//start
 
 
     @Override
     public void loop(){
 
+        //gamepad update
+        GP1_LY = -gamepad1.left_stick_y;
+        GP1_RY = -gamepad1.right_stick_y;
+        //GP2_LY = -gamepad2.right_stick_y;
+
         //telemetry
         update_telemetry();
 
-        //gamepad 2
-        if(gamepad2.left_bumper){
-            servoSide = ServoSide.LEFT_SIDE;
-            servoSideMessage = "left side";
-        }
-        if(gamepad2.right_bumper){
-            servoSide = ServoSide.RIGHT_SIDE;
-            servoSideMessage = "right side";
-        }
-
-        //right servo low
-        if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.a){
-            rightZipServoArm.setPosition(s_position(.25));
-        }
-
-        //right servo med/high
-        if (servoSide == ServoSide.RIGHT_SIDE && gamepad2.x){
-            rightZipServoArm.setPosition(s_position(0));
-        }
-
-        //left servo low
-        if (servoSide == ServoSide.LEFT_SIDE && gamepad2.a){
-            leftZipServoArm.setPosition(s_position(.25));
-        }
-
-        //left servo med/high
-        if (servoSide == ServoSide.LEFT_SIDE && gamepad2.x){
-            leftZipServoArm.setPosition(s_position(0));
-        }
-
-        //both servos up
-        if (gamepad2.b){
-            rightZipServoArm.setPosition(s_position(.75));
-            leftZipServoArm.setPosition(s_position(.8));
-        }
-
-        //support servo
-        if (gamepad2.dpad_down){
-            helperServoArm1.setPosition(s_position(.35));
-            helperServoArm2.setPosition(s_position(.35));
-        }
-
-        if (gamepad2.dpad_up){
-            helperServoArm1.setPosition(s_position(1));
-            helperServoArm2.setPosition(s_position(1));
-        }
-
-        //C_srm
-        if(gamepad2.dpad_left){
-            climberServoArm.setPosition(s_position(.7));
-        }
-        else{
-            climberServoArm.setPosition(s_position(0));
-        }
+        //tape motor
+        //tapeMotor.setPower(scale_motor_power(GP2_LY));
 
         //gamepad 1
         //speed change
@@ -128,9 +77,6 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         }
 
 
-        GP1_LY = -gamepad1.left_stick_y;
-        GP1_RY = -gamepad1.right_stick_y;
-
         //tank drive
         if(driveType == DriveType.TANK) {
             leftMotors = ((scale_motor_power(GP1_LY))*speed)*direction;
@@ -151,11 +97,7 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
 
     @Override
     public void stop(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
+
     }//stop
 
 }
