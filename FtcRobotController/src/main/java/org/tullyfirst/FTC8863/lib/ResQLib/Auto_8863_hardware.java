@@ -13,20 +13,12 @@ public class Auto_8863_hardware extends init_lib {
 
     @Override
     public void start(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
+
     }//start
 
     @Override
     public void stop(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
+
     }//stop
 
     public double s_position(double pos){

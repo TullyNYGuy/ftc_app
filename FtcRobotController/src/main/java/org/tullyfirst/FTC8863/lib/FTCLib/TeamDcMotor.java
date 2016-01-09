@@ -116,6 +116,7 @@ public class TeamDcMotor {
 
     public void setMotorType(MotorType motorType) {
         this.motorType = motorType;
+        setCountsPerRevForMotorType(motorType);
     }
 
     public int getCountsPerRev() {
