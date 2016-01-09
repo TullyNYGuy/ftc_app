@@ -1,8 +1,8 @@
 package org.tullyfirst.FTC8863.opmodes.ResQ;
 
-import org.tullyfirst.FTC8863.lib.ResQLib.TeleOP_8863_Telemetry;
+import org.tullyfirst.FTC8863.lib.ResQLib.TeleOPTelemetry;
 
-public class TeleOP_8863 extends TeleOP_8863_Telemetry {
+public class TeleOP extends TeleOPTelemetry {
 
 
     @Override
@@ -17,13 +17,13 @@ public class TeleOP_8863 extends TeleOP_8863_Telemetry {
         //gamepad update
         GP1_LY = -gamepad1.left_stick_y;
         GP1_RY = -gamepad1.right_stick_y;
-        //GP2_LY = -gamepad2.right_stick_y;
+        GP2_LY = -gamepad2.right_stick_y;
 
         //telemetry
         update_telemetry();
 
         //tape motor
-        //tapeMotor.setPower(scale_motor_power(GP2_LY));
+        tapeMotor.setPower(scale_motor_power(GP2_LY));
 
         //gamepad 1
         //speed change

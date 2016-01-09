@@ -8,12 +8,10 @@ public class init_lib extends OpMode{
 
     public DcMotor rightDriveMotor;
     public DcMotor leftDriveMotor;
+    public DcMotor tapeMotor;
 
-    public Servo rightZipServoArm;
-    public Servo leftZipServoArm;
-    public Servo helperServoArm1;
-    public Servo helperServoArm2;
-    public Servo climberServoArm;
+    //public Servo rightZipServoArm;
+    //public Servo leftZipServoArm;
 
     @Override
     public void init(){
@@ -23,16 +21,12 @@ public class init_lib extends OpMode{
         leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
         rightDriveMotor.setDirection(com.qualcomm.robotcore.hardware.DcMotor.Direction.REVERSE);
 
+        tapeMotor = hardwareMap.dcMotor.get("tapeMotor");
+
         //servo init
-        rightZipServoArm = hardwareMap.servo.get("rightZipServoArm");
-        leftZipServoArm = hardwareMap.servo.get("leftZipServoArm");
-        leftZipServoArm.setDirection(Servo.Direction.REVERSE);
-
-        helperServoArm1 = hardwareMap.servo.get("helperServoArm1");
-        helperServoArm2 = hardwareMap.servo.get("helperServoArm2");
-        helperServoArm2.setDirection(Servo.Direction.REVERSE);
-
-        climberServoArm = hardwareMap.servo.get("climberServoArm");
+        //rightZipServoArm = hardwareMap.servo.get("rightZipServoArm");
+        //leftZipServoArm = hardwareMap.servo.get("leftZipServoArm");
+        //leftZipServoArm.setDirection(Servo.Direction.REVERSE);
 
     }//init
 
