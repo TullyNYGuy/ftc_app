@@ -35,6 +35,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
 import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP;
+import org.tullyfirst.FTC8863.opmodes.test.IMU8863test;
+import org.tullyfirst.FTC8863.opmodes.test.IMUtest;
+import org.tullyfirst.FTC8863.opmodes.test.SweeperTest;
+import org.tullyfirst.FTC8863.opmodes.test.TestLinearSlide;
+import org.tullyfirst.FTC8863.opmodes.test.ToggleButtonTest;
 
 /**
  * Register Op Modes
@@ -104,15 +109,14 @@ public class FtcOpModeRegister implements OpModeRegister {
     //manager.register("PushBotIrSeek", PushBotIrSeek.java);
     //manager.register("PushBotSquare", PushBotSquare.java);
     // test routines
-    //manager.register("SweeperTest", SweeperTest.class);
-    //manager.register("IMUtest", IMUtest.class);
-    //manager.register("IMU8863test", IMU8863test.class);
-    //manager.register("TestLinearSlide", TestLinearSlide.class);
+    manager.register("SweeperTest", SweeperTest.class);
+    manager.register("IMUtest", IMUtest.class);
+    manager.register("IMU8863test", IMU8863test.class);
+    manager.register("TestLinearSlide", TestLinearSlide.class);
 
 
     /** ed young's */
     manager.register("TeleOP", TeleOP.class);
-    //manager.register("Auto", Auto.class);
-
+    manager.register("ToggleButtonTest", ToggleButtonTest.class);
   }
 }
