@@ -30,11 +30,11 @@ public class RobotConfigMapping {
     // getMotorPosition
     //*********************************************************************************************
 
-    public static String getLeftDriveMotor() {
+    public static String getLeftDriveMotorName() {
         return leftDriveMotor;
     }
 
-    public static String getRightDriveMotor() {
+    public static String getRightDriveMotorName() {
         return rightDriveMotor;
     }
 

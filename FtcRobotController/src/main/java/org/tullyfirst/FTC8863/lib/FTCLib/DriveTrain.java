@@ -63,8 +63,8 @@ public class DriveTrain {
     //*********************************************************************************************
 
     public DriveTrain(HardwareMap hardwareMap) {
-        leftDriveMotor = new TeamDcMotor(RobotConfigMapping.getLeftDriveMotor(), hardwareMap);
-        rightDriveMotor = new TeamDcMotor(RobotConfigMapping.getRightDriveMotor(), hardwareMap);
+        leftDriveMotor = new TeamDcMotor(RobotConfigMapping.getLeftDriveMotorName(), hardwareMap);
+        rightDriveMotor = new TeamDcMotor(RobotConfigMapping.getRightDriveMotorName(), hardwareMap);
 
         rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
         rightDriveMotor.setMaxMotorPower(1);
