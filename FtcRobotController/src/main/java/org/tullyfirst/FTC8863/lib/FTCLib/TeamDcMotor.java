@@ -3,9 +3,7 @@ package org.tullyfirst.FTC8863.lib.FTCLib;
 import com.qualcomm.robotcore.hardware.*;
 import com.qualcomm.robotcore.util.Range;
 
-/**
- * Created by ball on 11/28/2015.
- */
+
 public class TeamDcMotor {
 
     /**

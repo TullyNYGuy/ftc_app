@@ -17,6 +17,8 @@ public class TeleOPHardware extends init_lib {
     float rightMotors;
     float leftMotors;
 
+    boolean servo2StagePressed = false;
+    boolean servo3StagePressed = false;
 
     public double s_position(double pos){
 
@@ -24,46 +26,46 @@ public class TeleOPHardware extends init_lib {
     }
 
     public double servoButtonToggle2Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Home){
-        boolean pressed = false;
-        double servoReturn = Home;
-        if(Button && !pressed){
+        double servo2StageReturn = Home;
+        if(Button && !servo2StagePressed){
             if(servoPosition == Home){
-                servoReturn = Stage1;
+                servo2StageReturn = Stage1;
             }
             else if(servoPosition == Stage1){
-                servoReturn = Stage2;
+                servo2StageReturn = Stage2;
             }
             else if(servoPosition == Stage2){
-                servoReturn = Home;
+                servo2StageReturn = Home;
             }
-            pressed = true;
+            servo2StagePressed = true;
         }
-        if(!Button && pressed){
-            pressed = false;
+        if(!Button && servo2StagePressed){
+            servo2StagePressed = false;
         }
-        return servoReturn;
+        return servo2StageReturn;
     }
 
-    public void servoButtonToggle3Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Stage3, double Home){
-        boolean pressed = false;
-        if(Button && !pressed){
+    public double servoButtonToggle3Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Stage3, double Home){
+        double servosStageReturn = Home;
+        if(Button && !servo3StagePressed){
             if(servoPosition == Home){
-
+                servosStageReturn = Stage1;
             }
             else if(servoPosition == Stage1){
-
+                servosStageReturn = Stage2;
             }
             else if(servoPosition == Stage2){
-
+                servosStageReturn = Stage3;
             }
             else if(servoPosition == Stage3){
-
+                servosStageReturn = Home;
             }
-            pressed = true;
+            servo3StagePressed = true;
         }
-        if(!Button && pressed){
-            pressed = false;
+        if(!Button && servo3StagePressed){
+            servo3StagePressed = false;
         }
+        return servosStageReturn;
     }
 
 
@@ -103,12 +105,6 @@ public class TeleOPHardware extends init_lib {
         rightDriveMotor.setPower(right_power);
     }
 
-    public enum DriveType{
-        TANK, JOYSTICK
-    }
-    public DriveType driveType = DriveType.TANK;
-    public String driveTypeMessage;
-
     public void Drive(){
         //tank drive
         if(driveType == DriveType.TANK) {
@@ -126,15 +122,39 @@ public class TeleOPHardware extends init_lib {
         set_motor(leftMotors, rightMotors);
     }
 
+    public enum DriveType{
+        TANK, JOYSTICK
+    }
+    public DriveType driveType = DriveType.TANK;
+    public String driveTypeMessage;
+    boolean drivePressed = false;
+
+    public void driveTypeToggle(boolean Button){
+        if(Button && !drivePressed){
+            if(driveType == DriveType.TANK){
+                driveType = DriveType.JOYSTICK;
+                driveTypeMessage = "joystick";
+            }
+            else{
+                driveType = DriveType.TANK;
+                driveTypeMessage = "tank";
+            }
+            drivePressed = true;
+        }
+        if(!Button && drivePressed){
+            drivePressed = false;
+        }
+    }
+
     public enum DriveDirection{
         FORWARD, REVERSE
     }
     public DriveDirection driveDirection = DriveDirection.FORWARD;
     public String directionMessage;
+    boolean directionPressed = false;
 
     public void driveDicrectionToggle(boolean Button){
-        boolean pressed = false;
-        if(Button && !pressed){
+        if(Button && !directionPressed){
             if(driveDirection == DriveDirection.FORWARD){
                 direction = -1;
                 driveDirection = DriveDirection.REVERSE;
@@ -145,28 +165,10 @@ public class TeleOPHardware extends init_lib {
                 driveDirection = DriveDirection.FORWARD;
                 directionMessage = "forward";
             }
-            pressed = true;
+            directionPressed = true;
         }
-        if(!Button && pressed){
-            pressed = false;
-        }
-    }
-
-    public void driveTypeToggle(boolean Button){
-        boolean pressed = false;
-        if(Button && !pressed){
-            if(driveType == DriveType.TANK){
-                driveType = DriveType.JOYSTICK;
-                driveTypeMessage = "joystick";
-            }
-            else{
-                driveType = DriveType.TANK;
-                driveTypeMessage = "tank";
-            }
-            pressed = true;
-        }
-        if(!Button && pressed){
-            pressed = false;
+        if(!Button && directionPressed){
+            directionPressed = false;
         }
     }
 
@@ -175,11 +177,10 @@ public class TeleOPHardware extends init_lib {
     }
     public Speed speed = Speed.FULL;
     public String speedMessage;
+    boolean speedPressed = false;
 
     public void speedToggle(boolean Button){
-        boolean pressed = false;
-
-        if(Button && !pressed){
+        if(Button && !speedPressed){
             if(speed == Speed.FULL){
                 speed = Speed.HALF;
                 speedMessage = "Half";
@@ -192,10 +193,10 @@ public class TeleOPHardware extends init_lib {
                 speed = Speed.FULL;
                 speedMessage = "Full";
             }
-            pressed = true;
+            speedPressed = true;
         }
-        if(!Button && pressed){
-            pressed = false;
+        if(!Button && speedPressed){
+            speedPressed = false;
         }
     }
 
@@ -204,10 +205,10 @@ public class TeleOPHardware extends init_lib {
     }
     public ServoSide servoSide;
     public String servoSideMessage;
+    boolean servoSidePressed = false;
 
     public void servoSideToggle(boolean Button){
-        boolean pressed = false;
-        if(Button && !pressed){
+        if(Button && !servoSidePressed){
             if(servoSide == ServoSide.LEFT_SIDE){
                 servoSide = ServoSide.RIGHT_SIDE;
                 servoSideMessage = "right";
@@ -216,10 +217,10 @@ public class TeleOPHardware extends init_lib {
                 servoSide = ServoSide.LEFT_SIDE;
                 servoSideMessage = "left";
             }
-            pressed = true;
+            servoSidePressed = true;
         }
-        if(!Button && pressed){
-            pressed = false;
+        if(!Button && servoSidePressed){
+            servoSidePressed = false;
         }
     }
 
@@ -228,10 +229,10 @@ public class TeleOPHardware extends init_lib {
     }
     public SweeperDirection sweeperDirection = SweeperDirection.NEUTRAL;
     public String sweeperMessage;
+    boolean sweeperPressed = false;
 
     public void sweeperDirectionToggle(boolean Button){
-        boolean pressed = false;
-        if(Button && !pressed){
+        if(Button && !sweeperPressed){
             if(sweeperDirection == SweeperDirection.NEUTRAL){
                 sweeperDirection = SweeperDirection.FORWARDS;
                 sweeperMessage = "forwards";
@@ -244,10 +245,10 @@ public class TeleOPHardware extends init_lib {
                 sweeperDirection = SweeperDirection.NEUTRAL;
                 sweeperMessage = "neutral";
             }
-            pressed = true;
+            sweeperPressed = true;
         }
-        if(!Button && pressed){
-            pressed = false;
+        if(!Button && sweeperPressed){
+            sweeperPressed = false;
         }
     }
 
