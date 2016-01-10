@@ -3,10 +3,19 @@ package org.tullyfirst.FTC8863.lib.FTCLib;
 import com.qualcomm.robotcore.hardware.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
+
 /**
  * Created by ball on 11/26/2015.
  */
-public class TwoMotorDriveTrain {
+public class DriveTrain {
+
+    //*********************************************************************************************
+    //          PRIVATE DATA FIELDS
+    //
+    // can be accessed only by this class, or by using the public
+    // getter and setter methods
+    //*********************************************************************************************
 
     private float rightPower = 0;
     private float leftPower = 0;
@@ -14,6 +23,13 @@ public class TwoMotorDriveTrain {
 
     public TeamDcMotor rightDriveMotor;
     public TeamDcMotor leftDriveMotor;
+
+    //*********************************************************************************************
+    //          GETTER and SETTER Methods
+    //
+    // allow access to private data fields for example setMotorPower,
+    // getMotorPosition
+    //*********************************************************************************************
 
     public float getRightPower(){
         return this.rightPower;
@@ -39,27 +55,41 @@ public class TwoMotorDriveTrain {
         this.cmPerRotation = cmPerRotation;
     }
 
-    public TwoMotorDriveTrain(HardwareMap hardwareMap) {
-        leftDriveMotor = new TeamDcMotor("leftDriveMotor", hardwareMap);
-        rightDriveMotor = new TeamDcMotor("rightDriveMotor", hardwareMap);
+    //*********************************************************************************************
+    //          Constructors
+    //
+    // the function that builds the class when an object is created
+    // from it
+    //*********************************************************************************************
+
+    public DriveTrain(HardwareMap hardwareMap) {
+        leftDriveMotor = new TeamDcMotor(RobotConfigMapping.getLeftDriveMotorName(), hardwareMap);
+        rightDriveMotor = new TeamDcMotor(RobotConfigMapping.getRightDriveMotorName(), hardwareMap);
 
         rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
         rightDriveMotor.setMaxMotorPower(1);
         rightDriveMotor.setMinMotorPower(-1);
         rightDriveMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
         rightDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
-        rightDriveMotor.setEncoderTolerance(5);
+        rightDriveMotor.setEncoderTolerance(3);
         rightDriveMotor.setUnitsPerRev(10);
+        rightDriveMotor.setNextMotorState(TeamDcMotor.NextMotorState.HOLD);
 
-        rightDriveMotor.setMaxMotorPower(1);
-        rightDriveMotor.setMinMotorPower(-1);
-        rightDriveMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        rightDriveMotor.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        rightDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
-        rightDriveMotor.setEncoderTolerance(5);
-        rightDriveMotor.setUnitsPerRev(10);
+        leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveMotor.setMaxMotorPower(1);
+        leftDriveMotor.setMinMotorPower(-1);
+        leftDriveMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        leftDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
+        leftDriveMotor.setEncoderTolerance(3);
+        leftDriveMotor.setUnitsPerRev(10);
+        leftDriveMotor.setNextMotorState(TeamDcMotor.NextMotorState.HOLD);
     }
+
+    //*********************************************************************************************
+    //          Helper Methods
+    //
+    // methods that aid or support the major functions in the class
+    //*********************************************************************************************
 
     public void rotateToDistance(double power, double distance){
         rightDriveMotor.rotateToDistance(power, distance, TeamDcMotor.NextMotorState.HOLD);
@@ -74,6 +104,13 @@ public class TwoMotorDriveTrain {
         }
 
     }
+
+    //*********************************************************************************************
+    //          MAJOR METHODS
+    //
+    // public methods that give the class its functionality
+    //*********************************************************************************************
+
     // Joystick info for reference.
     // Normally:
     // y ranges from -1 to 1, where -1 is full up and 1 is full down
@@ -99,8 +136,8 @@ public class TwoMotorDriveTrain {
         // To steer the robot right, the left motor needs to increase power and the left needs to reduce.
         // Since left on the joystick is negative, we need to add the direction for the left motor and
         // subtract from the right motor
-        this.leftPower = (float)(throttle + direction);
-        this.rightPower = (float)(throttle - direction);
+        leftDriveMotor.setPower((float)(throttle + direction));
+        rightDriveMotor.setPower((float)(throttle - direction));
     }
 
     // The tank drive uses the left joystick to control the left drive motor and the right joystick
@@ -113,7 +150,7 @@ public class TwoMotorDriveTrain {
      * @param rightValue
      */
     public void tankDrive(double leftValue, double rightValue){
-        this.leftPower = (float)leftValue;
-        this.rightPower = (float)rightValue;
+        leftDriveMotor.setPower((float)leftValue);
+        rightDriveMotor.setPower((float)leftValue);
     }
 }

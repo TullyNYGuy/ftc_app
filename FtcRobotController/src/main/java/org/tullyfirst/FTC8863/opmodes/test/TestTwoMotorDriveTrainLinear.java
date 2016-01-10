@@ -33,14 +33,14 @@ package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.TwoMotorDriveTrain;
+import org.tullyfirst.FTC8863.lib.FTCLib.DriveTrain;
 
 /**
  * A simple example of a linear op mode that will approach an IR beacon
  */
 public class TestTwoMotorDriveTrainLinear extends LinearOpMode {
 
-    TwoMotorDriveTrain driveTrain;
+    DriveTrain driveTrain;
     boolean isMovementComplete = false;
 
   @Override
@@ -51,7 +51,7 @@ public class TestTwoMotorDriveTrainLinear extends LinearOpMode {
     //motorLeft = hardwareMap.dcMotor.get("motor_1");
     //motorRight = hardwareMap.dcMotor.get("motor_2");
 
-      driveTrain = new TwoMotorDriveTrain(hardwareMap);
+      driveTrain = new DriveTrain(hardwareMap);
 
     //motorLeft.setDirection(DcMotor.Direction.REVERSE);
 
