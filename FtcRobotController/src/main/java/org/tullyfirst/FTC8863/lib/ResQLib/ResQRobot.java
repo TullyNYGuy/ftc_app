@@ -1,90 +1,73 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
+import org.tullyfirst.FTC8863.lib.FTCLib.DriveTrain;
 
 /**
- * Created by ball on 12/12/2015.
+ * Created by ball on 1/9/2016.
  */
 public class ResQRobot {
 
-//*********************************************************************************************
-//           DATA FIELDS
-//*********************************************************************************************
+    //*********************************************************************************************
+    //          ENUMERATED TYPES
+    //
+    // user defined types
+    //
+    //*********************************************************************************************
 
-    //public TeamDcMotor popperMotor;
-
-//*********************************************************************************************
-//           CONSTRUCTOR
-//*********************************************************************************************
-
-    ResQRobot(HardwareMap hardwareMap) {
-       // popperMotor = new TeamDcMotor("popperMotor", hardwareMap);
-        //initPopperMotor();
+    public enum Mode {
+        TELEOP, AUTONOMOUS
     }
 
+    public static DriveTrain driveTrain;
+    //*********************************************************************************************
+    //          PRIVATE DATA FIELDS
+    //
+    // can be accessed only by this class, or by using the public
+    // getter and setter methods
+    //*********************************************************************************************
 
-//*********************************************************************************************
-//           METHODS
-//*********************************************************************************************
 
-/*    public void initPopperMotor() {
-        popperMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        popperMotor.setUnitsPerRev(360);
-        popperMotor.setEncoderTolerance(5);
-        popperMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
-        popperMotor.setMinMotorPower(-1);
-        popperMotor.setMaxMotorPower(1);
-        popperMotor.setDirection(DcMotor.Direction.REVERSE);
+    //*********************************************************************************************
+    //          GETTER and SETTER Methods
+    //
+    // allow access to private data fields for example setMotorPower,
+    // getMotorPosition
+    //*********************************************************************************************
 
+
+    //*********************************************************************************************
+    //          Constructors
+    //
+    // the function that builds the class when an object is created
+    // from it
+    //*********************************************************************************************
+
+    private ResQRobot() {
     }
 
-    public void setPopperMotorHome() {
-        //popperMotor.resetEncoder(true);
-        popperMotor.rotateToDistance(.5, 0,TeamDcMotor.NextMotorState.HOLD );
+    public static ResQRobot ResQRobotTeleop(HardwareMap hardwareMap) {
+        ResQRobot resQRobot = new ResQRobot();
+        driveTrain = DriveTrain.DriveTrainTeleop(hardwareMap);
+        return resQRobot;
     }
 
-    public void goPopperMotorHome() {
-        popperMotor.resetEncoder(true);
-        popperMotor.rotateToDistance(.95, -80, TeamDcMotor.NextMotorState.HOLD);
+    public static ResQRobot ResQRobotAutonomous(HardwareMap hardwareMap) {
+        ResQRobot resQRobot = new ResQRobot();
+        driveTrain = DriveTrain.DriveTrainAutonomous(hardwareMap);
+        return resQRobot;
     }
-
-    public void goPopperMotorPop() {
-        popperMotor.resetEncoder(true);
-        popperMotor.rotateToDistance(.95, 80, TeamDcMotor.NextMotorState.HOLD);
-    }*/
-
-//*********************************************************************************************
-//           NESTED CLASSES
-//*********************************************************************************************
-
-/*    public class ObjectNameMapping {
+    //*********************************************************************************************
+    //          Helper Methods
+    //
+    // methods that aid or support the major functions in the class
+    //*********************************************************************************************
 
 
-        /*//*********************************************************************************************
-        //           DATA FIELDS
-        /*//*********************************************************************************************
-        protected String popperMotorName = "popperMotor";
-
-        /*//*********************************************************************************************
-        //           GETTERS AND SETTERS
-        /*//*********************************************************************************************
-        public String getPopperMotorName() {
-            return popperMotorName;
-        }
-        /*//*********************************************************************************************
-        //           CONSTRUCTOR
-        /*//*********************************************************************************************
-
-        ObjectNameMapping() {
-        }
-
-        /*//*********************************************************************************************
-        //           METHODS
-        /*//*********************************************************************************************
-
-    }*/
+    //*********************************************************************************************
+    //          MAJOR METHODS
+    //
+    // public methods that give the class its functionality
+    //*********************************************************************************************
 }
-

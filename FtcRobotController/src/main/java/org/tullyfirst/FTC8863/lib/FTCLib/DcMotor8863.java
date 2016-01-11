@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by ball on 11/28/2015.
  */
-public class TeamDcMotor {
+public class DcMotor8863 {
 
     /**
      * Defines the type of motor.
@@ -199,7 +199,7 @@ public class TeamDcMotor {
     //          Constructors
     //*********************************************************************************************
 
-    public TeamDcMotor(String motorName, HardwareMap hardwareMap) {
+    public DcMotor8863(String motorName, HardwareMap hardwareMap) {
         FTCDcMotor = hardwareMap.dcMotor.get(motorName);
         initMotorDefaults();
     }

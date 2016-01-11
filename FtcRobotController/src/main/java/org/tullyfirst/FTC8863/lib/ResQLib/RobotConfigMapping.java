@@ -20,8 +20,13 @@ public class RobotConfigMapping {
     // getter and setter methods
     //*********************************************************************************************
 
-    private static String leftDriveMotor = "leftDriveMotor";
-    private static String rightDriveMotor = "rightDriveMotor";
+    private static String leftDriveMotorName = "leftDriveMotor";
+    private static String rightDriveMotorName = "rightDriveMotor";
+
+    private static String sweeperMotorName = "sweeperMotor";
+
+    private static String leftZipLineServoName = "leftZipLineServo";
+    private static String rightZipLineServoName = "rightZipLineServo";
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -31,14 +36,26 @@ public class RobotConfigMapping {
     //*********************************************************************************************
 
     public static String getLeftDriveMotorName() {
-        return leftDriveMotor;
+        return leftDriveMotorName;
     }
 
     public static String getRightDriveMotorName() {
-        return rightDriveMotor;
+        return rightDriveMotorName;
     }
 
-//*********************************************************************************************
+    public static String getSweeperMotorName() {
+        return sweeperMotorName;
+    }
+
+    public static String getLeftZipLineServoName() {
+        return leftZipLineServoName;
+    }
+
+    public static String getRightZipLineServoName() {
+        return rightZipLineServoName;
+    }
+
+    //*********************************************************************************************
     //          Constructors
     //
     // the function that builds the class when an object is created

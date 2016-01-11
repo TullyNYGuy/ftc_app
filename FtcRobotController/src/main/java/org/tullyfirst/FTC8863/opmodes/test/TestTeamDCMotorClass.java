@@ -40,7 +40,7 @@ import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotorOld;
 
 
 /**
- * TestTeamDCMotor is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
+ * TestDCMotor8863 is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
  * <p>
  */
 public class TestTeamDCMotorClass extends OpMode {

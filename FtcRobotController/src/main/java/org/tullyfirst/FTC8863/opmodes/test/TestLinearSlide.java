@@ -32,12 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
-
-import org.tullyfirst.FTC8863.lib.FTCLib.JoyStick;
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamServo;
 
 public class TestLinearSlide extends OpMode {
 

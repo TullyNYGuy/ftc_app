@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.JoyStick;
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamServo;
+import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
 
 /**
  * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control
@@ -73,10 +73,10 @@ public class ResQTeleop extends OpMode {
     double rightSupportArmPositionUp = 1.0;
     double rightSupportArmpositionDown = .35;
 
-    TeamServo leftSupportArmServo;
-    TeamServo rightSupportArmServo;
-    TeamServo leftRepelServo;
-    TeamServo rightRepelServo;
+    Servo8863 leftSupportArmServo;
+    Servo8863 rightSupportArmServo;
+    Servo8863 leftRepelServo;
+    Servo8863 rightRepelServo;
 
     DcMotor motorRight;
     DcMotor motorLeft;
@@ -112,11 +112,11 @@ public class ResQTeleop extends OpMode {
 	@Override
 	public void init() {
 
-        leftRepelServo = new TeamServo("leftRepelServo", hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
-        rightRepelServo =new TeamServo("rightRepelServo",hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
+        leftRepelServo = new Servo8863("leftRepelServo", hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
+        rightRepelServo =new Servo8863("rightRepelServo",hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
 
-        leftSupportArmServo =new TeamServo("leftSupportArmServo",hardwareMap, leftSupportArmPositionHome, leftSupportArmPositionUp, leftSupportArmpositionDown, Servo.Direction.FORWARD);
-        rightSupportArmServo =new TeamServo("rightSupportArmServo",hardwareMap, rightSupportArmPositionHome, rightSupportArmPositionUp, rightSupportArmpositionDown, Servo.Direction.REVERSE);
+        leftSupportArmServo =new Servo8863("leftSupportArmServo",hardwareMap, leftSupportArmPositionHome, leftSupportArmPositionUp, leftSupportArmpositionDown, Servo.Direction.FORWARD);
+        rightSupportArmServo =new Servo8863("rightSupportArmServo",hardwareMap, rightSupportArmPositionHome, rightSupportArmPositionUp, rightSupportArmpositionDown, Servo.Direction.REVERSE);
 
         driverDiffLeftJoyStickX = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.NO_INVERT_SIGN);
         driverDiffLeftJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);

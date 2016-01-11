@@ -21,8 +21,8 @@ public class DriveTrain {
     private float leftPower = 0;
     private float cmPerRotation = 0;
 
-    public TeamDcMotor rightDriveMotor;
-    public TeamDcMotor leftDriveMotor;
+    public DcMotor8863 rightDriveMotor;
+    public DcMotor8863 leftDriveMotor;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -62,27 +62,53 @@ public class DriveTrain {
     // from it
     //*********************************************************************************************
 
-    public DriveTrain(HardwareMap hardwareMap) {
-        leftDriveMotor = new TeamDcMotor(RobotConfigMapping.getLeftDriveMotorName(), hardwareMap);
-        rightDriveMotor = new TeamDcMotor(RobotConfigMapping.getRightDriveMotorName(), hardwareMap);
+    private DriveTrain(HardwareMap hardwareMap) {
+        leftDriveMotor = new DcMotor8863(RobotConfigMapping.getLeftDriveMotorName(), hardwareMap);
+        rightDriveMotor = new DcMotor8863(RobotConfigMapping.getRightDriveMotorName(), hardwareMap);
 
         rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
         rightDriveMotor.setMaxMotorPower(1);
         rightDriveMotor.setMinMotorPower(-1);
-        rightDriveMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        rightDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
+        rightDriveMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
+        rightDriveMotor.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);
         rightDriveMotor.setEncoderTolerance(3);
         rightDriveMotor.setUnitsPerRev(10);
-        rightDriveMotor.setNextMotorState(TeamDcMotor.NextMotorState.HOLD);
+        rightDriveMotor.setNextMotorState(DcMotor8863.NextMotorState.HOLD);
 
         leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
         leftDriveMotor.setMaxMotorPower(1);
         leftDriveMotor.setMinMotorPower(-1);
-        leftDriveMotor.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        leftDriveMotor.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
+        leftDriveMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
+        leftDriveMotor.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);
         leftDriveMotor.setEncoderTolerance(3);
         leftDriveMotor.setUnitsPerRev(10);
-        leftDriveMotor.setNextMotorState(TeamDcMotor.NextMotorState.HOLD);
+        leftDriveMotor.setNextMotorState(DcMotor8863.NextMotorState.HOLD);
+    }
+
+    /**
+     * This method is a factory method. It returns a driveTrain object that is setup to float the
+     * motors after a movement is completed.
+     * @param hardwareMap
+     * @return Instance of a driveTrain (a driveTrain oject) optimized for TeleOp
+     */
+    public static DriveTrain DriveTrainTeleop(HardwareMap hardwareMap) {
+        DriveTrain driveTrain = new DriveTrain(hardwareMap);
+        driveTrain.rightDriveMotor.setNextMotorState(DcMotor8863.NextMotorState.FLOAT);
+        driveTrain.leftDriveMotor.setNextMotorState(DcMotor8863.NextMotorState.FLOAT);
+        return driveTrain;
+    }
+
+    /**
+     * This method is a factory method. It returns a driveTrain object that is setup to float the
+     * motors after a movement is completed.
+     * @param hardwareMap
+     * @return Instance of a driveTrain (a driveTrain oject) optimized for TeleOp
+     */
+    public static DriveTrain DriveTrainAutonomous(HardwareMap hardwareMap) {
+        DriveTrain driveTrain = new DriveTrain(hardwareMap);
+        driveTrain.rightDriveMotor.setNextMotorState(DcMotor8863.NextMotorState.HOLD);
+        driveTrain.leftDriveMotor.setNextMotorState(DcMotor8863.NextMotorState.HOLD);
+        return driveTrain;
     }
 
     //*********************************************************************************************
@@ -92,8 +118,8 @@ public class DriveTrain {
     //*********************************************************************************************
 
     public void rotateToDistance(double power, double distance){
-        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotor.NextMotorState.HOLD);
-        rightDriveMotor.rotateToDistance(power, distance, TeamDcMotor.NextMotorState.HOLD);
+        rightDriveMotor.rotateToDistance(power, distance, DcMotor8863.NextMotorState.HOLD);
+        rightDriveMotor.rotateToDistance(power, distance, DcMotor8863.NextMotorState.HOLD);
     }
 
     public boolean isRotationComplete() {
