@@ -5,53 +5,67 @@ import com.qualcomm.robotcore.util.Range;
 
 public class TeleOPHardware extends init_lib {
 
-
-    public enum DriveType{
-        TANK, JOYSTICK
-    }
-    public DriveType driveType = DriveType.TANK;
-    public boolean driveTogglePressed = false;
-    public String driveTypeMessage;
-
-
-    public enum DriveDirection{
-        FORWARD, REVERSE
-    }
-    public DriveDirection driveDirection = DriveDirection.FORWARD;
-    public boolean directionTogglePressed = false;
-    public String directionMessage;
-
-
-   /* public enum ServoSide{
-        LEFT_SIDE, RIGHT_SIDE
-    }
-    public ServoSide servoSide;
-    public String servoSideMessage;*/
-    
     public static final float MIN_DCMOTOR_POSITION = -1;
     public static final float MAX_DCMOTOR_POSITION = 1;
-
     public static final double MIN_SERVO_POSITION = 0;
     public static final double MAX_SERVO_POSITION = 1;
 
-
-    public float speed = 1;
+    public float driveSpeed = 1;
     public float direction = 1;
     public double drive = 0;
 
+    float rightMotors;
+    float leftMotors;
 
-    public float GP1_LY;
-    public float GP1_RY;
-    public float GP2_LY;
-
-
-    public float rightMotors;
-    public float leftMotors;
-
+    boolean servo2StagePressed = false;
+    boolean servo3StagePressed = false;
 
     public double s_position(double pos){
 
         return Range.clip(pos, MIN_SERVO_POSITION, MAX_SERVO_POSITION);
+    }
+
+    public double servoButtonToggle2Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Home){
+        double servo2StageReturn = Home;
+        if(Button && !servo2StagePressed){
+            if(servoPosition == Home){
+                servo2StageReturn = Stage1;
+            }
+            else if(servoPosition == Stage1){
+                servo2StageReturn = Stage2;
+            }
+            else if(servoPosition == Stage2){
+                servo2StageReturn = Home;
+            }
+            servo2StagePressed = true;
+        }
+        if(!Button && servo2StagePressed){
+            servo2StagePressed = false;
+        }
+        return servo2StageReturn;
+    }
+
+    public double servoButtonToggle3Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Stage3, double Home){
+        double servosStageReturn = Home;
+        if(Button && !servo3StagePressed){
+            if(servoPosition == Home){
+                servosStageReturn = Stage1;
+            }
+            else if(servoPosition == Stage1){
+                servosStageReturn = Stage2;
+            }
+            else if(servoPosition == Stage2){
+                servosStageReturn = Stage3;
+            }
+            else if(servoPosition == Stage3){
+                servosStageReturn = Home;
+            }
+            servo3StagePressed = true;
+        }
+        if(!Button && servo3StagePressed){
+            servo3StagePressed = false;
+        }
+        return servosStageReturn;
     }
 
 
@@ -90,6 +104,155 @@ public class TeleOPHardware extends init_lib {
         leftDriveMotor.setPower(left_power);
         rightDriveMotor.setPower(right_power);
     }
+
+    public void Drive(){
+        //tank drive
+        if(driveType == DriveType.TANK) {
+            leftMotors = ((scale_motor_power(-gamepad1.left_stick_y))*driveSpeed)*direction;
+            rightMotors = ((scale_motor_power(-gamepad1.right_stick_y))*driveSpeed)*direction;
+        }
+
+        //forward/backward
+        if(driveType == DriveType.JOYSTICK){
+            leftMotors = ((scale_motor_power(-gamepad1.left_stick_y))*driveSpeed)*direction;
+            rightMotors = ((scale_motor_power(-gamepad1.right_stick_y))*driveSpeed)*direction;
+        }
+
+
+        set_motor(leftMotors, rightMotors);
+    }
+
+    public enum DriveType{
+        TANK, JOYSTICK
+    }
+    public DriveType driveType = DriveType.TANK;
+    public String driveTypeMessage;
+    boolean drivePressed = false;
+
+    public void driveTypeToggle(boolean Button){
+        if(Button && !drivePressed){
+            if(driveType == DriveType.TANK){
+                driveType = DriveType.JOYSTICK;
+                driveTypeMessage = "joystick";
+            }
+            else{
+                driveType = DriveType.TANK;
+                driveTypeMessage = "tank";
+            }
+            drivePressed = true;
+        }
+        if(!Button && drivePressed){
+            drivePressed = false;
+        }
+    }
+
+    public enum DriveDirection{
+        FORWARD, REVERSE
+    }
+    public DriveDirection driveDirection = DriveDirection.FORWARD;
+    public String directionMessage;
+    boolean directionPressed = false;
+
+    public void driveDicrectionToggle(boolean Button){
+        if(Button && !directionPressed){
+            if(driveDirection == DriveDirection.FORWARD){
+                direction = -1;
+                driveDirection = DriveDirection.REVERSE;
+                directionMessage = "reverse";
+            }
+            else{
+                direction = 1;
+                driveDirection = DriveDirection.FORWARD;
+                directionMessage = "forward";
+            }
+            directionPressed = true;
+        }
+        if(!Button && directionPressed){
+            directionPressed = false;
+        }
+    }
+
+    public enum Speed{
+        HALF, PARTIAL, FULL
+    }
+    public Speed speed = Speed.FULL;
+    public String speedMessage;
+    boolean speedPressed = false;
+
+    public void speedToggle(boolean Button){
+        if(Button && !speedPressed){
+            if(speed == Speed.FULL){
+                speed = Speed.HALF;
+                speedMessage = "Half";
+            }
+            else if(speed == Speed.HALF){
+                speed = Speed.PARTIAL;
+                speedMessage = "Partial";
+            }
+            else if(speed == Speed.PARTIAL){
+                speed = Speed.FULL;
+                speedMessage = "Full";
+            }
+            speedPressed = true;
+        }
+        if(!Button && speedPressed){
+            speedPressed = false;
+        }
+    }
+
+    public enum ServoSide{
+        LEFT_SIDE, RIGHT_SIDE
+    }
+    public ServoSide servoSide;
+    public String servoSideMessage;
+    boolean servoSidePressed = false;
+
+    public void servoSideToggle(boolean Button){
+        if(Button && !servoSidePressed){
+            if(servoSide == ServoSide.LEFT_SIDE){
+                servoSide = ServoSide.RIGHT_SIDE;
+                servoSideMessage = "right";
+            }
+            else if(servoSide == ServoSide.RIGHT_SIDE){
+                servoSide = ServoSide.LEFT_SIDE;
+                servoSideMessage = "left";
+            }
+            servoSidePressed = true;
+        }
+        if(!Button && servoSidePressed){
+            servoSidePressed = false;
+        }
+    }
+
+    public enum SweeperDirection{
+        FORWARDS, NEUTRAL, REVERSE
+    }
+    public SweeperDirection sweeperDirection = SweeperDirection.NEUTRAL;
+    public String sweeperMessage;
+    boolean sweeperPressed = false;
+
+    public void sweeperDirectionToggle(boolean Button){
+        if(Button && !sweeperPressed){
+            if(sweeperDirection == SweeperDirection.NEUTRAL){
+                sweeperDirection = SweeperDirection.FORWARDS;
+                sweeperMessage = "forwards";
+            }
+            else if(sweeperDirection == SweeperDirection.FORWARDS){
+                sweeperDirection = SweeperDirection.REVERSE;
+                sweeperMessage = "reverse";
+            }
+            else if(sweeperDirection == SweeperDirection.REVERSE){
+                sweeperDirection = SweeperDirection.NEUTRAL;
+                sweeperMessage = "neutral";
+            }
+            sweeperPressed = true;
+        }
+        if(!Button && sweeperPressed){
+            sweeperPressed = false;
+        }
+    }
+
+
 
 
     /*public void toggleButton(boolean button, float switching, float state1, float state2){

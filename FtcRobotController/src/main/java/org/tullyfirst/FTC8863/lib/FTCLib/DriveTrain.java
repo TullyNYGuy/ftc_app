@@ -5,9 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
 
-/**
- * Created by ball on 11/26/2015.
- */
 public class DriveTrain {
 
     //*********************************************************************************************
@@ -123,7 +120,7 @@ public class DriveTrain {
     }
 
     public boolean isRotationComplete() {
-        if (rightDriveMotor.isRotationComplete() && leftDriveMotor.isRotationComplete()) {
+        if(rightDriveMotor.isRotationComplete() && leftDriveMotor.isRotationComplete()) {
             return true;
         } else {
             return false;

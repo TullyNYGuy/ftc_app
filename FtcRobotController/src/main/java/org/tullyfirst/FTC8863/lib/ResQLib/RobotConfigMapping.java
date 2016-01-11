@@ -1,8 +1,5 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
-/**
- * Created by ball on 1/9/2016.
- */
 public class RobotConfigMapping {
 
     //*********************************************************************************************

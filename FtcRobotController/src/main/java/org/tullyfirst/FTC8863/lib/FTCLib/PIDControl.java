@@ -1,8 +1,6 @@
 package org.tullyfirst.FTC8863.lib.FTCLib;
 
-/**
- * Created by ball on 1/9/2016.
- */
+
 public class PIDControl {
 
     //*********************************************************************************************

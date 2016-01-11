@@ -1,7 +1,7 @@
 package org.tullyfirst.FTC8863.lib.FTCLib;
 
 
-public class GenericClass {
+public class ToggleSwitch {
 
     //*********************************************************************************************
     //          ENUMERATED TYPES
@@ -10,6 +10,13 @@ public class GenericClass {
     //
     //*********************************************************************************************
 
+    public enum SwitchState {
+        PRESSED, RELEASED, BUMPED, RESET
+    }
+
+    public enum SwitchCommand {
+        RESET, NORESET
+    }
 
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
@@ -18,6 +25,10 @@ public class GenericClass {
     // getter and setter methods
     //*********************************************************************************************
 
+    /**
+     * The state of the switch
+     */
+    private SwitchState switchState = SwitchState.RELEASED;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -26,6 +37,14 @@ public class GenericClass {
     // getMotorPosition
     //*********************************************************************************************
 
+    public SwitchState getSwitchstate() {
+        return switchState;
+    }
+
+    public void setSwitchstate(SwitchState switchstate) {
+        this.switchState = switchstate;
+    }
+
 
     //*********************************************************************************************
     //          Constructors
@@ -33,6 +52,10 @@ public class GenericClass {
     // the function that builds the class when an object is created
     // from it
     //*********************************************************************************************
+
+    public ToggleSwitch() {
+        setSwitchstate(SwitchState.RELEASED);
+    }
 
 
     //*********************************************************************************************
@@ -47,4 +70,19 @@ public class GenericClass {
     //
     // public methods that give the class its functionality
     //*********************************************************************************************
+
+    public SwitchState updateSwitchState(boolean button, SwitchCommand switchCommand) {
+
+        switch(switchState) {
+            case RELEASED:
+                break;
+            case PRESSED:
+                break;
+            case BUMPED:
+                break;
+            case RESET:
+                break;
+        }
+        return SwitchState.RELEASED;
+    }
 }
