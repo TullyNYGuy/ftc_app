@@ -1,4 +1,4 @@
-package org.tullyfirst.FTC8863.lib.ResQLib;
+package com.qualcomm.ftcrobotcontroller.FTC;
 
 public class TeleOPTelemetry extends TeleOPHardware {
 

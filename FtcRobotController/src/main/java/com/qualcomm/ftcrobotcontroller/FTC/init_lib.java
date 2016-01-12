@@ -1,4 +1,4 @@
-package org.tullyfirst.FTC8863.lib.ResQLib;
+package com.qualcomm.ftcrobotcontroller.FTC;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
