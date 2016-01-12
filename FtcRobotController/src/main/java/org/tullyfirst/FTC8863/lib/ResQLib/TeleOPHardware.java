@@ -17,12 +17,30 @@ public class TeleOPHardware extends init_lib {
     float rightMotors;
     float leftMotors;
 
+    boolean servoPressed = false;
     boolean servo2StagePressed = false;
     boolean servo3StagePressed = false;
 
-    public double s_position(double pos){
 
+    public double s_position(double pos){
         return Range.clip(pos, MIN_SERVO_POSITION, MAX_SERVO_POSITION);
+    }
+
+    public double servoButtonToggle(boolean Button, double servoPosition, double Stage1, double Home){
+        double servoReturn = Home;
+        if(Button && !servoPressed){
+            if(servoPosition == Home){
+                servoReturn = Stage1;
+            }
+            else if(servoPosition == Stage1){
+                servoReturn = Home;
+            }
+            servoPressed = true;
+        }
+        if(!Button && servoPressed){
+            servoPressed = false;
+        }
+        return servoReturn;
     }
 
     public double servoButtonToggle2Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Home){
@@ -46,26 +64,26 @@ public class TeleOPHardware extends init_lib {
     }
 
     public double servoButtonToggle3Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Stage3, double Home){
-        double servosStageReturn = Home;
+        double servos3StageReturn = Home;
         if(Button && !servo3StagePressed){
             if(servoPosition == Home){
-                servosStageReturn = Stage1;
+                servos3StageReturn = Stage1;
             }
             else if(servoPosition == Stage1){
-                servosStageReturn = Stage2;
+                servos3StageReturn = Stage2;
             }
             else if(servoPosition == Stage2){
-                servosStageReturn = Stage3;
+                servos3StageReturn = Stage3;
             }
             else if(servoPosition == Stage3){
-                servosStageReturn = Home;
+                servos3StageReturn = Home;
             }
             servo3StagePressed = true;
         }
         if(!Button && servo3StagePressed){
             servo3StagePressed = false;
         }
-        return servosStageReturn;
+        return servos3StageReturn;
     }
 
 
