@@ -51,6 +51,12 @@ public class ResQRobot {
     private ResQRobot() {
     }
 
+    /**
+     * Factory class that returns a ResQRobot object setup for Teleop. Call this instead of using
+     * constructor.
+     * @param hardwareMap
+     * @return ResQRobot object
+     */
     public static ResQRobot ResQRobotTeleop(HardwareMap hardwareMap) {
         ResQRobot resQRobot = new ResQRobot();
         driveTrain = DriveTrain.DriveTrainTeleop(hardwareMap);
@@ -60,6 +66,12 @@ public class ResQRobot {
         return resQRobot;
     }
 
+    /**
+     * Factory class that returns a ResQRobot object setup for Autonomous. Call this instead of using
+     * constructor.
+     * @param hardwareMap
+     * @return ResQRobot object
+     */
     public static ResQRobot ResQRobotAutonomous(HardwareMap hardwareMap) {
         ResQRobot resQRobot = new ResQRobot();
         driveTrain = DriveTrain.DriveTrainAutonomous(hardwareMap);
@@ -81,7 +93,12 @@ public class ResQRobot {
     // public methods that give the class its functionality
     //*********************************************************************************************
 
+    /**
+     * Update the robot every time through the loop() in the opmode
+     */
     public void updateRobot(){
         deliveryBox.updatePosition(deliveryBoxThrottle);
+
+        //will need to add updates for the drivetrain and other systems
     }
 }
