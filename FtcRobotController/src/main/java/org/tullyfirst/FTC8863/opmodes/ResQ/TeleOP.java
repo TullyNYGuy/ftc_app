@@ -3,6 +3,7 @@ package org.tullyfirst.FTC8863.opmodes.ResQ;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 public class TeleOP extends OpMode {
@@ -58,8 +59,7 @@ public class TeleOP extends OpMode {
         aimingServo = hardwareMap.servo.get("aimingServo");
         climberServo = hardwareMap.servo.get("climberServo");
         barGrabberServo = hardwareMap.servo.get("barGrabberServo");
-
-    }
+    }//init
 
     @Override
     public void start(){
@@ -163,9 +163,27 @@ public class TeleOP extends OpMode {
         return servos3StageReturn;
     }
 
+    ElapsedTime Time;
+
+    public double servoWiggle(boolean Button, float timeDif,double Home, double pos1, double pos2){
+        double servoWiggleReturn = Home;
+        Time.reset();
+        if(Button){
+            Time.startTime();
+            servoWiggleReturn = pos1;
+            if(Time.time() > timeDif){
+                servoWiggleReturn = pos2;
+                Time.reset();
+            }
+        }
+        if(!Button){
+            servoWiggleReturn = Home;
+        }
+        return servoWiggleReturn;
+    }
 
     //motor scale
-    public float scale_motor_power (float p_power) {
+    float scale_motor_power (float p_power) {
         float l_scale;
         float l_power = Range.clip (p_power, MIN_DCMOTOR_POSITION, MAX_DCMOTOR_POSITION);
         float[] l_array =
@@ -195,12 +213,12 @@ public class TeleOP extends OpMode {
         return l_scale;
     }
 
-    public void set_motor(double left_power, double right_power) {
+    void set_motor(double left_power, double right_power) {
         leftDriveMotor.setPower(left_power);
         rightDriveMotor.setPower(right_power);
     }
 
-    public void Drive(){
+    void Drive(){
         //tank drive
         if(driveType == DriveType.TANK) {
             leftMotors = ((scale_motor_power(-gamepad1.left_stick_y))*driveSpeed)*direction;
@@ -217,14 +235,14 @@ public class TeleOP extends OpMode {
         set_motor(leftMotors, rightMotors);
     }
 
-    public enum DriveType{
+    enum DriveType{
         TANK, JOYSTICK
     }
-    public DriveType driveType = DriveType.TANK;
-    public String driveTypeMessage;
+    DriveType driveType = DriveType.TANK;
+    String driveTypeMessage;
     boolean drivePressed = false;
 
-    public void driveTypeToggle(boolean Button){
+    void driveTypeToggle(boolean Button){
         if(Button && !drivePressed){
             if(driveType == DriveType.TANK){
                 driveType = DriveType.JOYSTICK;
@@ -241,14 +259,14 @@ public class TeleOP extends OpMode {
         }
     }
 
-    public enum DriveDirection{
+    enum DriveDirection{
         FORWARD, REVERSE
     }
-    public DriveDirection driveDirection = DriveDirection.FORWARD;
-    public String directionMessage;
+    DriveDirection driveDirection = DriveDirection.FORWARD;
+    String directionMessage;
     boolean directionPressed = false;
 
-    public void driveDicrectionToggle(boolean Button){
+    void driveDicrectionToggle(boolean Button){
         if(Button && !directionPressed){
             if(driveDirection == DriveDirection.FORWARD){
                 direction = -1;
@@ -267,14 +285,13 @@ public class TeleOP extends OpMode {
         }
     }
 
-    public enum Speed{
+    enum Speed{
         HALF, PARTIAL, FULL
     }
-    public Speed speed = Speed.FULL;
-    public String speedMessage;
+    Speed speed = Speed.FULL;
+    String speedMessage;
     boolean speedPressed = false;
-
-    public void speedToggle(boolean Button){
+    void speedToggle(boolean Button){
         if(Button && !speedPressed){
             if(speed == Speed.FULL){
                 speed = Speed.HALF;
@@ -295,14 +312,14 @@ public class TeleOP extends OpMode {
         }
     }
 
-    public enum ServoSide{
+    enum ServoSide{
         LEFT_SIDE, RIGHT_SIDE
     }
-    public ServoSide servoSide;
-    public String servoSideMessage;
+    ServoSide servoSide;
+    String servoSideMessage;
     boolean servoSidePressed = false;
 
-    public void servoSideToggle(boolean Button){
+    void servoSideToggle(boolean Button){
         if(Button && !servoSidePressed){
             if(servoSide == ServoSide.LEFT_SIDE){
                 servoSide = ServoSide.RIGHT_SIDE;
@@ -319,14 +336,14 @@ public class TeleOP extends OpMode {
         }
     }
 
-    public enum SweeperDirection{
+    enum SweeperDirection{
         FORWARDS, NEUTRAL, REVERSE
     }
-    public SweeperDirection sweeperDirection = SweeperDirection.NEUTRAL;
-    public String sweeperMessage;
+    SweeperDirection sweeperDirection = SweeperDirection.NEUTRAL;
+    String sweeperMessage;
     boolean sweeperPressed = false;
 
-    public void sweeperDirectionToggle(boolean Button){
+    void sweeperDirectionToggle(boolean Button){
         if(Button && !sweeperPressed){
             if(sweeperDirection == SweeperDirection.NEUTRAL){
                 sweeperDirection = SweeperDirection.FORWARDS;

@@ -51,7 +51,7 @@ public class TestLinearSlide extends OpMode {
 	 * Code to run when the op mode is first enabled goes here
 	 * 
 	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-	 */
+    */
 	@Override
 	public void init() {
 
