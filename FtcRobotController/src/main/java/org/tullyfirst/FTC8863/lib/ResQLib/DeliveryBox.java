@@ -1,6 +1,13 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
-public class RobotConfigMapping {
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.tullyfirst.FTC8863.lib.FTCLib.CRServo;
+import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
+
+public class DeliveryBox {
 
     //*********************************************************************************************
     //          ENUMERATED TYPES
@@ -17,17 +24,15 @@ public class RobotConfigMapping {
     // getter and setter methods
     //*********************************************************************************************
 
-    private static String leftDriveMotorName = "leftDriveMotor";
-    private static String rightDriveMotorName = "rightDriveMotor";
+    CRServo slideServo;
+    Servo8863 dumpServo;
 
-    private static String sweeperMotorName = "sweeperMotor";
+    private double dumpHomePosition = 0.0;
+    private double dumpUpPosition = .25;
+    private double dumpDownPosition = 0.0;
 
-    private static String leftZipLineServoName = "leftZipLineServo";
-    private static String rightZipLineServoName = "rightZipLineServo";
-
-    private static String linearSlideServoName = "slideServo";
-    private static String dumpServoName = "dumpServo";
-
+    private double slideServoZeroThrottle = .52;
+    private double slideServoZeroZone = .1;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -36,33 +41,6 @@ public class RobotConfigMapping {
     // getMotorPosition
     //*********************************************************************************************
 
-    public static String getLeftDriveMotorName() {
-        return leftDriveMotorName;
-    }
-
-    public static String getRightDriveMotorName() {
-        return rightDriveMotorName;
-    }
-
-    public static String getSweeperMotorName() {
-        return sweeperMotorName;
-    }
-
-    public static String getLeftZipLineServoName() {
-        return leftZipLineServoName;
-    }
-
-    public static String getRightZipLineServoName() {
-        return rightZipLineServoName;
-    }
-
-    public static String getLinearSlideServoName() {
-        return linearSlideServoName;
-    }
-
-    public static String getDumpServoName() {
-        return dumpServoName;
-    }
 
     //*********************************************************************************************
     //          Constructors
@@ -70,6 +48,14 @@ public class RobotConfigMapping {
     // the function that builds the class when an object is created
     // from it
     //*********************************************************************************************
+
+    public DeliveryBox(HardwareMap hardwareMap) {
+        slideServo = new CRServo(RobotConfigMapping.getLinearSlideServoName(),hardwareMap, slideServoZeroThrottle, slideServoZeroZone);
+        dumpServo = new Servo8863(RobotConfigMapping.getDumpServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.REVERSE);
+
+        // set slide servo so box is not moving
+        slideServo.updatePosition(slideServoZeroThrottle);
+    }
 
 
     //*********************************************************************************************
@@ -84,4 +70,18 @@ public class RobotConfigMapping {
     //
     // public methods that give the class its functionality
     //*********************************************************************************************
+
+    public void updatePosition(double throttle){
+        slideServo.updatePosition(throttle);
+    }
+
+    public void raiseDumpRamp(){
+        dumpServo.goUp();
+    }
+
+    public void lowerDumpRamp() {
+        dumpServo.goHome();
+    }
+
+
 }

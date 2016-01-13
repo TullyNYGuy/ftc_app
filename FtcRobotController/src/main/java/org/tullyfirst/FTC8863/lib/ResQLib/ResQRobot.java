@@ -21,6 +21,9 @@ public class ResQRobot {
     }
 
     public static DriveTrain driveTrain;
+
+    public static DeliveryBox deliveryBox;
+
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
     //
@@ -28,6 +31,7 @@ public class ResQRobot {
     // getter and setter methods
     //*********************************************************************************************
 
+    public double deliveryBoxThrottle;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -50,12 +54,18 @@ public class ResQRobot {
     public static ResQRobot ResQRobotTeleop(HardwareMap hardwareMap) {
         ResQRobot resQRobot = new ResQRobot();
         driveTrain = DriveTrain.DriveTrainTeleop(hardwareMap);
+
+        deliveryBox = new DeliveryBox(hardwareMap);
+
         return resQRobot;
     }
 
     public static ResQRobot ResQRobotAutonomous(HardwareMap hardwareMap) {
         ResQRobot resQRobot = new ResQRobot();
         driveTrain = DriveTrain.DriveTrainAutonomous(hardwareMap);
+
+        deliveryBox = new DeliveryBox(hardwareMap);
+
         return resQRobot;
     }
     //*********************************************************************************************
@@ -70,4 +80,8 @@ public class ResQRobot {
     //
     // public methods that give the class its functionality
     //*********************************************************************************************
+
+    public void updateRobot(){
+        deliveryBox.updatePosition(deliveryBoxThrottle);
+    }
 }
