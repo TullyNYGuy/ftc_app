@@ -1,6 +1,11 @@
-package org.tullyfirst.FTC8863.lib.ResQLib;
+package org.tullyfirst.FTC8863.lib.FTCLib;
 
-public class RobotConfigMapping {
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
+
+public class CRServo {
 
     //*********************************************************************************************
     //          ENUMERATED TYPES
@@ -17,15 +22,9 @@ public class RobotConfigMapping {
     // getter and setter methods
     //*********************************************************************************************
 
-    private static String leftDriveMotorName = "leftDriveMotor";
-    private static String rightDriveMotorName = "rightDriveMotor";
-
-    private static String sweeperMotorName = "sweeperMotor";
-
-    private static String leftZipLineServoName = "leftZipLineServo";
-    private static String rightZipLineServoName = "rightZipLineServo";
-
-    private static String linearSlideServoName = "slideServo";
+    private double centerValue = 0.5;
+    private double deadBandRange = 0.1;
+    private Servo crServo;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -34,29 +33,22 @@ public class RobotConfigMapping {
     // getMotorPosition
     //*********************************************************************************************
 
-    public static String getLeftDriveMotorName() {
-        return leftDriveMotorName;
+    public double getCenterValue() {
+        return centerValue;
     }
 
-    public static String getRightDriveMotorName() {
-        return rightDriveMotorName;
+    public void setCenterValue(double centerValue) {
+        this.centerValue = centerValue;
     }
 
-    public static String getSweeperMotorName() {
-        return sweeperMotorName;
+    public double getDeadBandRange() {
+        return deadBandRange;
     }
 
-    public static String getLeftZipLineServoName() {
-        return leftZipLineServoName;
+    public void setDeadBandRange(double deadBandRange) {
+        this.deadBandRange = deadBandRange;
     }
 
-    public static String getRightZipLineServoName() {
-        return rightZipLineServoName;
-    }
-
-    public static String getLinearSlideServoName() {
-        return linearSlideServoName;
-    }
 
     //*********************************************************************************************
     //          Constructors
@@ -64,6 +56,12 @@ public class RobotConfigMapping {
     // the function that builds the class when an object is created
     // from it
     //*********************************************************************************************
+
+    public CRServo(String servoName, HardwareMap hardwareMap, double centerValue, double deadBandRange) {
+        crServo = hardwareMap.servo.get(servoName);
+        this.centerValue = centerValue;
+        this.deadBandRange = deadBandRange;
+    }
 
 
     //*********************************************************************************************
@@ -78,4 +76,21 @@ public class RobotConfigMapping {
     //
     // public methods that give the class its functionality
     //*********************************************************************************************
+
+    public void updatePosition(double throttle) {
+        double servoPosition;
+        if (-deadBandRange < throttle && throttle < deadBandRange) {
+            crServo.setPosition(centerValue);
+        }
+
+        else {
+            servoPosition = 0.5 * throttle + centerValue;
+            servoPosition = Range.clip(servoPosition, 0, 1);
+            crServo.setPosition(servoPosition);
+        }
+    }
+
+    public double getPosition() {
+        return crServo.getPosition();
+    }
 }

@@ -35,15 +35,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-public class TestLinearSlide extends OpMode {
+import org.tullyfirst.FTC8863.lib.FTCLib.CRServo;
+import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
+
+public class TestCRServo extends OpMode {
 
     double slidePosition = .52;
-    Servo slideServo;
+    CRServo slideServo;
 
 	/**
 	 * Constructor
 	 */
-	public TestLinearSlide() {
+	public TestCRServo() {
 
 	}
 
@@ -55,8 +58,7 @@ public class TestLinearSlide extends OpMode {
 	@Override
 	public void init() {
 
-        slideServo = hardwareMap.servo.get("slideServo");
-        slideServo.setPosition(slidePosition);
+        slideServo = new CRServo(RobotConfigMapping.getLinearSlideServoName(),hardwareMap, .52, .1);
     }
 
     @Override
@@ -67,12 +69,10 @@ public class TestLinearSlide extends OpMode {
 	@Override
 	public void loop() {
 
-                slidePosition = 0.5 * gamepad1.left_stick_x + 0.52;
-        slidePosition = Range.clip(slidePosition, 0, 1);
-        slideServo.setPosition(slidePosition);
+        slideServo.updatePosition(gamepad1.left_stick_x);
 
         telemetry.addData("Text", "*** Robot Data***");
-        telemetry.addData("slide", "position:  " + String.format("%.2f", slidePosition));
+        telemetry.addData("slide", "position:  " + String.format("%.2f", slideServo.getPosition()));
 
 	}
 
