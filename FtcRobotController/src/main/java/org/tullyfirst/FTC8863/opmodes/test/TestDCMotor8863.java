@@ -34,24 +34,23 @@ package org.tullyfirst.FTC8863.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 // only need this import to get access to enums
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamDcMotor;
+import org.tullyfirst.FTC8863.lib.FTCLib.DcMotor8863;
 
 
 /**
- * TestTeamDCMotor is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
+ * TestDCMotor8863 is meant to provide a test platform for the FTC8863 extension to the DcMotor class.
  * <p>
  */
-public class TestTeamDCMotor extends OpMode {
+public class TestDCMotor8863 extends OpMode {
 
-    // This declaration refers to my TeamDcMotor class
-    TeamDcMotor motorRight;
+    // This declaration refers to my DcMotor8863 class
+    DcMotor8863 motorRight;
 
 	/**
 	 * Constructor
 	 */
-	public TestTeamDCMotor() {
+	public TestDCMotor8863() {
 	}
 
 	/*
@@ -63,23 +62,23 @@ public class TestTeamDCMotor extends OpMode {
 	public void init() {
 
         // Instantiate and initialize a motor
-        motorRight = new TeamDcMotor("rightDriveMotor", hardwareMap);
+        motorRight = new DcMotor8863("rightDriveMotor", hardwareMap);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        motorRight.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
         motorRight.setUnitsPerRev(360);
         motorRight.setEncoderTolerance(5);
-        motorRight.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);
+        motorRight.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);
         motorRight.setMinMotorPower(-1);
         motorRight.setMaxMotorPower(1);
 
-        // TeamDcMotor contains a DcMotor object: FTCDcMotor. That object give us access to the
+        // DcMotor8863 contains a DcMotor object: FTCDcMotor. That object give us access to the
         // motor.
 /*		motorRight.FTCDcMotor.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
-        motorRight.setCountsPerRevForMotorType(TeamDcMotor.MotorType.ANDYMARK_40);
+        motorRight.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
+        motorRight.setCountsPerRevForMotorType(DcMotor8863.MotorType.ANDYMARK_40);
         motorRight.setCmPerRev(10);
         motorRight.setEncoderTolerance(10);
-        motorRight.setMotorMoveType(TeamDcMotor.MotorMoveType.RELATIVE);*/
+        motorRight.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);*/
 
 	}
 
@@ -94,14 +93,14 @@ public class TestTeamDCMotor extends OpMode {
 		double motorPower = .5;
 
 		// rotate the motor one revolution and then coast
-        //motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), TeamDcMotor.NextMotorState.COAST);
+        //motorRight.rotateToEncoderCount(motorPower, motorRight.getCountsPerRev(), DcMotor8863.NextMotorState.COAST);
         if (gamepad1.b) {
 
 //            motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
 //            motorRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 //            motorRight.setPower(motorPower);
 
-            motorRight.rotateToDistance(motorPower, -360, TeamDcMotor.NextMotorState.HOLD);
+            motorRight.rotateToDistance(motorPower, -360, DcMotor8863.NextMotorState.HOLD);
         }
         if (gamepad1.a) {
             // if the A button is pushed on gamepad1, the motor stops

@@ -1,10 +1,28 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
-public class Auto_8863_hardware extends init_lib {
+public class Auto_8863_hardware extends OpMode {
+
+    public DcMotor rightDriveMotor;
+    public DcMotor leftDriveMotor;
+    public DcMotor tapeMotor;
+    public DcMotor sweeperMotor;
+
+    public Servo rightZipServoArm;
+    public Servo leftZipServoArm;
+    public Servo bucketSlide360Servo;
+    public Servo rampServo;
+    public Servo trapdoorServo;
+    public Servo aimingServo;
+    public Servo climberServo;
+    public Servo barGrabberServo;
+
 
     public static final double MIN_SERVO_POSITION = 0;
     public static final double MAX_SERVO_POSITION = 1;
@@ -12,21 +30,40 @@ public class Auto_8863_hardware extends init_lib {
     public String t_message;
 
     @Override
+    public void init(){
+        //motor init
+        rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
+        leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
+        rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+        tapeMotor = hardwareMap.dcMotor.get("tapeMotor");
+        sweeperMotor = hardwareMap.dcMotor.get("sweeperMotor");
+
+        //servo init
+        rightZipServoArm = hardwareMap.servo.get("rightZipServoArm");
+        leftZipServoArm = hardwareMap.servo.get("leftZipServoArm");
+        leftZipServoArm.setDirection(Servo.Direction.REVERSE);
+        bucketSlide360Servo = hardwareMap.servo.get("bucketSlide360Servo");
+        rampServo = hardwareMap.servo.get("rampServo");
+        trapdoorServo = hardwareMap.servo.get("trapdoorServo");
+        aimingServo = hardwareMap.servo.get("aimingServo");
+        climberServo = hardwareMap.servo.get("climberServo");
+        barGrabberServo = hardwareMap.servo.get("barGrabberServo");
+
+    }
+
+    @Override
     public void start(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
+
     }//start
 
     @Override
+    public void loop(){
+
+    }
+
+    @Override
     public void stop(){
-        leftZipServoArm.setPosition(s_position(.8));
-        rightZipServoArm.setPosition(s_position(.75));
-        helperServoArm1.setPosition(s_position(1));
-        helperServoArm2.setPosition(s_position(1));
-        climberServoArm.setPosition(s_position(0));
+
     }//stop
 
     public double s_position(double pos){

@@ -34,7 +34,8 @@ package org.tullyfirst.FTC8863.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.TeamServo;
+import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
+import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
 
 /**
  * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control
@@ -50,20 +51,20 @@ import org.tullyfirst.FTC8863.lib.FTCLib.TeamServo;
  *  gamepad2 x button = .5 (halfway)
  * <p>
  */
-public class TestTeamServo extends OpMode {
+public class TestServo8863 extends OpMode {
     boolean leftRepelServoActive = true;
     double upPosition = .8;
     double downPosition = .2;
     double homePosition = .8;
-    double lowerRepelPosition = .25;
-    double middleRepelPosition = .1;
-    double upperRepelPosition = .1;
-    TeamServo leftRepelServo;
-    TeamServo rightRepelServo;
+    double lowerRepelPosition = .4;
+    double middleRepelPosition = .5;
+    double upperRepelPosition = .6;
+    Servo8863 leftRepelServo;
+
 	/**
 	 * Constructor
 	 */
-	public TestTeamServo() {
+	public TestServo8863() {
 
 	}
 
@@ -74,89 +75,56 @@ public class TestTeamServo extends OpMode {
 	 */
 	@Override
 	public void init() {
-        leftRepelServo = new TeamServo("leftRepelServo", hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
-        rightRepelServo =new TeamServo("rightRepelServo",hardwareMap,homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
+        leftRepelServo = new Servo8863(RobotConfigMapping.getLeftZipLineServoName(), hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
+
         leftRepelServo.setPositionOne(lowerRepelPosition);
         leftRepelServo.setPositionTwo(middleRepelPosition);
         leftRepelServo.setPositionThree(upperRepelPosition);
-        rightRepelServo.setPositionOne(lowerRepelPosition);
-        rightRepelServo.setPositionTwo(middleRepelPosition);
-        rightRepelServo.setPositionThree(upperRepelPosition);
 	}
 
     @Override
     public void start() {
         leftRepelServo.goHome();
-        rightRepelServo.goHome();
     }
 
 	@Override
 	public void loop() {
 
-        if (gamepad2.left_bumper) {
-            leftRepelServoActive = true;
-        }
-
-        if (gamepad2.right_bumper) {
-            leftRepelServoActive = false;
-        }
+        leftRepelServo.updateWiggle();
 
         if (gamepad2.a) {
-            // if the A button is pushed on gamepad2, increment the position of
-            // the arm servo.
-            if (leftRepelServoActive) {
                 leftRepelServo.goPositionOne();
-                rightRepelServo.goHome();
                 telemetry.addData("leftRepel", "is lower");
-                telemetry.addData("rightRepel", "home");
-            } else {
-                rightRepelServo.goPositionOne();
-                leftRepelServo.goHome();
-                telemetry.addData("rightRepel", "is lower");
-                telemetry.addData("leftRepel", "home");
-            }
         }
 
         if (gamepad2.b) {
-            // if the B button is pushed on gamepad2, increment the position of
-            // the arm servo.
             leftRepelServo.goHome();
-            rightRepelServo.goHome();
             telemetry.addData("leftRepel", "home");
-            telemetry.addData("rightRepel", "home");
         }
 
         if (gamepad2.x) {
-            // if the X button is pushed on gamepad2, decrease the position of
-            // the arm servo.
-            if (leftRepelServoActive) {
                 leftRepelServo.goPositionTwo();
-                rightRepelServo.goHome();
-                telemetry.addData("leftRepel", "is middle");
-                telemetry.addData("rightRepel", "home");
-            } else {
-                rightRepelServo.goPositionTwo();
-                leftRepelServo.goHome();
-                telemetry.addData("rightRepel", "is middle");
-                telemetry.addData("leftRepel", "home");
-            }
+                telemetry.addData("leftRepel", "is position 2");
         }
 
         if (gamepad2.y) {
-            // if the Y button is pushed on gamepad2, decrease the position of
-            // the arm servo.
-            if (leftRepelServoActive) {
                 leftRepelServo.goPositionThree();
-                rightRepelServo.goHome();
-                telemetry.addData("leftRepel", "is upper");
-                telemetry.addData("rightRepel", "home");
-            } else {
-                rightRepelServo.goPositionThree();
-                leftRepelServo.goHome();
-                telemetry.addData("rightRepel", "is upper");
-                telemetry.addData("leftRepel", "home");
-            }
+                telemetry.addData("leftRepel", "is position 3");
         }
+
+        if (gamepad2.left_bumper) {
+            double wiggleDelay = .5;
+            double wiggleDelta = -.5;
+            double wiggleTime = 5.0;
+
+            leftRepelServo.startWiggle(upPosition, wiggleDelay, wiggleDelta, wiggleTime);
+        }
+
+        if (gamepad2.right_bumper) {
+            leftRepelServo.stopWiggle();
+        }
+
+        telemetry.addData("Position",  "Position: " + String.format("%.2f", leftRepelServo.getPosition()));
 	}
 
 	/*
@@ -167,6 +135,5 @@ public class TestTeamServo extends OpMode {
 	@Override
 	public void stop() {
         leftRepelServo.goHome();
-        rightRepelServo.goHome();
     }
 }

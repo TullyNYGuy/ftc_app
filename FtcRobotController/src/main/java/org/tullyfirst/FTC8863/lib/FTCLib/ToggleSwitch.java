@@ -1,13 +1,7 @@
-package org.tullyfirst.FTC8863.lib.ResQLib;
+package org.tullyfirst.FTC8863.lib.FTCLib;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.DriveTrain;
-
-/**
- * Created by ball on 1/9/2016.
- */
-public class ResQRobot {
+public class ToggleSwitch {
 
     //*********************************************************************************************
     //          ENUMERATED TYPES
@@ -16,13 +10,13 @@ public class ResQRobot {
     //
     //*********************************************************************************************
 
-    public enum Mode {
-        TELEOP, AUTONOMOUS
+    public enum SwitchState {
+        PRESSED, RELEASED, BUMPED, RESET
     }
 
-    public static DriveTrain driveTrain;
-
-    public static DeliveryBox deliveryBox;
+    public enum SwitchCommand {
+        RESET, NORESET
+    }
 
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
@@ -31,7 +25,10 @@ public class ResQRobot {
     // getter and setter methods
     //*********************************************************************************************
 
-    public double deliveryBoxThrottle;
+    /**
+     * The state of the switch
+     */
+    private SwitchState switchState = SwitchState.RELEASED;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -39,6 +36,14 @@ public class ResQRobot {
     // allow access to private data fields for example setMotorPower,
     // getMotorPosition
     //*********************************************************************************************
+
+    public SwitchState getSwitchstate() {
+        return switchState;
+    }
+
+    public void setSwitchstate(SwitchState switchstate) {
+        this.switchState = switchstate;
+    }
 
 
     //*********************************************************************************************
@@ -48,38 +53,11 @@ public class ResQRobot {
     // from it
     //*********************************************************************************************
 
-    private ResQRobot() {
+    public ToggleSwitch() {
+        setSwitchstate(SwitchState.RELEASED);
     }
 
-    /**
-     * Factory class that returns a ResQRobot object setup for Teleop. Call this instead of using
-     * constructor.
-     * @param hardwareMap
-     * @return ResQRobot object
-     */
-    public static ResQRobot ResQRobotTeleop(HardwareMap hardwareMap) {
-        ResQRobot resQRobot = new ResQRobot();
-        driveTrain = DriveTrain.DriveTrainTeleop(hardwareMap);
 
-        deliveryBox = new DeliveryBox(hardwareMap);
-
-        return resQRobot;
-    }
-
-    /**
-     * Factory class that returns a ResQRobot object setup for Autonomous. Call this instead of using
-     * constructor.
-     * @param hardwareMap
-     * @return ResQRobot object
-     */
-    public static ResQRobot ResQRobotAutonomous(HardwareMap hardwareMap) {
-        ResQRobot resQRobot = new ResQRobot();
-        driveTrain = DriveTrain.DriveTrainAutonomous(hardwareMap);
-
-        deliveryBox = new DeliveryBox(hardwareMap);
-
-        return resQRobot;
-    }
     //*********************************************************************************************
     //          Helper Methods
     //
@@ -93,12 +71,18 @@ public class ResQRobot {
     // public methods that give the class its functionality
     //*********************************************************************************************
 
-    /**
-     * Update the robot every time through the loop() in the opmode
-     */
-    public void updateRobot(){
-        deliveryBox.updatePosition(deliveryBoxThrottle);
+    public SwitchState updateSwitchState(boolean button, SwitchCommand switchCommand) {
 
-        //will need to add updates for the drivetrain and other systems
+        switch(switchState) {
+            case RELEASED:
+                break;
+            case PRESSED:
+                break;
+            case BUMPED:
+                break;
+            case RESET:
+                break;
+        }
+        return SwitchState.RELEASED;
     }
 }
