@@ -31,6 +31,21 @@ public class DeliveryBox {
     private double dumpUpPosition = .25;
     private double dumpDownPosition = 0.0;
 
+    /**
+     * Amount of time to wait between "wiggle" movements when dump ramp is wiggling
+     */
+    private double dumpWiggleDelay = .5;
+
+    /**
+     * Amount of time to wiggle the dump ramp trying to get debris out of the box
+     */
+    private double dumpWiggleTime = 5;
+
+    /**
+     * Amount of movement for each wiggle of the dump ramp
+     */
+    private double dumpWiggleDelta = -.25;
+
     private double slideServoZeroThrottle = .52;
     private double slideServoZeroZone = .1;
 
@@ -53,8 +68,13 @@ public class DeliveryBox {
         slideServo = new CRServo(RobotConfigMapping.getLinearSlideServoName(),hardwareMap, slideServoZeroThrottle, slideServoZeroZone);
         dumpServo = new Servo8863(RobotConfigMapping.getDumpServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.REVERSE);
 
-        // set slide servo so box is not moving
-        slideServo.updatePosition(slideServoZeroThrottle);
+        //setup the dump ramp wiggle for later use
+        dumpServo.setupWiggle(dumpUpPosition, dumpWiggleDelay, dumpWiggleDelta, dumpWiggleTime);
+
+        //for reference using a touch sensor
+        // private TouchSensor v_sensor_touch;
+        //v_sensor_touch = hardwareMap.touchSensor.get ("sensor_touch");
+        //v_sensor_touch.isPressed ();
     }
 
 
@@ -71,8 +91,17 @@ public class DeliveryBox {
     // public methods that give the class its functionality
     //*********************************************************************************************
 
-    public void updatePosition(double throttle){
+    public void initDeliveryBox() {
+        // set slide servo so box is not moving
+        slideServo.updatePosition(slideServoZeroThrottle);
+    }
+
+    public void updateDeliveryBox(double throttle){
+        // update the linear slider throttle
         slideServo.updatePosition(throttle);
+
+        //update the wiggle for the dump ramp (if any)
+        dumpServo.updateWiggle();
     }
 
     public void raiseDumpRamp(){
@@ -81,6 +110,14 @@ public class DeliveryBox {
 
     public void lowerDumpRamp() {
         dumpServo.goHome();
+    }
+
+    public void startWiggleDumpRamp() {
+        dumpServo.startWiggle();
+    }
+
+    public void stopWiggleDumpRamp() {
+        dumpServo.stopWiggle();
     }
 
 

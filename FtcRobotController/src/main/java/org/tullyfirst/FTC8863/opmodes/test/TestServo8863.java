@@ -114,7 +114,7 @@ public class TestServo8863 extends OpMode {
 
         if (gamepad2.left_bumper) {
             double wiggleDelay = .5;
-            double wiggleDelta = -.2;
+            double wiggleDelta = -.5;
             double wiggleTime = 5.0;
 
             leftRepelServo.startWiggle(upPosition, wiggleDelay, wiggleDelta, wiggleTime);
@@ -123,6 +123,8 @@ public class TestServo8863 extends OpMode {
         if (gamepad2.right_bumper) {
             leftRepelServo.stopWiggle();
         }
+
+        telemetry.addData("Position",  "Position: " + String.format("%.2f", leftRepelServo.getPosition()));
 	}
 
 	/*

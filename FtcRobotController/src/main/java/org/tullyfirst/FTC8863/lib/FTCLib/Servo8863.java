@@ -120,6 +120,12 @@ public class Servo8863 {
      */
     private ServoWiggleState servoWiggleState;
 
+    /**
+     * Enter debug mode
+     */
+    private boolean debug = false;
+
+
     //*********************************************************************************************
     //          GETTER and SETTER Methods
     //*********************************************************************************************
@@ -189,6 +195,14 @@ public class Servo8863 {
         return servoWiggleState;
     }
 
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
     //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
@@ -215,6 +229,8 @@ public class Servo8863 {
         setPositionThree(0);
         setDirection(Servo.Direction.FORWARD);
         this.servoWiggleState = ServoWiggleState.NOWIGGLE;
+        elapsedTimeTotalWiggle = new ElapsedTime();
+        elapsedTimeEachWiggle = new ElapsedTime();
     }
 
     //*********************************************************************************************
@@ -246,25 +262,54 @@ public class Servo8863 {
     }
 
     /**
+     * Setup a servo wiggle. The servo can wiggle
+     * between the wiggle start position and wiggleStartPosition + wiggleDelta. Each wiggle movement
+     * will begin after the timer has expired and after the servo has reached the position
+     * commanded +/- the wiggle position tolerance.
+     * Note that you have to call startWiggle in order to start the wiggle.
+     * Note that the looping routine will have to call updateWiggle after setting this up in order
+     * to make the wiggle work.
+     * @param wiggleStartPosition The position to start the wiggle from.
+     * @param wiggleDelay The time to pass between each wiggle movement. If 0 then the only thing
+     *                    that will be checked is if the servo has reached the wiggle position.
+     * @param wiggleDelta How much to move the servo from the starting position. Can be + or -.
+     */
+    public void setupWiggle(double wiggleStartPosition, double wiggleDelay, double wiggleDelta, double wiggleTime) {
+        this.wiggleStartPosition = wiggleStartPosition;
+        this.wiggleDelay = wiggleDelay;
+        this.wiggleDelta = wiggleDelta;
+        this.wiggleTime = wiggleTime;
+        // the servo will be said to have reached its position if it is within the range of
+        // desired position - wigglePositionTolerance to desired position + wigglePositionTolerance
+        this.wigglePositionTolerance = .05;
+        // for now there is no wiggle started. We only setup one for the future
+        servoWiggleState = ServoWiggleState.NOWIGGLE;
+    }
+
+    /**
      * Setup a servo wiggle. Then start the wiggle. The servo will wiggle
      * between the wiggle position and wigglePosition + wiggleDelta. Each wiggle movement will begin
      * after the timer has expired and after the servo has reached the position commanded +/-
      * the wiggle position tolerance.
      * Note that the looping routine will have to call updateWiggle after setting this up in order
      * to make the wiggle work.
-     * @param position The position to start the wiggle from.
+     * @param wiggleStartPosition The position to start the wiggle from.
      * @param wiggleDelay The time to pass between each wiggle movement. If 0 then the only thing
      *                    that will be checked is if the servo has reached the wiggle position.
      * @param wiggleDelta How much to move the servo from the starting position. Can be + or -.
      */
-    public void startWiggle(double position, double wiggleDelay, double wiggleDelta, double wiggleTime) {
-        wiggleStartPosition = position;
-        this.wiggleDelay = wiggleDelay;
-        this.wiggleDelta = wiggleDelta;
-        this.wiggleTime = wiggleTime;
-        this.wigglePositionTolerance = .05;
+    public void startWiggle(double wiggleStartPosition, double wiggleDelay, double wiggleDelta, double wiggleTime) {
+        setupWiggle(wiggleStartPosition, wiggleDelay, wiggleDelta, wiggleTime);
+        startWiggle();
+    }
+
+    /**
+     * Then start the servo wiggle. It is assumed that you already setup the wiggle.
+     * Should add error checking to make sure of this but won't now due to time.
+     */
+    public void startWiggle(){
         servoWiggleState = ServoWiggleState.STARTPOSITION;
-        teamServo.setPosition(position);
+        teamServo.setPosition(wiggleStartPosition);
         elapsedTimeTotalWiggle.reset();
         elapsedTimeEachWiggle.reset();
     }
@@ -275,6 +320,10 @@ public class Servo8863 {
      */
     public void updateWiggle() {
 
+        // if there is no wiggle started or ongoing, just return because there is nothing to do
+        if(getServoWiggleState() == ServoWiggleState.NOWIGGLE){
+            return;
+        }
         // check to see if the total time the servo is supposed to wiggle has been exceeded.
         // if it has, the wiggle is done
         if(elapsedTimeTotalWiggle.time() > wiggleTime) {
@@ -333,5 +382,9 @@ public class Servo8863 {
     public void stopWiggle() {
         servoWiggleState = ServoWiggleState.WIGGLECOMPLETE;
         teamServo.setPosition(wiggleStartPosition);
+    }
+
+    public double getPosition(){
+        return teamServo.getPosition();
     }
 }

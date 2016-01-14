@@ -11,6 +11,7 @@ import org.tullyfirst.FTC8863.opmodes.test.TestLinearSlide;
 import org.tullyfirst.FTC8863.opmodes.test.TestServo8863;
 import org.tullyfirst.FTC8863.opmodes.test.TestTrapDoor;
 import org.tullyfirst.FTC8863.opmodes.test.ToggleButtonTest;
+import org.tullyfirst.FTC8863.opmodes.test.TestCRServo;
 
 /**
  * Register Op Modes
@@ -24,6 +25,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("TestLinearSlide", TestLinearSlide.class);
     manager.register("TestTrapDoor", TestTrapDoor.class);
     manager.register("TestServo8863", TestServo8863.class);
+    manager.register("TestCRServo", TestCRServo.class);
 
     /** ed young's */
     manager.register("TeleOP", TeleOP.class);
