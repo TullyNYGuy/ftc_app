@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
+
 public class TeleOP extends OpMode {
 
     public DcMotor rightDriveMotor;
@@ -43,22 +45,21 @@ public class TeleOP extends OpMode {
     @Override
     public void init(){
         //motor init
-        rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
-        leftDriveMotor = hardwareMap.dcMotor.get("leftDriveMotor");
+        rightDriveMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getRightDriveMotorName());
+        leftDriveMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getLeftDriveMotorName());
         rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
-        tapeMotor = hardwareMap.dcMotor.get("tapeMotor");
-        sweeperMotor = hardwareMap.dcMotor.get("sweeperMotor");
+        tapeMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getTapeMeasureMotorName());
+        sweeperMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getSweeperMotorName());
 
         //servo init
-        rightZipServoArm = hardwareMap.servo.get("rightZipServoArm");
-        leftZipServoArm = hardwareMap.servo.get("leftZipServoArm");
+        rightZipServoArm = hardwareMap.servo.get(RobotConfigMapping.getRightZipLineServoName());
+        leftZipServoArm = hardwareMap.servo.get(RobotConfigMapping.getLeftZipLineServoName());
         leftZipServoArm.setDirection(Servo.Direction.REVERSE);
-        bucketSlide360Servo = hardwareMap.servo.get("bucketSlide360Servo");
-        rampServo = hardwareMap.servo.get("rampServo");
-        trapdoorServo = hardwareMap.servo.get("trapdoorServo");
-        aimingServo = hardwareMap.servo.get("aimingServo");
-        climberServo = hardwareMap.servo.get("climberServo");
-        barGrabberServo = hardwareMap.servo.get("barGrabberServo");
+        bucketSlide360Servo = hardwareMap.servo.get(RobotConfigMapping.getLinearSlideServoName());
+        rampServo = hardwareMap.servo.get(RobotConfigMapping.getRampServoName());
+        aimingServo = hardwareMap.servo.get(RobotConfigMapping.getTapeMeasureAimingServoName());
+        climberServo = hardwareMap.servo.get(RobotConfigMapping.getClimberDumpServoName());
+        barGrabberServo = hardwareMap.servo.get(RobotConfigMapping.getBarGrabberServoName());
     }//init
 
     @Override
