@@ -25,8 +25,13 @@ public class ClimberDumpServo {
 
     private Servo8863 climberDumpServo;
 
+   // where the climber arm normally rests
     private double dumpHomePosition = 0.0;
+
+    // the position to dump the climber is this
     private double dumpUpPosition = .25;
+
+    // an extra unused position so just make it the same as the home position
     private double dumpDownPosition = 0.0;
 
     //*********************************************************************************************
@@ -47,7 +52,7 @@ public class ClimberDumpServo {
     //*********************************************************************************************
 
     public ClimberDumpServo(HardwareMap hardwareMap) {
-        //climberDumpServo = new Servo8863(RobotConfigMapping.getClim, hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.REVERSE);
+        climberDumpServo = new Servo8863(RobotConfigMapping.getClimberDumpServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.FORWARD);
     }
 
 
@@ -63,4 +68,12 @@ public class ClimberDumpServo {
     //
     // public methods that give the class its functionality
     //*********************************************************************************************
+
+    public void goDumpClimber() {
+        climberDumpServo.goUp();
+    }
+
+    public void goHome() {
+        climberDumpServo.goHome();
+    }
 }

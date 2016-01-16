@@ -24,6 +24,8 @@ public class ResQRobot {
 
     public static DeliveryBox deliveryBox;
 
+    public static ClimberDumpServo climberDumpServo;
+
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
     //
@@ -62,6 +64,8 @@ public class ResQRobot {
         driveTrain = DriveTrain.DriveTrainTeleop(hardwareMap);
 
         deliveryBox = new DeliveryBox(hardwareMap);
+
+        climberDumpServo = new ClimberDumpServo(hardwareMap);
 
         return resQRobot;
     }

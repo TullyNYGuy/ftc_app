@@ -82,6 +82,12 @@ public class ExampleTeleopWithRobotObject extends OpMode {
 	@Override
 	public void loop() {
         robot.updateRobot();
+
+		if (gamepad2.dpad_right) {
+			robot.climberDumpServo.goDumpClimber();
+		} else {
+			robot.climberDumpServo.goHome();
+		}
 	}
 
 	/*

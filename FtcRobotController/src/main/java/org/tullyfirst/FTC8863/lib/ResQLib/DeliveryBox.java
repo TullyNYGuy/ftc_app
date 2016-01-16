@@ -25,7 +25,7 @@ public class DeliveryBox {
     //*********************************************************************************************
 
     CRServo slideServo;
-    Servo8863 dumpServo;
+    Servo8863 rampServo;
 
     private double dumpHomePosition = 0.0;
     private double dumpUpPosition = .25;
@@ -66,10 +66,10 @@ public class DeliveryBox {
 
     public DeliveryBox(HardwareMap hardwareMap) {
         slideServo = new CRServo(RobotConfigMapping.getLinearSlideServoName(),hardwareMap, slideServoZeroThrottle, slideServoZeroZone);
-        dumpServo = new Servo8863(RobotConfigMapping.getRampServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.REVERSE);
+        rampServo = new Servo8863(RobotConfigMapping.getRampServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.REVERSE);
 
         //setup the dump ramp wiggle for later use
-        dumpServo.setupWiggle(dumpUpPosition, dumpWiggleDelay, dumpWiggleDelta, dumpWiggleTime);
+        rampServo.setupWiggle(dumpUpPosition, dumpWiggleDelay, dumpWiggleDelta, dumpWiggleTime);
 
         //for reference using a touch sensor will need statements like these
         // private TouchSensor v_sensor_touch;
@@ -110,23 +110,23 @@ public class DeliveryBox {
         slideServo.updatePosition(throttle);
 
         //update the wiggle for the dump ramp (if any)
-        dumpServo.updateWiggle();
+        rampServo.updateWiggle();
     }
 
     public void raiseDumpRamp(){
-        dumpServo.goUp();
+        rampServo.goUp();
     }
 
     public void lowerDumpRamp() {
-        dumpServo.goHome();
+        rampServo.goHome();
     }
 
     public void startWiggleDumpRamp() {
-        dumpServo.startWiggle();
+        rampServo.startWiggle();
     }
 
     public void stopWiggleDumpRamp() {
-        dumpServo.stopWiggle();
+        rampServo.stopWiggle();
     }
 
 

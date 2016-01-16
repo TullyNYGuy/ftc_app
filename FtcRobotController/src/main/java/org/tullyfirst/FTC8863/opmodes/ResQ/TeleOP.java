@@ -222,11 +222,12 @@ public class TeleOP extends OpMode {
     void Drive(){
         //tank drive
         if(driveType == DriveType.TANK) {
+            //robot.driveTrain.tankDrive(-gamepad1.left_stick_y, -gamepad1.right_stick_y)
             leftMotors = ((scale_motor_power(-gamepad1.left_stick_y))*driveSpeed)*direction;
             rightMotors = ((scale_motor_power(-gamepad1.right_stick_y))*driveSpeed)*direction;
         }
 
-        //forward/backward
+        //forward/backward (differential)
         if(driveType == DriveType.JOYSTICK){
             leftMotors = ((scale_motor_power(-gamepad1.left_stick_y))*driveSpeed)*direction;
             rightMotors = ((scale_motor_power(-gamepad1.right_stick_y))*driveSpeed)*direction;
