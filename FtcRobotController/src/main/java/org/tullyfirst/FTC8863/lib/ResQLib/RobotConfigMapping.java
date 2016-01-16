@@ -17,16 +17,34 @@ public class RobotConfigMapping {
     // getter and setter methods
     //*********************************************************************************************
 
+    //Drive Train
     private static String leftDriveMotorName = "leftDriveMotor";
     private static String rightDriveMotorName = "rightDriveMotor";
 
+    //Sweeper
     private static String sweeperMotorName = "sweeperMotor";
 
+    //Zip Line
     private static String leftZipLineServoName = "leftZipLineServo";
     private static String rightZipLineServoName = "rightZipLineServo";
 
+    //Box Slider
     private static String linearSlideServoName = "slideServo";
-    private static String dumpServoName = "dumpServo";
+    private static String rampServoName = "rampServo";
+    private static String leftBoxLimitSwitchName = "leftBoxLimitSwitch";
+    private static String rightBoxLimitSwitchName = "rightBoxLimitSwitch";
+
+    //Tape Measure
+    private static String tapeMeasureMotorName = "tapeMeasureMotor";
+    private static String tapeMeasureLimitSwitchName = "tapeMeasureLimitSwitch";
+    private static String tapeMeasureAimingServoName = "tapeMeasureAimingServo";
+
+    //Climber Dump
+    private static String climberDumpServoName = "climberDumpServo";
+
+    //Bar Grabber
+    private static String barGrabberServoName = "barGrabberServo";
+
 
 
     //*********************************************************************************************
@@ -36,9 +54,7 @@ public class RobotConfigMapping {
     // getMotorPosition
     //*********************************************************************************************
 
-    public static String getLeftDriveMotorName() {
-        return leftDriveMotorName;
-    }
+    public static String getLeftDriveMotorName() {return leftDriveMotorName;}
 
     public static String getRightDriveMotorName() {
         return rightDriveMotorName;
@@ -60,9 +76,21 @@ public class RobotConfigMapping {
         return linearSlideServoName;
     }
 
-    public static String getDumpServoName() {
-        return dumpServoName;
-    }
+    public static String getRampServoName() {return rampServoName;}
+
+    public static String getLeftBoxLimitSwitchName() {return leftBoxLimitSwitchName; }
+
+    public static String getRightBoxLimitSwitchName() {return rightBoxLimitSwitchName;}
+
+    public static String getTapeMeasureMotorName() {return tapeMeasureMotorName;}
+
+    public static String getTapeMeasureLimitSwitchName() {return tapeMeasureLimitSwitchName;}
+
+    public static String getTapeMeasureAimingServoName() {return tapeMeasureAimingServoName;}
+
+    public static String getClimberDumpServoName() {return climberDumpServoName;}
+
+    public static String getBarGrabberServoName() {return barGrabberServoName;}
 
     //*********************************************************************************************
     //          Constructors
