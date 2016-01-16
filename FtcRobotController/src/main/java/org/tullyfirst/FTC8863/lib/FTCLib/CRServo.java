@@ -1,8 +1,8 @@
 package org.tullyfirst.FTC8863.lib.FTCLib;
 
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 public class CRServo {
@@ -93,4 +93,9 @@ public class CRServo {
     public double getPosition() {
         return crServo.getPosition();
     }
+
+    public void setDirection(Servo.Direction direction){
+        crServo.setDirection(direction);
+    }
+
 }

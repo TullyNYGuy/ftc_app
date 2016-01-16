@@ -40,7 +40,7 @@ import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
 
 public class TestCRServo extends OpMode {
 
-    double noMovePosition = .52;
+    double noMovePosition = .5;
     double deadZone = .1;
     CRServo slideServo;
 
@@ -60,6 +60,7 @@ public class TestCRServo extends OpMode {
 	public void init() {
 
         slideServo = new CRServo(RobotConfigMapping.getLinearSlideServoName(),hardwareMap, noMovePosition, deadZone);
+        slideServo.setDirection(Servo.Direction.REVERSE);
     }
 
     @Override

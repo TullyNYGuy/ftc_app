@@ -71,7 +71,7 @@ public class DeliveryBox {
         //setup the dump ramp wiggle for later use
         dumpServo.setupWiggle(dumpUpPosition, dumpWiggleDelay, dumpWiggleDelta, dumpWiggleTime);
 
-        //for reference using a touch sensor
+        //for reference using a touch sensor will need statements like these
         // private TouchSensor v_sensor_touch;
         //v_sensor_touch = hardwareMap.touchSensor.get ("sensor_touch");
         //v_sensor_touch.isPressed ();
@@ -98,6 +98,15 @@ public class DeliveryBox {
 
     public void updateDeliveryBox(double throttle){
         // update the linear slider throttle
+        // if the limit switch has been pressed, the box is at the end of its movement
+        // force the box to stop moving despite what the operator says. Here are the details:
+        // the left limit switch should only stop movement to the left, it should allow no movement
+        //    or movement to the right
+        // the right limit swtich should only stop movement to the right, it should allow no movement
+        //    or movement to the left
+
+        // for now, there are no limit switches installed so just go ahead and move the box.
+        // I hope the operator is good!
         slideServo.updatePosition(throttle);
 
         //update the wiggle for the dump ramp (if any)
