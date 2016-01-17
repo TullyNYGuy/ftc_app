@@ -236,7 +236,7 @@ public class Servo8863 {
 
     private void initServo(String servoName, HardwareMap hardwareMap) {
         teamServo = hardwareMap.servo.get(servoName);
-        setHomePosition(0);
+        setHomePosition(1);
         setDownPosition(0);
         setUpPosition(0);
         setPositionOne(0);

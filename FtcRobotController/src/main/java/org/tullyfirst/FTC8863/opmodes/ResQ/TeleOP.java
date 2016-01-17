@@ -17,7 +17,8 @@ public class TeleOP extends OpMode {
 
     Servo bucketSlide360Servo;
     Servo rampServo;
-    Servo barGrabberServo;
+    Servo barGrabber;
+
 
     double driveSpeed = 1;
     double direction = 1;
@@ -33,8 +34,12 @@ public class TeleOP extends OpMode {
 
         //servo init
         bucketSlide360Servo = hardwareMap.servo.get(RobotConfigMapping.getLinearSlideServoName());
+        bucketSlide360Servo.setPosition(.52);
         rampServo = hardwareMap.servo.get(RobotConfigMapping.getRampServoName());
-        barGrabberServo = hardwareMap.servo.get(RobotConfigMapping.getBarGrabberServoName());
+        rampServo.setPosition(0);
+        barGrabber = hardwareMap.servo.get("barGrabberServo");
+        barGrabber.setPosition(.7);
+
     }//init
 
     @Override
@@ -51,12 +56,15 @@ public class TeleOP extends OpMode {
         sweeperDirectionToggle(gamepad2.a);
         sweeperRun();
 
-        //bucketSliderServoRun(gamepad2.left_stick_x);
+        bucketSliderServoRun(gamepad2.left_stick_x);
+        rampRun(gamepad2.b);
 
         servoSideToggle(gamepad2.right_bumper);
         zipServoTogglePosition(gamepad2.y);
 
         //climberServoRun(gamepad2.dpad_right);
+
+        barGrab(gamepad1.b);
 
         tapeMotorAim(gamepad2.dpad_up, gamepad2.dpad_down);
 
@@ -77,7 +85,7 @@ public class TeleOP extends OpMode {
         telemetry.addData("01", "speed: " + speedMessage);
         telemetry.addData("02", "drive type: " + driveTypeMessage);
         telemetry.addData("03", "direction: " + directionMessage);
-        telemetry.addData("04", "servo: " + servoSideMessage);
+        telemetry.addData("04", "servo: " + servoSide);
     }
 
     void Drive(){
@@ -90,7 +98,7 @@ public class TeleOP extends OpMode {
         //forward/backward (differential)
         if(driveType == DriveType.JOYSTICK){
             robot.driveTrain.differentialDrive(-gamepad1.right_stick_y, -gamepad1.right_stick_x);
-            tapeMotor.setPower(-gamepad1.left_stick_y);
+            tapeMotor.setPower(-gamepad2.left_stick_y);
         }
     }
 
@@ -100,14 +108,14 @@ public class TeleOP extends OpMode {
     void tapeMotorAim(boolean Up, boolean Down){
         if(Up && !tapeMotorAimPressedUp){
             tapeMotorAimPressedUp = true;
-            robot.tapeMeasureWinch.incrementServoPosition(.1);
+            robot.tapeMeasureWinch.incrementServoPosition(.05);
         }
         if(!Up && tapeMotorAimPressedUp){
             tapeMotorAimPressedUp = false;
         }
         if(Down && !tapeMotorAimPressedDown){
             tapeMotorAimPressedDown = true;
-            robot.tapeMeasureWinch.incrementServoPosition(-.1);
+            robot.tapeMeasureWinch.incrementServoPosition(-.05);
         }
         if (!Down && tapeMotorAimPressedDown){
             tapeMotorAimPressedDown = false;
@@ -142,7 +150,7 @@ public class TeleOP extends OpMode {
         FORWARD, REVERSE
     }
     DriveDirection driveDirection = DriveDirection.FORWARD;
-    String directionMessage;
+    String directionMessage = "forward";
     boolean directionPressed = false;
 
     void driveDirectionToggle(boolean Button){
@@ -321,23 +329,32 @@ public class TeleOP extends OpMode {
     }
 
     void bucketSliderServoRun(double Joystick){
-        if(Joystick < -.2){
-            bucketSlide360Servo.setPosition(0);
+        robot.deliveryBox.updateDeliveryBox(Joystick);
+    }
+
+    boolean barPressed = false;
+
+    void barGrab(boolean Button){
+        if(Button && !barPressed){
+            if(barGrabber.getPosition() == 0){
+                barGrabber.setPosition(.7);
+            }
+            else if(barGrabber.getPosition() == .7){
+                barGrabber.setPosition(0);
+            }
+            barPressed = true;
         }
-        if(Joystick > .2){
-            bucketSlide360Servo.setPosition(1);
-        }
-        if(Joystick > -.2 || Joystick < .2){
-            bucketSlide360Servo.setPosition(.52);
+        if(!Button && barPressed){
+            barPressed = false;
         }
     }
 
-    /*void rampRun(boolean Button){
+    void rampRun(boolean Button){
         if(Button){
-            rampServo.startWiggle(.8, .5, -.5, 5.0);
+            robot.deliveryBox.raiseDumpRamp();
         }
         if(!Button){
-            rampServo.stopWiggle();
+            robot.deliveryBox.lowerDumpRamp();
         }
-    }*/
+    }
 }

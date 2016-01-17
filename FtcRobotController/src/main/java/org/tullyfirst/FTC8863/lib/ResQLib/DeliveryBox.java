@@ -27,8 +27,8 @@ public class DeliveryBox {
     CRServo slideServo;
     Servo8863 rampServo;
 
-    private double dumpHomePosition = 0.0;
-    private double dumpUpPosition = .7;
+    private double dumpHomePosition = 1;
+    private double dumpUpPosition = 0;
     private double dumpDownPosition = 0.0;
     private double dumpInitPosition = dumpHomePosition;
 
