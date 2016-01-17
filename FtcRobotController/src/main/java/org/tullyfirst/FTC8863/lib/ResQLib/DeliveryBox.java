@@ -28,7 +28,7 @@ public class DeliveryBox {
     Servo8863 rampServo;
 
     private double dumpHomePosition = 0.0;
-    private double dumpUpPosition = .25;
+    private double dumpUpPosition = .7;
     private double dumpDownPosition = 0.0;
     private double dumpInitPosition = dumpHomePosition;
 
@@ -45,7 +45,7 @@ public class DeliveryBox {
     /**
      * Amount of movement for each wiggle of the dump ramp
      */
-    private double dumpWiggleDelta = -.25;
+    private double dumpWiggleDelta = -.2;
 
     private double slideServoZeroThrottle = .52;
     private double slideServoZeroZone = .1;
