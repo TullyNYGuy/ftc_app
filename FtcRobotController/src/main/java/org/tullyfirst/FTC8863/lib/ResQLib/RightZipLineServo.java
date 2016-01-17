@@ -37,6 +37,7 @@ public class RightZipLineServo {
     // lower zip line guy
     private double rightZipLineLowerPosition = .25;
 
+    private double rightZipLineInitPosition =  rightZipLineHomePosition;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -60,7 +61,9 @@ public class RightZipLineServo {
         rightZipLineServo.setUpPosition(rightZipLineUpperPosition);
         rightZipLineServo.setPositionOne(rightZipLineMiddlePosition);
         rightZipLineServo.setDownPosition(rightZipLineLowerPosition);
+        rightZipLineServo.setInitPosition(rightZipLineInitPosition);
         rightZipLineServo.setDirection(Servo.Direction.FORWARD);
+        rightZipLineServo.goInitPosition();
     }
 
 
@@ -91,5 +94,13 @@ public class RightZipLineServo {
 
     public void goLowerGuy() {
         rightZipLineServo.goDown();
+    }
+
+    public double getPosition() {
+        return rightZipLineServo.getPosition();
+    }
+
+    public void setPosition(double position) {
+        rightZipLineServo.setPosition(position);
     }
 }

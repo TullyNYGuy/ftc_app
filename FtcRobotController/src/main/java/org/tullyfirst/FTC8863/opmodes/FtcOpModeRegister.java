@@ -7,8 +7,11 @@ import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP;
 import org.tullyfirst.FTC8863.opmodes.test.IMU8863test;
 import org.tullyfirst.FTC8863.opmodes.test.IMUtest;
 import org.tullyfirst.FTC8863.opmodes.test.SweeperTest;
+import org.tullyfirst.FTC8863.opmodes.test.TestAimingServo;
 import org.tullyfirst.FTC8863.opmodes.test.TestBarGrabber;
+import org.tullyfirst.FTC8863.opmodes.test.TestLeftZipLineServo;
 import org.tullyfirst.FTC8863.opmodes.test.TestLinearSlide;
+import org.tullyfirst.FTC8863.opmodes.test.TestRightZipLineServo;
 import org.tullyfirst.FTC8863.opmodes.test.TestServo8863;
 import org.tullyfirst.FTC8863.opmodes.test.TestTrapDoor;
 import org.tullyfirst.FTC8863.opmodes.test.ToggleButtonTest;
@@ -27,6 +30,9 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("TestTrapDoor", TestTrapDoor.class);
     manager.register("TestServo8863", TestServo8863.class);
     manager.register("TestBarGrabber", TestBarGrabber.class);
+    manager.register("TestLeftZipLineServo", TestLeftZipLineServo.class);
+    manager.register("TestRightZipLineServo", TestRightZipLineServo.class);
+    manager.register("TestAimingServo", TestAimingServo.class);
 
     /** ed young's */
     manager.register("TeleOP", TeleOP.class);

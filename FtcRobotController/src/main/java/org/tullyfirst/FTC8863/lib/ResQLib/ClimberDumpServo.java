@@ -34,6 +34,8 @@ public class ClimberDumpServo {
     // an extra unused position so just make it the same as the home position
     private double dumpDownPosition = 0.0;
 
+    private double dumpInitPosition = dumpHomePosition;
+
     //*********************************************************************************************
     //          GETTER and SETTER Methods
     //
@@ -52,7 +54,7 @@ public class ClimberDumpServo {
     //*********************************************************************************************
 
     public ClimberDumpServo(HardwareMap hardwareMap) {
-        climberDumpServo = new Servo8863(RobotConfigMapping.getClimberDumpServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.FORWARD);
+        climberDumpServo = new Servo8863(RobotConfigMapping.getClimberDumpServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, dumpInitPosition, Servo.Direction.FORWARD);
     }
 
 
@@ -75,5 +77,9 @@ public class ClimberDumpServo {
 
     public void goHome() {
         climberDumpServo.goHome();
+    }
+
+    public void goInit() {
+        climberDumpServo.goInitPosition();
     }
 }

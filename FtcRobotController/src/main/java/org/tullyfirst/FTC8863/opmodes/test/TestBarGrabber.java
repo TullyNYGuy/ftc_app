@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 
@@ -80,7 +81,10 @@ public class TestBarGrabber extends OpMode {
 	@Override
 	public void loop() {
 
-		if (gamepad1.dpad_up) {
+        ElapsedTime timer = new ElapsedTime();
+        double timeLimit = 3;
+
+/*		if (gamepad1.dpad_up) {
 			robot.barGrabberServo.goHome();
 		}
 
@@ -94,7 +98,15 @@ public class TestBarGrabber extends OpMode {
 
         if (gamepad1.dpad_down) {
             // go at servo direct
+        }*/
+        for(int i=0; i<11; i++){
+            if( timer.time() > timeLimit) {
+                timer.reset();
+                robot.barGrabberServo.setPosition(i/10);
+            }
         }
+
+        telemetry.addData("servo",  "positiom " + String.format("%.2f", robot.barGrabberServo.getPosition()));
 	}
 
 	/*

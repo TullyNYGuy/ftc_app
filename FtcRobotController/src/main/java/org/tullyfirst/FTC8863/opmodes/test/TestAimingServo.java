@@ -32,10 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
-import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
+import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 
 /**
  * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control
@@ -51,21 +50,16 @@ import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
  *  gamepad2 x button = .5 (halfway)
  * <p>
  */
-public class TestServo8863 extends OpMode {
-    boolean leftRepelServoActive = true;
-    double upPosition = .8;
-    double downPosition = .2;
-    double homePosition = .8;
-    double lowerRepelPosition = .4;
-    double middleRepelPosition = .5;
-    double upperRepelPosition = .6;
-    double initPosition = homePosition;
-    Servo8863 leftRepelServo;
+public class TestAimingServo extends OpMode {
+
+    public ResQRobot robot;
+
+    //public Servo barGrabberServo;
 
 	/**
 	 * Constructor
 	 */
-	public TestServo8863() {
+	public TestAimingServo() {
 
 	}
 
@@ -76,56 +70,43 @@ public class TestServo8863 extends OpMode {
 	 */
 	@Override
 	public void init() {
-        leftRepelServo = new Servo8863(RobotConfigMapping.getLeftZipLineServoName(), hardwareMap, homePosition, upPosition, downPosition, initPosition, Servo.Direction.REVERSE);
-
-        leftRepelServo.setPositionOne(lowerRepelPosition);
-        leftRepelServo.setPositionTwo(middleRepelPosition);
-        leftRepelServo.setPositionThree(upperRepelPosition);
-	}
+        robot = ResQRobot.ResQRobotTeleop(hardwareMap);
+    }
 
     @Override
-    public void start(){
-        leftRepelServo.goHome();
+    public void start() {
+
     }
 
 	@Override
 	public void loop() {
 
-        leftRepelServo.updateWiggle();
+        ElapsedTime timer = new ElapsedTime();
+        double timeLimit = 3;
 
-        if (gamepad2.a) {
-                leftRepelServo.goPositionOne();
-                telemetry.addData("leftRepel", "is lower");
+/*		if (gamepad1.dpad_up) {
+			robot.barGrabberServo.goHome();
+		}
+
+		if (gamepad1.dpad_down) {
+			robot.barGrabberServo.goGrabBar();
+		}
+
+        if (gamepad1.dpad_up) {
+            // go at servo direct
         }
 
-        if (gamepad2.b) {
-            leftRepelServo.goHome();
-            telemetry.addData("leftRepel", "home");
+        if (gamepad1.dpad_down) {
+            // go at servo direct
+        }*/
+        for(int i=0; i<11; i++){
+            if( timer.time() > timeLimit) {
+                timer.reset();
+                robot.tapeMeasureWinch.setPosition(i / 10);
+            }
         }
 
-        if (gamepad2.x) {
-                leftRepelServo.goPositionTwo();
-                telemetry.addData("leftRepel", "is position 2");
-        }
-
-        if (gamepad2.y) {
-                leftRepelServo.goPositionThree();
-                telemetry.addData("leftRepel", "is position 3");
-        }
-
-        if (gamepad2.left_bumper) {
-            double wiggleDelay = .5;
-            double wiggleDelta = -.5;
-            double wiggleTime = 5.0;
-
-            leftRepelServo.startWiggle(upPosition, wiggleDelay, wiggleDelta, wiggleTime);
-        }
-
-        if (gamepad2.right_bumper) {
-            leftRepelServo.stopWiggle();
-        }
-
-        telemetry.addData("Position",  "Position: " + String.format("%.2f", leftRepelServo.getPosition()));
+        telemetry.addData("servo",  "positiom " + String.format("%.2f", robot.tapeMeasureWinch.getPosition()));
 	}
 
 	/*
@@ -135,6 +116,6 @@ public class TestServo8863 extends OpMode {
 	 */
 	@Override
 	public void stop() {
-        leftRepelServo.goHome();
+
     }
 }

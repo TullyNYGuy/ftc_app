@@ -112,11 +112,11 @@ public class ResQTeleop extends OpMode {
 	@Override
 	public void init() {
 
-        leftRepelServo = new Servo8863("leftRepelServo", hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
-        rightRepelServo =new Servo8863("rightRepelServo",hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
+        //leftRepelServo = new Servo8863("leftRepelServo", hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.REVERSE);
+        //rightRepelServo =new Servo8863("rightRepelServo",hardwareMap, homePosition, upPosition, downPosition, Servo.Direction.FORWARD);
 
-        leftSupportArmServo =new Servo8863("leftSupportArmServo",hardwareMap, leftSupportArmPositionHome, leftSupportArmPositionUp, leftSupportArmpositionDown, Servo.Direction.FORWARD);
-        rightSupportArmServo =new Servo8863("rightSupportArmServo",hardwareMap, rightSupportArmPositionHome, rightSupportArmPositionUp, rightSupportArmpositionDown, Servo.Direction.REVERSE);
+        //leftSupportArmServo =new Servo8863("leftSupportArmServo",hardwareMap, leftSupportArmPositionHome, leftSupportArmPositionUp, leftSupportArmpositionDown, Servo.Direction.FORWARD);
+        //rightSupportArmServo =new Servo8863("rightSupportArmServo",hardwareMap, rightSupportArmPositionHome, rightSupportArmPositionUp, rightSupportArmpositionDown, Servo.Direction.REVERSE);
 
         driverDiffLeftJoyStickX = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.NO_INVERT_SIGN);
         driverDiffLeftJoyStickY = new JoyStick(JoyStick.JoyStickMode.SQUARE, JOYSTICK_DEADBAND_VALUE, JoyStick.InvertSign.INVERT_SIGN);

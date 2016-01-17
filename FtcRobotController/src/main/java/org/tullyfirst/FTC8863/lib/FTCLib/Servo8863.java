@@ -221,11 +221,12 @@ public class Servo8863 {
     //          Constructors
     //*********************************************************************************************
 
-    public Servo8863(String servoName, HardwareMap hardwareMap, double homePosition, double upPosition, double downPosition, Servo.Direction direction) {
+    public Servo8863(String servoName, HardwareMap hardwareMap, double homePosition, double upPosition, double downPosition, double initPosition, Servo.Direction direction) {
         this.initServo(servoName, hardwareMap);
         setHomePosition(homePosition);
         setUpPosition(upPosition);
         setDownPosition(downPosition);
+        setInitPosition(initPosition);
         this.setDirection(direction);
     }
 

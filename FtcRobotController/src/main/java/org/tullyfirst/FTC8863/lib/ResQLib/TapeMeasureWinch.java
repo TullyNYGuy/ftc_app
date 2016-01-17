@@ -55,7 +55,7 @@ public class TapeMeasureWinch {
         // setup the servo 
         tapeMeasureAimingServo = new Servo8863(RobotConfigMapping.getTapeMeasureAimingServoName(),hardwareMap);
         tapeMeasureAimingServo.setHomePosition(aimingHomePosition);
-        tapeMeasureAimingServo.setDirection(Servo.Direction.FORWARD);
+        tapeMeasureAimingServo.setDirection(Servo.Direction.REVERSE);
         this.currentPosition = 0;
         
         // setup the tape measure motor
@@ -94,6 +94,10 @@ public class TapeMeasureWinch {
 
     public void setPosition(double position) {
         tapeMeasureAimingServo.setPosition(position);
+    }
+
+    public double getPosition() {
+        return tapeMeasureAimingServo.getPosition();
     }
     
     public void incrementServoPosition (double increment) {

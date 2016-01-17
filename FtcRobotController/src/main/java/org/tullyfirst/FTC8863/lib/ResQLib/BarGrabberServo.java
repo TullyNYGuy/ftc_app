@@ -51,7 +51,8 @@ public class BarGrabberServo{
 
 
     public BarGrabberServo(HardwareMap hardwareMap) {
-        barGrabberServo = new Servo8863(RobotConfigMapping.getBarGrabberServoName(),hardwareMap, grabberHomePosition, grabberDownPosition, grabberUpPosition, Servo.Direction.FORWARD);
+        barGrabberServo = new Servo8863(RobotConfigMapping.getBarGrabberServoName(),hardwareMap, grabberHomePosition, grabberDownPosition, grabberUpPosition, initPosition, Servo.Direction.FORWARD);
+        barGrabberServo.goInitPosition();
     }
 
 
@@ -74,6 +75,14 @@ public class BarGrabberServo{
 
     public void goInit() {
         barGrabberServo.goInitPosition();
+    }
+
+    public double getPosition() {
+        return barGrabberServo.getPosition();
+    }
+
+    public void setPosition(double position) {
+        barGrabberServo.setPosition(position);
     }
 
 }

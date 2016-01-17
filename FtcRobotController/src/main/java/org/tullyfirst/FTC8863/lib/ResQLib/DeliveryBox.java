@@ -30,6 +30,7 @@ public class DeliveryBox {
     private double dumpHomePosition = 0.0;
     private double dumpUpPosition = .25;
     private double dumpDownPosition = 0.0;
+    private double dumpInitPosition = dumpHomePosition;
 
     /**
      * Amount of time to wait between "wiggle" movements when dump ramp is wiggling
@@ -66,7 +67,7 @@ public class DeliveryBox {
 
     public DeliveryBox(HardwareMap hardwareMap) {
         slideServo = new CRServo(RobotConfigMapping.getLinearSlideServoName(),hardwareMap, slideServoZeroThrottle, slideServoZeroZone);
-        rampServo = new Servo8863(RobotConfigMapping.getRampServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, Servo.Direction.REVERSE);
+        rampServo = new Servo8863(RobotConfigMapping.getRampServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, dumpInitPosition, Servo.Direction.REVERSE);
 
         //setup the dump ramp wiggle for later use
         rampServo.setupWiggle(dumpUpPosition, dumpWiggleDelay, dumpWiggleDelta, dumpWiggleTime);
@@ -127,6 +128,10 @@ public class DeliveryBox {
 
     public void stopWiggleDumpRamp() {
         rampServo.stopWiggle();
+    }
+
+    public void initDumpRamp() {
+        rampServo.goInitPosition();
     }
 
 
