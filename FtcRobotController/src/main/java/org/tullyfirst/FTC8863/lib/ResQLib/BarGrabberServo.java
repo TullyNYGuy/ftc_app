@@ -27,7 +27,7 @@ public class BarGrabberServo{
 
     private double grabberHomePosition = 0.0;
 
-    private double grabberDownPosition = .25;
+    private double grabberDownPosition = .7;
 
     private double grabberUpPosition = 0.0;
 

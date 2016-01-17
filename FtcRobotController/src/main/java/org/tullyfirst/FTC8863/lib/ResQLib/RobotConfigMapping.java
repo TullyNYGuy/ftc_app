@@ -22,11 +22,12 @@ public class RobotConfigMapping {
     // AL00XPUH - top of robot
 
     // servo controllers:
-    // AL00VV9L - bottom of robot
+    // AL00VV9L - bottom of robot\
+    // AL004A89 - top of robot
 
     //Drive Train
-    private static String leftDriveMotorName = "leftDriveMotor"; //AH00qK3C port 1
-    private static String rightDriveMotorName = "rightDriveMotor"; //AH00qK3C port 2
+    private static String leftDriveMotorName = "leftDriveMotor"; //AH00qK3C port 1 (bottom)
+    private static String rightDriveMotorName = "rightDriveMotor"; //AH00qK3C port 2 (bottom)
 
     //Sweeper
     private static String sweeperMotorName = "sweeperMotor"; //AL00XPUH port 2

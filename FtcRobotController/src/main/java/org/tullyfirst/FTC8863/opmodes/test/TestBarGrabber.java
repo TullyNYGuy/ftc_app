@@ -84,27 +84,27 @@ public class TestBarGrabber extends OpMode {
         ElapsedTime timer = new ElapsedTime();
         double timeLimit = 3;
 
-/*		if (gamepad1.dpad_up) {
+		if (gamepad1.b) {
 			robot.barGrabberServo.goHome();
 		}
 
-		if (gamepad1.dpad_down) {
+		if (gamepad1.a) {
 			robot.barGrabberServo.goGrabBar();
 		}
 
-        if (gamepad1.dpad_up) {
+        //if (gamepad1.dpad_up) {
             // go at servo direct
-        }
+        //}
 
         if (gamepad1.dpad_down) {
             // go at servo direct
-        }*/
-        for(int i=0; i<11; i++){
+        }
+/*        for(int i=0; i<11; i++){
             if( timer.time() > timeLimit) {
                 timer.reset();
                 robot.barGrabberServo.setPosition(i/10);
             }
-        }
+        }*/
 
         telemetry.addData("servo",  "positiom " + String.format("%.2f", robot.barGrabberServo.getPosition()));
 	}
