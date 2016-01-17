@@ -18,32 +18,32 @@ public class RobotConfigMapping {
     //*********************************************************************************************
 
     //Drive Train
-    private static String leftDriveMotorName = "leftDriveMotor";
-    private static String rightDriveMotorName = "rightDriveMotor";
+    private static String leftDriveMotorName = "leftDriveMotor"; //AH00qK3C port 1
+    private static String rightDriveMotorName = "rightDriveMotor"; //AH00qK3C port 2
 
     //Sweeper
-    private static String sweeperMotorName = "sweeperMotor";
+    private static String sweeperMotorName = "sweeperMotor"; //AL00XPUH port 2
 
     //Zip Line
-    private static String leftZipLineServoName = "leftZipLineServo";
-    private static String rightZipLineServoName = "rightZipLineServo";
+    private static String leftZipLineServoName = "leftZipLineServo"; //AL00VV9L port 3
+    private static String rightZipLineServoName = "rightZipLineServo"; //AL00VV9L port 4
 
     //Box Slider
-    private static String linearSlideServoName = "slideServo";
-    private static String rampServoName = "rampServo";
+    private static String linearSlideServoName = "slideServo"; //AL004A89 port 1
+    private static String rampServoName = "rampServo"; //AL00VV9L port 1
     private static String leftBoxLimitSwitchName = "leftBoxLimitSwitch";
     private static String rightBoxLimitSwitchName = "rightBoxLimitSwitch";
 
     //Tape Measure
-    private static String tapeMeasureMotorName = "tapeMeasureMotor";
+    private static String tapeMeasureMotorName = "tapeMeasureMotor"; //AL00XPUH port 1
     private static String tapeMeasureLimitSwitchName = "tapeMeasureLimitSwitch";
-    private static String tapeMeasureAimingServoName = "tapeMeasureAimingServo";
+    private static String tapeMeasureAimingServoName = "tapeMeasureAimingServo"; //AL00VV9L port 5
 
     //Climber Dump
     private static String climberDumpServoName = "climberDumpServo";
 
     //Bar Grabber
-    private static String barGrabberServoName = "barGrabberServo";
+    private static String barGrabberServoName = "barGrabberServo"; //AL00VV9L port 2
 
 
 

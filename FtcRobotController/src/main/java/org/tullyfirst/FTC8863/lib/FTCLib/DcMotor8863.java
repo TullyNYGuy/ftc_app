@@ -163,7 +163,7 @@ public class DcMotor8863 {
         return nextMotorState;
     }
 
-    protected void setNextMotorState(NextMotorState nextMotorState) {
+    public void setNextMotorState(NextMotorState nextMotorState) {
         this.nextMotorState = nextMotorState;
     }
 
@@ -427,7 +427,7 @@ public class DcMotor8863 {
      * @param power Power input for the motor.
      * @return true if successfully completed
      */
-     public boolean runsUsingEncoder(double power) {
+     public boolean runUsingEncoder(double power) {
          if(getMotorState() != MotorState.MOVING) {
             // reset the encoder
             this.resetEncoder();

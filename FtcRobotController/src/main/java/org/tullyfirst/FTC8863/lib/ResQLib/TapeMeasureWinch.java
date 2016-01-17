@@ -1,6 +1,7 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -50,10 +51,24 @@ public class TapeMeasureWinch {
 
 
     public TapeMeasureWinch(HardwareMap hardwareMap) {
+        
+        // setup the servo 
         tapeMeasureAimingServo = new Servo8863(RobotConfigMapping.getTapeMeasureAimingServoName(),hardwareMap);
         tapeMeasureAimingServo.setHomePosition(aimingHomePosition);
         tapeMeasureAimingServo.setDirection(Servo.Direction.FORWARD);
         this.currentPosition = 0;
+        
+        // setup the tape measure motor
+        tapeMeasureMotor = new DcMotor8863(RobotConfigMapping.getTapeMeasureMotorName(), hardwareMap);
+
+        tapeMeasureMotor.setDirection(DcMotor.Direction.REVERSE);
+        tapeMeasureMotor.setMaxMotorPower(1);
+        tapeMeasureMotor.setMinMotorPower(-1);
+        tapeMeasureMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
+        tapeMeasureMotor.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);
+        tapeMeasureMotor.setEncoderTolerance(3);
+        tapeMeasureMotor.setUnitsPerRev(3.07 * Math.PI);
+        tapeMeasureMotor.setNextMotorState(DcMotor8863.NextMotorState.HOLD);
     }
 
 
@@ -70,6 +85,8 @@ public class TapeMeasureWinch {
     // public methods that give the class its functionality
     //*********************************************************************************************
 
+    // servo functions
+
     public void goHome() {
         tapeMeasureAimingServo.goHome();
         this.currentPosition = aimingHomePosition;
@@ -82,5 +99,11 @@ public class TapeMeasureWinch {
     public void incrementServoPosition (double increment) {
         this.currentPosition = currentPosition + increment;
         tapeMeasureAimingServo.setPosition(this.currentPosition);
+    }
+
+    //motor functions
+
+    public void setPower(double power) {
+        tapeMeasureMotor.setPower(power);
     }
 }
