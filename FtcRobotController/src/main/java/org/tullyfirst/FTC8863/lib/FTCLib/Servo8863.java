@@ -4,6 +4,7 @@ package org.tullyfirst.FTC8863.lib.FTCLib;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 /**
  * Created by FTC8863 on 12/2/2015.
@@ -259,6 +260,11 @@ public class Servo8863 {
 
     public void goPositionThree() {
         teamServo.setPosition(getPositionThree());
+    }
+
+    public void setPosition(double position) {
+        position = Range.clip(position, 0.0, 1.0);
+        teamServo.setPosition(position);
     }
 
     /**

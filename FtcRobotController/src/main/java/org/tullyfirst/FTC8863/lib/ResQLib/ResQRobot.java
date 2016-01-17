@@ -28,6 +28,11 @@ public class ResQRobot {
 
     public static BarGrabberServo barGrabberServo;
 
+    public static LeftZipLineServo leftZipLineServo;
+    public static RightZipLineServo rightZipLineServo;
+
+    public static TapeMeasureWinch tapeMeasureWinch;
+
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
     //
@@ -70,6 +75,11 @@ public class ResQRobot {
         climberDumpServo = new ClimberDumpServo(hardwareMap);
 
         barGrabberServo = new BarGrabberServo(hardwareMap);
+
+        leftZipLineServo = new LeftZipLineServo(hardwareMap);
+        rightZipLineServo = new RightZipLineServo(hardwareMap);
+
+        tapeMeasureWinch = new TapeMeasureWinch(hardwareMap);
 
         return resQRobot;
     }
