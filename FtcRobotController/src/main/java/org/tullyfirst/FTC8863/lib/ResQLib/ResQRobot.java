@@ -26,6 +26,8 @@ public class ResQRobot {
 
     public static ClimberDumpServo climberDumpServo;
 
+    public static BarGrabberServo barGrabberServo;
+
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
     //
@@ -66,6 +68,8 @@ public class ResQRobot {
         deliveryBox = new DeliveryBox(hardwareMap);
 
         climberDumpServo = new ClimberDumpServo(hardwareMap);
+
+        barGrabberServo = new BarGrabberServo(hardwareMap);
 
         return resQRobot;
     }
