@@ -52,6 +52,9 @@ import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 public class TestBarGrabber extends OpMode {
 
     public ResQRobot robot;
+
+    //public Servo barGrabberServo;
+
 	/**
 	 * Constructor
 	 */
@@ -84,6 +87,14 @@ public class TestBarGrabber extends OpMode {
 		if (gamepad1.dpad_down) {
 			robot.barGrabberServo.goGrabBar();
 		}
+
+        if (gamepad1.dpad_up) {
+            // go at servo direct
+        }
+
+        if (gamepad1.dpad_down) {
+            // go at servo direct
+        }
 	}
 
 	/*
