@@ -91,7 +91,7 @@ public class TestBarGrabber extends OpMode {
 		if (gamepad1.a) {
 			robot.barGrabberServo.goGrabBar();
 		}
-
+        // a comment
         //if (gamepad1.dpad_up) {
             // go at servo direct
         //}
