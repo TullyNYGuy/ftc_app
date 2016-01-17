@@ -69,6 +69,11 @@ public class Servo8863 {
     private double positionThree;
 
     /**
+     * The position that the servo initially gets set to
+     */
+    private double initPosition;
+
+    /**
      * The servo that this class wraps around
      */
     private Servo teamServo;
@@ -188,6 +193,14 @@ public class Servo8863 {
         this.positionThree = positionThree;
     }
 
+    public double getInitPosition() {
+        return initPosition;
+    }
+
+    public void setInitPosition(double initPosition) {
+        this.initPosition = initPosition;
+    }
+
     /**
      * readonly
      * @return wiggle state of the servo
@@ -228,6 +241,7 @@ public class Servo8863 {
         setPositionOne(0);
         setPositionTwo(0);
         setPositionThree(0);
+        setInitPosition(0);
         setDirection(Servo.Direction.FORWARD);
         this.servoWiggleState = ServoWiggleState.NOWIGGLE;
         elapsedTimeTotalWiggle = new ElapsedTime();
@@ -260,6 +274,10 @@ public class Servo8863 {
 
     public void goPositionThree() {
         teamServo.setPosition(getPositionThree());
+    }
+
+    public void goInitPosition() {
+        teamServo.setPosition(getInitPosition());
     }
 
     public void setPosition(double position) {

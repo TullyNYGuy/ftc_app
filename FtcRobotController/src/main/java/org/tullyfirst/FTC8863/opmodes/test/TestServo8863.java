@@ -83,7 +83,7 @@ public class TestServo8863 extends OpMode {
 	}
 
     @Override
-    public void start() {
+    public void start(){
         leftRepelServo.goHome();
     }
 

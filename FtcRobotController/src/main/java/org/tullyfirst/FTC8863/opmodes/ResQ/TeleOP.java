@@ -3,62 +3,37 @@ package org.tullyfirst.FTC8863.opmodes.ResQ;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
+import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
 
 public class TeleOP extends OpMode {
 
-    public DcMotor rightDriveMotor;
-    public DcMotor leftDriveMotor;
-    public DcMotor tapeMotor;
-    public DcMotor sweeperMotor;
 
-    public Servo rightZipServoArm;
-    public Servo leftZipServoArm;
-    public Servo bucketSlide360Servo;
-    public Servo rampServo;
-    public Servo trapdoorServo;
-    public Servo aimingServo;
-    public Servo climberServo;
-    public Servo barGrabberServo;
+    ResQRobot robot;
 
+    DcMotor tapeMotor;
+    DcMotor sweeperMotor;
 
-    public static final float MIN_DCMOTOR_POSITION = -1;
-    public static final float MAX_DCMOTOR_POSITION = 1;
-    public static final double MIN_SERVO_POSITION = 0;
-    public static final double MAX_SERVO_POSITION = 1;
+    Servo bucketSlide360Servo;
+    Servo rampServo;
+    Servo barGrabberServo;
 
-    public float driveSpeed = 1;
-    public float direction = 1;
-    public double drive = 0;
-
-    float rightMotors;
-    float leftMotors;
-
-    boolean servoPressed = false;
-    boolean servo2StagePressed = false;
-    boolean servo3StagePressed = false;
+    double driveSpeed = 1;
+    double direction = 1;
 
 
     @Override
     public void init(){
-        //motor init
-        rightDriveMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getRightDriveMotorName());
-        leftDriveMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getLeftDriveMotorName());
-        rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        robot = ResQRobot.ResQRobotTeleop(hardwareMap);
+
         tapeMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getTapeMeasureMotorName());
         sweeperMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getSweeperMotorName());
 
         //servo init
-        rightZipServoArm = hardwareMap.servo.get(RobotConfigMapping.getRightZipLineServoName());
-        leftZipServoArm = hardwareMap.servo.get(RobotConfigMapping.getLeftZipLineServoName());
-        leftZipServoArm.setDirection(Servo.Direction.REVERSE);
         bucketSlide360Servo = hardwareMap.servo.get(RobotConfigMapping.getLinearSlideServoName());
         rampServo = hardwareMap.servo.get(RobotConfigMapping.getRampServoName());
-        aimingServo = hardwareMap.servo.get(RobotConfigMapping.getTapeMeasureAimingServoName());
-        climberServo = hardwareMap.servo.get(RobotConfigMapping.getClimberDumpServoName());
         barGrabberServo = hardwareMap.servo.get(RobotConfigMapping.getBarGrabberServoName());
     }//init
 
@@ -74,15 +49,20 @@ public class TeleOP extends OpMode {
         updateTelemetry();
 
         sweeperDirectionToggle(gamepad2.a);
+        sweeperRun();
+
+        //bucketSliderServoRun(gamepad2.left_stick_x);
 
         servoSideToggle(gamepad2.right_bumper);
+        zipServoTogglePosition(gamepad2.y);
+
+        //climberServoRun(gamepad2.dpad_right);
+
+        tapeMotorAim(gamepad2.dpad_up, gamepad2.dpad_down);
 
         speedToggle(gamepad1.a);
-
-        driveDicrectionToggle(gamepad1.right_bumper);
-
+        driveDirectionToggle(gamepad1.right_bumper);
         driveTypeToggle(gamepad1.left_bumper);
-
         Drive();
 
     }//loop
@@ -93,155 +73,52 @@ public class TeleOP extends OpMode {
 
     }//stop
 
-    public void updateTelemetry(){
+    void updateTelemetry(){
         telemetry.addData("01", "speed: " + speedMessage);
         telemetry.addData("02", "drive type: " + driveTypeMessage);
         telemetry.addData("03", "direction: " + directionMessage);
         telemetry.addData("04", "servo: " + servoSideMessage);
     }
 
-    public double s_position(double pos){
-        return Range.clip(pos, MIN_SERVO_POSITION, MAX_SERVO_POSITION);
-    }
-
-    public double servoButtonToggle(boolean Button, double servoPosition, double Stage1, double Home){
-        double servoReturn = Home;
-        if(Button && !servoPressed){
-            if(servoPosition == Home){
-                servoReturn = Stage1;
-            }
-            else if(servoPosition == Stage1){
-                servoReturn = Home;
-            }
-            servoPressed = true;
-        }
-        if(!Button && servoPressed){
-            servoPressed = false;
-        }
-        return servoReturn;
-    }
-
-    public double servoButtonToggle2Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Home){
-        double servo2StageReturn = Home;
-        if(Button && !servo2StagePressed){
-            if(servoPosition == Home){
-                servo2StageReturn = Stage1;
-            }
-            else if(servoPosition == Stage1){
-                servo2StageReturn = Stage2;
-            }
-            else if(servoPosition == Stage2){
-                servo2StageReturn = Home;
-            }
-            servo2StagePressed = true;
-        }
-        if(!Button && servo2StagePressed){
-            servo2StagePressed = false;
-        }
-        return servo2StageReturn;
-    }
-
-    public double servoButtonToggle3Stage(boolean Button, double servoPosition, double Stage1, double Stage2, double Stage3, double Home){
-        double servos3StageReturn = Home;
-        if(Button && !servo3StagePressed){
-            if(servoPosition == Home){
-                servos3StageReturn = Stage1;
-            }
-            else if(servoPosition == Stage1){
-                servos3StageReturn = Stage2;
-            }
-            else if(servoPosition == Stage2){
-                servos3StageReturn = Stage3;
-            }
-            else if(servoPosition == Stage3){
-                servos3StageReturn = Home;
-            }
-            servo3StagePressed = true;
-        }
-        if(!Button && servo3StagePressed){
-            servo3StagePressed = false;
-        }
-        return servos3StageReturn;
-    }
-
-    ElapsedTime Time;
-
-    public double servoWiggle(boolean Button, float timeDif,double Home, double pos1, double pos2){
-        double servoWiggleReturn = Home;
-        Time.reset();
-        if(Button){
-            Time.startTime();
-            servoWiggleReturn = pos1;
-            if(Time.time() > timeDif){
-                servoWiggleReturn = pos2;
-                Time.reset();
-            }
-        }
-        if(!Button){
-            servoWiggleReturn = Home;
-        }
-        return servoWiggleReturn;
-    }
-
-    //motor scale
-    float scale_motor_power (float p_power) {
-        float l_scale;
-        float l_power = Range.clip (p_power, MIN_DCMOTOR_POSITION, MAX_DCMOTOR_POSITION);
-        float[] l_array =
-                { 0.00f, 0.05f, 0.09f, 0.10f, 0.12f
-                        , 0.15f, 0.18f, 0.24f, 0.30f, 0.36f
-                        , 0.43f, 0.50f, 0.60f, 0.72f, 0.85f
-                        , 1.00f, 1.00f
-                };
-        int l_index = (int)(l_power * 16.0);
-        if (l_index < 0)
-        {
-            l_index = -l_index;
-        }
-        else if (l_index > 16)
-        {
-            l_index = 16;
-        }
-        if (l_power < 0)
-        {
-            l_scale = -l_array[l_index];
-        }
-        else
-        {
-            l_scale = l_array[l_index];
-        }
-
-        return l_scale;
-    }
-
-    void set_motor(double left_power, double right_power) {
-        leftDriveMotor.setPower(left_power);
-        rightDriveMotor.setPower(right_power);
-    }
-
     void Drive(){
         //tank drive
         if(driveType == DriveType.TANK) {
-            //robot.driveTrain.tankDrive(-gamepad1.left_stick_y, -gamepad1.right_stick_y)
-            leftMotors = ((scale_motor_power(-gamepad1.left_stick_y))*driveSpeed)*direction;
-            rightMotors = ((scale_motor_power(-gamepad1.right_stick_y))*driveSpeed)*direction;
+            robot.driveTrain.tankDrive(((-gamepad1.left_stick_y)*driveSpeed)*direction, ((-gamepad1.right_stick_y)*driveSpeed)*direction);
+            tapeMotor.setPower(-gamepad2.right_stick_y);
         }
 
         //forward/backward (differential)
         if(driveType == DriveType.JOYSTICK){
-            leftMotors = ((scale_motor_power(-gamepad1.left_stick_y))*driveSpeed)*direction;
-            rightMotors = ((scale_motor_power(-gamepad1.right_stick_y))*driveSpeed)*direction;
+            robot.driveTrain.differentialDrive(-gamepad1.right_stick_y, -gamepad1.right_stick_x);
+            tapeMotor.setPower(-gamepad1.left_stick_y);
         }
+    }
 
+    boolean tapeMotorAimPressedUp = false;
+    boolean tapeMotorAimPressedDown = false;
 
-        set_motor(leftMotors, rightMotors);
+    void tapeMotorAim(boolean Up, boolean Down){
+        if(Up && !tapeMotorAimPressedUp){
+            tapeMotorAimPressedUp = true;
+            robot.tapeMeasureWinch.incrementServoPosition(.1);
+        }
+        if(!Up && tapeMotorAimPressedUp){
+            tapeMotorAimPressedUp = false;
+        }
+        if(Down && !tapeMotorAimPressedDown){
+            tapeMotorAimPressedDown = true;
+            robot.tapeMeasureWinch.incrementServoPosition(-.1);
+        }
+        if (!Down && tapeMotorAimPressedDown){
+            tapeMotorAimPressedDown = false;
+        }
     }
 
     enum DriveType{
         TANK, JOYSTICK
     }
     DriveType driveType = DriveType.TANK;
-    String driveTypeMessage;
+    String driveTypeMessage = "tank";
     boolean drivePressed = false;
 
     void driveTypeToggle(boolean Button){
@@ -268,7 +145,7 @@ public class TeleOP extends OpMode {
     String directionMessage;
     boolean directionPressed = false;
 
-    void driveDicrectionToggle(boolean Button){
+    void driveDirectionToggle(boolean Button){
         if(Button && !directionPressed){
             if(driveDirection == DriveDirection.FORWARD){
                 direction = -1;
@@ -291,8 +168,9 @@ public class TeleOP extends OpMode {
         HALF, PARTIAL, FULL
     }
     Speed speed = Speed.FULL;
-    String speedMessage;
+    String speedMessage = "Full";
     boolean speedPressed = false;
+
     void speedToggle(boolean Button){
         if(Button && !speedPressed){
             if(speed == Speed.FULL){
@@ -313,6 +191,7 @@ public class TeleOP extends OpMode {
             speedPressed = false;
         }
     }
+
 
     enum ServoSide{
         LEFT_SIDE, RIGHT_SIDE
@@ -337,6 +216,59 @@ public class TeleOP extends OpMode {
             servoSidePressed = false;
         }
     }
+
+
+    enum ZipServoState{
+        HOME, LOW, MID, HIGH
+    }
+    ZipServoState zipServoState = ZipServoState.HOME;
+    boolean zipServoPressed = false;
+
+    void zipServoTogglePosition(boolean Button){
+        if(Button && !zipServoPressed){
+            if(servoSide == ServoSide.LEFT_SIDE){
+                switch(zipServoState){
+                    case HOME:
+                        robot.leftZipLineServo.goHome();
+                        break;
+                    case LOW:
+                        robot.leftZipLineServo.goLowerGuy();
+                        break;
+                    case MID:
+                        robot.leftZipLineServo.goMiddleGuy();
+                        break;
+                    case HIGH:
+                        robot.leftZipLineServo.goUpperGuy();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if(servoSide == ServoSide.RIGHT_SIDE){
+                switch(zipServoState){
+                    case HOME:
+                        robot.rightZipLineServo.goHome();
+                        break;
+                    case LOW:
+                        robot.rightZipLineServo.goLowerGuy();
+                        break;
+                    case MID:
+                        robot.rightZipLineServo.goMiddleGuy();
+                        break;
+                    case HIGH:
+                        robot.rightZipLineServo.goUpperGuy();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            zipServoPressed = true;
+        }
+        if(!Button && zipServoPressed){
+            zipServoPressed = false;
+        }
+    }
+
 
     enum SweeperDirection{
         FORWARDS, NEUTRAL, REVERSE
@@ -366,5 +298,46 @@ public class TeleOP extends OpMode {
         }
     }
 
+    void sweeperRun(){
+        if(sweeperDirection == SweeperDirection.NEUTRAL){
+            sweeperMotor.setPower(0);
+        }
+        else if(sweeperDirection == SweeperDirection.FORWARDS){
+            sweeperMotor.setPower(1);
+        }
+        else if(sweeperDirection == SweeperDirection.REVERSE){
+            sweeperMotor.setPower(-1);
+        }
+    }
 
+
+    void climberServoRun(boolean Button){
+        if(Button) {
+            robot.climberDumpServo.goDumpClimber();
+        }
+        else{
+            robot.climberDumpServo.goHome();
+        }
+    }
+
+    void bucketSliderServoRun(double Joystick){
+        if(Joystick < -.2){
+            bucketSlide360Servo.setPosition(0);
+        }
+        if(Joystick > .2){
+            bucketSlide360Servo.setPosition(1);
+        }
+        if(Joystick > -.2 || Joystick < .2){
+            bucketSlide360Servo.setPosition(.52);
+        }
+    }
+
+    /*void rampRun(boolean Button){
+        if(Button){
+            rampServo.startWiggle(.8, .5, -.5, 5.0);
+        }
+        if(!Button){
+            rampServo.stopWiggle();
+        }
+    }*/
 }

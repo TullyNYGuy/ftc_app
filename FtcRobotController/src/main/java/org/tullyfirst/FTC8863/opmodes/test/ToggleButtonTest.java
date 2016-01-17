@@ -12,6 +12,7 @@ public class ToggleButtonTest extends OpMode {
 
     @Override
     public void init(){
+        Time = new ElapsedTime();
         testServo = hardwareMap.servo.get("testServo");
     }
 
@@ -22,7 +23,7 @@ public class ToggleButtonTest extends OpMode {
 
     @Override
     public void loop(){
-        servoWiggle(gamepad1.y, 1, 0, .7, .5);
+        servoWiggle(gamepad1.y, 2, 0, .7, .5);
         testServo.setPosition(servoWiggleReturn);
     }
 
@@ -30,8 +31,10 @@ public class ToggleButtonTest extends OpMode {
 
     public double servoWiggle(boolean Button, float timeDif,double Home, double pos1, double pos2){
         if(Button){
-            servoWiggleReturn = pos1;
             if(Time.time() > timeDif){
+                servoWiggleReturn = pos1;
+            }
+            else if(Time.time() > timeDif + timeDif){
                 servoWiggleReturn = pos2;
                 Time.reset();
             }

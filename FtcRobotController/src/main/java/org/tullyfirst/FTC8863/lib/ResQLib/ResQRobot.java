@@ -2,11 +2,10 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.tullyfirst.FTC8863.lib.FTCLib.CRServo;
 import org.tullyfirst.FTC8863.lib.FTCLib.DriveTrain;
 
-/**
- * Created by ball on 1/9/2016.
- */
+
 public class ResQRobot {
 
     //*********************************************************************************************
@@ -23,7 +22,7 @@ public class ResQRobot {
     public static DriveTrain driveTrain;
 
     public static DeliveryBox deliveryBox;
-
+;
     public static ClimberDumpServo climberDumpServo;
 
     public static BarGrabberServo barGrabberServo;

@@ -31,6 +31,8 @@ public class BarGrabberServo{
 
     private double grabberUpPosition = 0.0;
 
+    private double initPosition = 0.0;
+
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -69,5 +71,9 @@ public class BarGrabberServo{
     public void goGrabBar() {barGrabberServo.goDown(); }
 
     public void goHome() {barGrabberServo.goHome();}
+
+    public void goInit() {
+        barGrabberServo.goInitPosition();
+    }
 
 }
