@@ -72,7 +72,7 @@ public class DriveTrain {
         rightDriveMotor.setUnitsPerRev(10);
         rightDriveMotor.setNextMotorState(DcMotor8863.NextMotorState.HOLD);
 
-        leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveMotor.setDirection(DcMotor.Direction.FORWARD);
         leftDriveMotor.setMaxMotorPower(1);
         leftDriveMotor.setMinMotorPower(-1);
         leftDriveMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
@@ -174,6 +174,6 @@ public class DriveTrain {
      */
     public void tankDrive(double leftValue, double rightValue){
         leftDriveMotor.setPower((float)leftValue);
-        rightDriveMotor.setPower((float)leftValue);
+        rightDriveMotor.setPower((float)rightValue);
     }
 }

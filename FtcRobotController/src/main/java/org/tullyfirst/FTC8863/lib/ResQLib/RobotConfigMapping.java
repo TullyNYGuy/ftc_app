@@ -17,6 +17,12 @@ public class RobotConfigMapping {
     // getter and setter methods
     //*********************************************************************************************
 
+    // motor congtrollers:
+    // AH00qK3C - bottom of robot
+    // AL00XPUH - top of robot
+
+    // servo controllers:
+    // AL00VV9L - top of robot
     //Drive Train
     private static String leftDriveMotorName = "leftDriveMotor"; //AH00qK3C port 1
     private static String rightDriveMotorName = "rightDriveMotor"; //AH00qK3C port 2
@@ -40,7 +46,7 @@ public class RobotConfigMapping {
     private static String tapeMeasureAimingServoName = "tapeMeasureAimingServo"; //AL00VV9L port 5
 
     //Climber Dump
-    private static String climberDumpServoName = "climberDumpServo";
+    private static String climberDumpServoName = "climberDumpServo"; //AL004A89 port 2
 
     //Bar Grabber
     private static String barGrabberServoName = "barGrabberServo"; //AL00VV9L port 2
