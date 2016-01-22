@@ -53,6 +53,12 @@ import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 public class TestBarGrabber extends OpMode {
 
     public ResQRobot robot;
+    double position = 0;
+    double position_increment = .05;
+    double position_max = 1.0;
+    ElapsedTime timer;
+    double timeLimit = 3.0;
+
 
     //public Servo barGrabberServo;
 
@@ -71,43 +77,43 @@ public class TestBarGrabber extends OpMode {
 	@Override
 	public void init() {
         robot = ResQRobot.ResQRobotTeleop(hardwareMap);
+        timer = new ElapsedTime();
     }
 
     @Override
     public void start() {
-
+        timer.reset();
+        robot.barGrabberServo.setPosition(position);
+        telemetry.addData("servo", "cmd position" + String.format("%.2f", position));
     }
 
 	@Override
 	public void loop() {
 
-        ElapsedTime timer = new ElapsedTime();
-        double timeLimit = 3;
-
-		if (gamepad1.b) {
+/*		if (gamepad1.b) {
 			robot.barGrabberServo.goHome();
 		}
 
 		if (gamepad1.a) {
 			robot.barGrabberServo.goGrabBar();
-		}
+		}*/
         // a comment
         //if (gamepad1.dpad_up) {
             // go at servo direct
         //}
 
-        if (gamepad1.dpad_down) {
+/*        if (gamepad1.dpad_down) {
             // go at servo direct
-        }
-/*        for(int i=0; i<11; i++){
-            if( timer.time() > timeLimit) {
-                timer.reset();
-                robot.barGrabberServo.setPosition(i/10);
-            }
         }*/
+        if( timer.time() > timeLimit && position <= position_max) {
+            position = position + position_increment;
+            robot.barGrabberServo.setPosition(position);
+            timer.reset();
+        }
+        telemetry.addData("servo cmd", "position" + String.format("%.2f", position));
+        telemetry.addData("servo actual", "position" + String.format("%.2f", robot.barGrabberServo.getPosition()));
 
-        telemetry.addData("servo",  "positiom " + String.format("%.2f", robot.barGrabberServo.getPosition()));
-	}
+    }
 
 	/*
 	 * Code to run when the op mode is first disabled goes here
