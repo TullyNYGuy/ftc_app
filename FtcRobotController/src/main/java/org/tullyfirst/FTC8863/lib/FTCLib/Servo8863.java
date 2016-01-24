@@ -131,6 +131,37 @@ public class Servo8863 {
      */
     private boolean debug = false;
 
+    /**
+     * Sets how much the servo moves within the set time period for the calibration routine.
+     */
+    private double servoCalibrationPositionIncrement;
+
+    /**
+     * Sets the time period between each servo movement for the calibration routine.
+     */
+    private double servoCalibrationTimeBetweenSteps;
+
+    /**
+     * Sets the position the servo will start at for the calibration routine.
+     */
+    private double servoCalibrationStartPosition;
+
+    /**
+     * Sets the position the servo will end at for the calibration routine.
+     */
+    private double servoCalibrationEndPosition;
+
+    /**
+     * Tells you how much time has passed in the calibration routine.
+      */
+    private ElapsedTime calibrationRoutineTimer;
+
+    /**
+     * Tells you what position the servo is at in the calibration routine.
+     */
+    private double calibrationRoutineCurrentPosition;
+
+
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -215,6 +246,22 @@ public class Servo8863 {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+
+    public void setServoCalibrationPositionIncrement(double servoCalibrationPositionIncrement) {
+        this.servoCalibrationPositionIncrement = servoCalibrationPositionIncrement;
+    }
+
+    public void setServoCalibrationTimeBetweenSteps(double servoCalibrationTimeBetweenSteps) {
+        this.servoCalibrationTimeBetweenSteps = servoCalibrationTimeBetweenSteps;
+    }
+
+    public void setServoCalibrationStartPosition(double servoCalibrationStartPosition) {
+        this.servoCalibrationStartPosition = servoCalibrationStartPosition;
+    }
+
+    public void setServoCalibrationEndPosition(double servoCalibrationEndPosition) {
+        this.servoCalibrationEndPosition = servoCalibrationEndPosition;
     }
 
     //*********************************************************************************************
@@ -412,4 +459,25 @@ public class Servo8863 {
     public double getPosition(){
         return teamServo.getPosition();
     }
+
+    public void setUpServoCalibration(double startPosition, double endPosition, double positionIncrement, double timeBetweenPositions){
+        setServoCalibrationStartPosition(startPosition);
+        setServoCalibrationEndPosition(endPosition);
+        setServoCalibrationPositionIncrement(positionIncrement);
+        setServoCalibrationTimeBetweenSteps(timeBetweenPositions);
+        calibrationRoutineTimer = new ElapsedTime();
+        calibrationRoutineCurrentPosition = startPosition;
+    }
+
+    public void updateServoCalibration(){
+        if( calibrationRoutineTimer.time() > servoCalibrationTimeBetweenSteps && calibrationRoutineCurrentPosition <= servoCalibrationEndPosition) {
+           calibrationRoutineCurrentPosition = calibrationRoutineCurrentPosition + servoCalibrationPositionIncrement;
+            teamServo.setPosition(calibrationRoutineCurrentPosition);
+            calibrationRoutineTimer.reset();
+        }
+        // we will need to pass in the telemetry object in the setup method so we can use it here
+        //telemetry.addData("servo cmd", "position" + String.format("%.2f", position));
+        //telemetry.addData("servo actual", "position" + String.format("%.2f", robot.barGrabberServo.getPosition()));
+    }
 }
+
