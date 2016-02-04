@@ -27,7 +27,7 @@ public class TeleOP extends OpMode {
     @Override
     public void init(){
 
-        robot = ResQRobot.ResQRobotTeleop(hardwareMap);
+        robot = ResQRobot.ResQRobotTeleop(hardwareMap, telemetry);
 
         tapeMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getTapeMeasureMotorName());
         sweeperMotor = hardwareMap.dcMotor.get(RobotConfigMapping.getSweeperMotorName());

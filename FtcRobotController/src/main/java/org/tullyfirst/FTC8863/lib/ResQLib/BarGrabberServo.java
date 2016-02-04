@@ -3,6 +3,7 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
 
@@ -33,6 +34,11 @@ public class BarGrabberServo{
 
     private double initPosition = 0.0;
 
+    private double calStartPosition = 0.0;
+    private double calEndPosition = 1.0;
+    private double calPositionIncrement = 0.05;
+    private double calTimeBetweenPositions = 3.0;
+
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -50,8 +56,8 @@ public class BarGrabberServo{
     //*********************************************************************************************
 
 
-    public BarGrabberServo(HardwareMap hardwareMap) {
-        barGrabberServo = new Servo8863(RobotConfigMapping.getBarGrabberServoName(),hardwareMap, grabberHomePosition, grabberDownPosition, grabberUpPosition, initPosition, Servo.Direction.FORWARD);
+    public BarGrabberServo(HardwareMap hardwareMap, Telemetry telemetry) {
+        barGrabberServo = new Servo8863(RobotConfigMapping.getBarGrabberServoName(),hardwareMap, telemetry, grabberHomePosition, grabberDownPosition, grabberUpPosition, initPosition, Servo.Direction.FORWARD);
         barGrabberServo.goInitPosition();
     }
 
@@ -83,6 +89,14 @@ public class BarGrabberServo{
 
     public void setPosition(double position) {
         barGrabberServo.setPosition(position);
+    }
+
+    public void setupCalibration(){
+        barGrabberServo.setUpServoCalibration(calStartPosition, calEndPosition, calPositionIncrement, calTimeBetweenPositions);
+    }
+
+    public void updateCalibration() {
+        barGrabberServo.updateServoCalibration();
     }
 
 }

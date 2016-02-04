@@ -3,6 +3,7 @@ package org.tullyfirst.FTC8863.lib.FTCLib;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -161,6 +162,8 @@ public class Servo8863 {
      */
     private double calibrationRoutineCurrentPosition;
 
+    private Telemetry telemetry;
+
 
 
     //*********************************************************************************************
@@ -268,8 +271,8 @@ public class Servo8863 {
     //          Constructors
     //*********************************************************************************************
 
-    public Servo8863(String servoName, HardwareMap hardwareMap, double homePosition, double upPosition, double downPosition, double initPosition, Servo.Direction direction) {
-        this.initServo(servoName, hardwareMap);
+    public Servo8863(String servoName, HardwareMap hardwareMap, Telemetry telemetry, double homePosition, double upPosition, double downPosition, double initPosition, Servo.Direction direction) {
+        this.initServo(servoName, hardwareMap, telemetry);
         setHomePosition(homePosition);
         setUpPosition(upPosition);
         setDownPosition(downPosition);
@@ -277,11 +280,11 @@ public class Servo8863 {
         this.setDirection(direction);
     }
 
-    public Servo8863(String servoName, HardwareMap hardwareMap) {
-        this.initServo(servoName, hardwareMap);
+    public Servo8863(String servoName, HardwareMap hardwareMap, Telemetry telemetry) {
+        this.initServo(servoName, hardwareMap, telemetry);
     }
 
-    private void initServo(String servoName, HardwareMap hardwareMap) {
+    private void initServo(String servoName, HardwareMap hardwareMap, Telemetry telemetry) {
         teamServo = hardwareMap.servo.get(servoName);
         setHomePosition(1);
         setDownPosition(0);
@@ -294,6 +297,7 @@ public class Servo8863 {
         this.servoWiggleState = ServoWiggleState.NOWIGGLE;
         elapsedTimeTotalWiggle = new ElapsedTime();
         elapsedTimeEachWiggle = new ElapsedTime();
+        this.telemetry = telemetry;
     }
 
     //*********************************************************************************************
@@ -475,9 +479,8 @@ public class Servo8863 {
             teamServo.setPosition(calibrationRoutineCurrentPosition);
             calibrationRoutineTimer.reset();
         }
-        // we will need to pass in the telemetry object in the setup method so we can use it here
-        //telemetry.addData("servo cmd", "position" + String.format("%.2f", position));
-        //telemetry.addData("servo actual", "position" + String.format("%.2f", robot.barGrabberServo.getPosition()));
+        telemetry.addData("servo cmd", "position" + String.format("%.2f", calibrationRoutineCurrentPosition));
+        telemetry.addData("servo actual", "position" + String.format("%.2f", teamServo.getPosition()));
     }
 }
 

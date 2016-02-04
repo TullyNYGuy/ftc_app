@@ -70,7 +70,7 @@ public class TestLeftZipLineServo extends OpMode {
 	 */
 	@Override
 	public void init() {
-        robot = ResQRobot.ResQRobotTeleop(hardwareMap);
+        robot = ResQRobot.ResQRobotTeleop(hardwareMap, telemetry);
     }
 
     @Override

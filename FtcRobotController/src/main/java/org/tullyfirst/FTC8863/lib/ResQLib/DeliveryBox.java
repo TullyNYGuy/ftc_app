@@ -3,6 +3,7 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.CRServo;
 import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
@@ -65,9 +66,9 @@ public class DeliveryBox {
     // from it
     //*********************************************************************************************
 
-    public DeliveryBox(HardwareMap hardwareMap) {
+    public DeliveryBox(HardwareMap hardwareMap, Telemetry telemetry) {
         slideServo = new CRServo(RobotConfigMapping.getLinearSlideServoName(),hardwareMap, slideServoZeroThrottle, slideServoZeroZone);
-        rampServo = new Servo8863(RobotConfigMapping.getRampServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, dumpInitPosition, Servo.Direction.REVERSE);
+        rampServo = new Servo8863(RobotConfigMapping.getRampServoName(), hardwareMap, telemetry, dumpHomePosition, dumpUpPosition, dumpDownPosition, dumpInitPosition, Servo.Direction.REVERSE);
 
         //setup the dump ramp wiggle for later use
         rampServo.setupWiggle(dumpUpPosition, dumpWiggleDelay, dumpWiggleDelta, dumpWiggleTime);

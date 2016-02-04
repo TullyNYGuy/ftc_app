@@ -70,7 +70,7 @@ public class TestRampServo extends OpMode {
 	 */
 	@Override
 	public void init() {
-        robot = ResQRobot.ResQRobotTeleop(hardwareMap);
+        robot = ResQRobot.ResQRobotTeleop(hardwareMap, telemetry);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class TestRampServo extends OpMode {
             }
         }
 
-        telemetry.addData("servo",  "positiom " + String.format("%.2f", robot.barGrabberServo.getPosition()));
+        //telemetry.addData("servo",  "positiom " + String.format("%.2f", robot.barGrabberServo.getPosition()));
 	}
 
 	/*

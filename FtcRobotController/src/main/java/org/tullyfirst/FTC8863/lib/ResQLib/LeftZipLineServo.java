@@ -3,6 +3,7 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
 
@@ -56,8 +57,8 @@ public class LeftZipLineServo {
     //*********************************************************************************************
 
 
-    public LeftZipLineServo(HardwareMap hardwareMap) {
-        leftZipLineServo = new Servo8863(RobotConfigMapping.getBarGrabberServoName(),hardwareMap);
+    public LeftZipLineServo(HardwareMap hardwareMap, Telemetry telemetry) {
+        leftZipLineServo = new Servo8863(RobotConfigMapping.getBarGrabberServoName(),hardwareMap, telemetry);
         leftZipLineServo.setHomePosition(leftZipLineHomePosition);
         leftZipLineServo.setUpPosition(leftZipLineUpperPosition);
         leftZipLineServo.setPositionOne(leftZipLineMiddlePosition);

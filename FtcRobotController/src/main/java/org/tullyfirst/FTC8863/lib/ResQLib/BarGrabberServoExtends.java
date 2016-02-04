@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
 
-public class RightZipLineServo {
+public class BarGrabberServoExtends extends Servo8863 {
+
 
     //*********************************************************************************************
     //          ENUMERATED TYPES
@@ -24,21 +25,16 @@ public class RightZipLineServo {
     // getter and setter methods
     //*********************************************************************************************
 
-    private Servo8863 rightZipLineServo;
+    private Servo8863 barGrabberServo;
 
-    // home position
-    private double rightZipLineHomePosition = 0.8;
+    private double grabberHomePosition = .7;
 
-    // upper zip line guy
-    private double rightZipLineUpperPosition = 0.1;
+    private double grabberDownPosition = 0.0;
 
-    // middle zip line guy
-    private double rightZipLineMiddlePosition = 0.1;
+    private double grabberUpPosition = 0.0;
 
-    // lower zip line guy
-    private double rightZipLineLowerPosition = .25;
+    private double initPosition = 0.0;
 
-    private double rightZipLineInitPosition =  rightZipLineHomePosition;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -56,15 +52,14 @@ public class RightZipLineServo {
     //*********************************************************************************************
 
 
-    public RightZipLineServo(HardwareMap hardwareMap, Telemetry telemetry) {
-        rightZipLineServo = new Servo8863(RobotConfigMapping.getBarGrabberServoName(),hardwareMap, telemetry);
-        rightZipLineServo.setHomePosition(rightZipLineHomePosition);
-        rightZipLineServo.setUpPosition(rightZipLineUpperPosition);
-        rightZipLineServo.setPositionOne(rightZipLineMiddlePosition);
-        rightZipLineServo.setDownPosition(rightZipLineLowerPosition);
-        rightZipLineServo.setInitPosition(rightZipLineInitPosition);
-        rightZipLineServo.setDirection(Servo.Direction.FORWARD);
-        rightZipLineServo.goInitPosition();
+    public BarGrabberServoExtends(HardwareMap hardwareMap, Telemetry telemetry) {
+        super(RobotConfigMapping.getBarGrabberServoName(),hardwareMap, telemetry);
+        this.setHomePosition(grabberHomePosition);
+        this.setDownPosition(grabberDownPosition);
+        this.setUpPosition(grabberUpPosition);
+        this.setInitPosition(initPosition);
+        this.setDirection(Servo.Direction.FORWARD);
+        this.goInitPosition();
     }
 
 
@@ -81,27 +76,22 @@ public class RightZipLineServo {
     // public methods that give the class its functionality
     //*********************************************************************************************
 
-    public void goHome() {
-        rightZipLineServo.goHome();
+    public void goGrabBar() {
+        this.goDown();
     }
 
-    public void goUpperGuy() {
-        rightZipLineServo.goUp();
-    }
+    public void goHome() {barGrabberServo.goHome();}
 
-    public void goMiddleGuy() {
-        rightZipLineServo.goPositionOne();
-    }
+/*    public void goInit() {
+        barGrabberServo.goInitPosition();
+    }*/
 
-    public void goLowerGuy() {
-        rightZipLineServo.goDown();
-    }
-
-    public double getPosition() {
-        return rightZipLineServo.getPosition();
+/*    public double getPosition() {
+        return barGrabberServo.getPosition();
     }
 
     public void setPosition(double position) {
-        rightZipLineServo.setPosition(position);
-    }
+        barGrabberServo.setPosition(position);
+    }*/
+
 }

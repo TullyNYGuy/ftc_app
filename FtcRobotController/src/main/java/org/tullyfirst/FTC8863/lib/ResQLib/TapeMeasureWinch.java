@@ -4,6 +4,7 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.DcMotor8863;
 import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
@@ -50,10 +51,10 @@ public class TapeMeasureWinch {
     //*********************************************************************************************
 
 
-    public TapeMeasureWinch(HardwareMap hardwareMap) {
+    public TapeMeasureWinch(HardwareMap hardwareMap, Telemetry telemetry) {
         
         // setup the servo 
-        tapeMeasureAimingServo = new Servo8863(RobotConfigMapping.getTapeMeasureAimingServoName(),hardwareMap);
+        tapeMeasureAimingServo = new Servo8863(RobotConfigMapping.getTapeMeasureAimingServoName(),hardwareMap, telemetry);
         tapeMeasureAimingServo.setHomePosition(aimingHomePosition);
         tapeMeasureAimingServo.setDirection(Servo.Direction.REVERSE);
         this.currentPosition = 0;

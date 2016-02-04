@@ -76,7 +76,7 @@ public class TestServo8863 extends OpMode {
 	 */
 	@Override
 	public void init() {
-        leftRepelServo = new Servo8863(RobotConfigMapping.getLeftZipLineServoName(), hardwareMap, homePosition, upPosition, downPosition, initPosition, Servo.Direction.REVERSE);
+        leftRepelServo = new Servo8863(RobotConfigMapping.getLeftZipLineServoName(), hardwareMap, telemetry, homePosition, upPosition, downPosition, initPosition, Servo.Direction.REVERSE);
 
         leftRepelServo.setPositionOne(lowerRepelPosition);
         leftRepelServo.setPositionTwo(middleRepelPosition);

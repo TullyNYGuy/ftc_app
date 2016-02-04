@@ -1,6 +1,7 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.CRServo;
 import org.tullyfirst.FTC8863.lib.FTCLib.DriveTrain;
@@ -21,16 +22,17 @@ public class ResQRobot {
 
     public static DriveTrain driveTrain;
 
-    public static DeliveryBox deliveryBox;
+    public DeliveryBox deliveryBox;
 ;
-    public static ClimberDumpServo climberDumpServo;
+    public ClimberDumpServo climberDumpServo;
 
-    public static BarGrabberServo barGrabberServo;
+    public BarGrabberServo barGrabberServoA;
+    public BarGrabberServoExtends barGrabberServoX;
 
-    public static LeftZipLineServo leftZipLineServo;
-    public static RightZipLineServo rightZipLineServo;
+    public LeftZipLineServo leftZipLineServo;
+    public RightZipLineServo rightZipLineServo;
 
-    public static TapeMeasureWinch tapeMeasureWinch;
+    public TapeMeasureWinch tapeMeasureWinch;
 
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
@@ -40,6 +42,7 @@ public class ResQRobot {
     //*********************************************************************************************
 
     public double deliveryBoxThrottle;
+    private static Telemetry telemetry;
 
     //*********************************************************************************************
     //          GETTER and SETTER Methods
@@ -56,7 +59,19 @@ public class ResQRobot {
     // from it
     //*********************************************************************************************
 
-    private ResQRobot() {
+    private ResQRobot(HardwareMap hardwareMap, Telemetry telemetry) {
+        deliveryBox = new DeliveryBox(hardwareMap, telemetry);
+
+        climberDumpServo = new ClimberDumpServo(hardwareMap, telemetry);
+
+        barGrabberServoA = new BarGrabberServo(hardwareMap, telemetry);
+
+        barGrabberServoX = new BarGrabberServoExtends(hardwareMap, telemetry);
+
+        leftZipLineServo = new LeftZipLineServo(hardwareMap, telemetry);
+        rightZipLineServo = new RightZipLineServo(hardwareMap, telemetry);
+
+        tapeMeasureWinch = new TapeMeasureWinch(hardwareMap, telemetry);
     }
 
     /**
@@ -65,21 +80,10 @@ public class ResQRobot {
      * @param hardwareMap
      * @return ResQRobot object
      */
-    public static ResQRobot ResQRobotTeleop(HardwareMap hardwareMap) {
-        ResQRobot resQRobot = new ResQRobot();
+    public static ResQRobot ResQRobotTeleop(HardwareMap hardwareMap, Telemetry telemetry) {
+        ResQRobot resQRobot = new ResQRobot(hardwareMap, telemetry);
+        //this.telemetry = telemetry;
         driveTrain = DriveTrain.DriveTrainTeleop(hardwareMap);
-
-        deliveryBox = new DeliveryBox(hardwareMap);
-
-        climberDumpServo = new ClimberDumpServo(hardwareMap);
-
-        barGrabberServo = new BarGrabberServo(hardwareMap);
-
-        leftZipLineServo = new LeftZipLineServo(hardwareMap);
-        rightZipLineServo = new RightZipLineServo(hardwareMap);
-
-        tapeMeasureWinch = new TapeMeasureWinch(hardwareMap);
-
         return resQRobot;
     }
 
@@ -89,12 +93,9 @@ public class ResQRobot {
      * @param hardwareMap
      * @return ResQRobot object
      */
-    public static ResQRobot ResQRobotAutonomous(HardwareMap hardwareMap) {
-        ResQRobot resQRobot = new ResQRobot();
+    public static ResQRobot ResQRobotAutonomous(HardwareMap hardwareMap, Telemetry telemetry) {
+        ResQRobot resQRobot = new ResQRobot(hardwareMap,telemetry);
         driveTrain = DriveTrain.DriveTrainAutonomous(hardwareMap);
-
-        deliveryBox = new DeliveryBox(hardwareMap);
-
         return resQRobot;
     }
     //*********************************************************************************************

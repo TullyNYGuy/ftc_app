@@ -1,6 +1,7 @@
 package org.tullyfirst.FTC8863.lib.FTCLib;
 
 import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -106,6 +107,30 @@ public class DcMotor8863 {
      */
     private DcMotor.Direction direction = com.qualcomm.robotcore.hardware.DcMotor.Direction.FORWARD;
 
+    /**
+     * enables whether you detect a stall
+     */
+    private boolean stallDetectionEnabled = false;
+
+    /**
+     * last encoder value
+     */
+    private int lastEncoderValue = 0;
+
+    /**
+     * timer used for stall detection
+     */
+    private ElapsedTime stallTimer;
+
+    /**
+     * if the motor is not moving for longer than this time limit the motor is stalled
+     */
+    private double stallTimeLimit = 0;
+
+    /**
+     * if the encoder changes less than this since the last time we read it than we call it a stall.
+     */
+    private int stallDetectionTolerance = 5;
     //*********************************************************************************************
     //          GETTER and SETTER Methods
     //*********************************************************************************************
@@ -195,12 +220,45 @@ public class DcMotor8863 {
         return direction;
     }
 
+    public double getStallTimeLimit() {
+        return stallTimeLimit;
+    }
+
+    public void setStallTimeLimit(double stallTimeLimit) {
+        this.stallTimeLimit = stallTimeLimit;
+    }
+
+    public boolean isStallDetectionEnabled() {
+        return stallDetectionEnabled;
+    }
+
+    public void setStallDetectionEnabled(boolean stallDetectionEnabled) {
+        this.stallDetectionEnabled = stallDetectionEnabled;
+    }
+
+    public int getStallDetectionTolerance() {
+        return stallDetectionTolerance;
+    }
+
+    public void setStallDetectionTolerance(int stallDetectionTolerance) {
+        this.stallDetectionTolerance = stallDetectionTolerance;
+    }
+
+    public int getLastEncoderValue() {
+        return lastEncoderValue;
+    }
+
+    public MotorState getCurrentMotorState() {
+        return currentMotorState;
+    }
+
     //*********************************************************************************************
     //          Constructors
     //*********************************************************************************************
 
     public DcMotor8863(String motorName, HardwareMap hardwareMap) {
         FTCDcMotor = hardwareMap.dcMotor.get(motorName);
+        stallTimer = new ElapsedTime();
         initMotorDefaults();
     }
 
@@ -211,6 +269,7 @@ public class DcMotor8863 {
         setMotorType(MotorType.ANDYMARK_40);
         setCountsPerRevForMotorType(MotorType.ANDYMARK_40);
         setUnitsPerRev(0);
+        setStallDetectionEnabled(false);
         setDesiredEncoderCount(0);
         setEncoderTolerance(10);
         setMotorState(MotorState.IDLE);
@@ -218,6 +277,7 @@ public class DcMotor8863 {
         setMotorMoveType(MotorMoveType.RELATIVE);
         setMinMotorPower(-1);
         setMaxMotorPower(1);
+        setStallDetectionTolerance(5);
     }
 
     //*********************************************************************************************
@@ -346,6 +406,9 @@ public class DcMotor8863 {
         }
     }
 
+    public boolean rotateNumberOfDegrees(double power, double degrees, NextMotorState afterCompletion) {
+        return true;
+    }
 
     /**
      * Makes the motor rotate to a certain amount of revolutions.
@@ -354,7 +417,7 @@ public class DcMotor8863 {
      * @param afterCompletion Whether it holds or floats after completion.
      * @return If return is true then it actually did it.
      */
-    public boolean rotateToRev(double power, double revs, NextMotorState afterCompletion){
+    public boolean rotateNumberOfRevolutions(double power, double revs, NextMotorState afterCompletion){
         return rotateToEncoderCount(power, getEncoderCountForRevs(revs), afterCompletion);
     }
 
@@ -400,18 +463,48 @@ public class DcMotor8863 {
      * @return true if movement complete
      */
     public boolean isRotationComplete() {
-        // get the current encoder position
-        int currentEncoderCount = this.getCurrentPosition();
-        // is the current position within the tolerance limit of the desired position
-        if (Math.abs(getDesiredEncoderCount() - currentEncoderCount) <getEncoderTolerance()) {
-            // movement is complete. See what to do next
-            return true;
+        if (FTCDcMotor.getMode() == DcMotorController.RunMode.RUN_TO_POSITION) {
+            // The motor is moving to a certain encoder position so it will complete movement at
+            // some point.
+            // get the current encoder position
+            int currentEncoderCount = this.getCurrentPosition();
+            // is the current position within the tolerance limit of the desired position?
+            if (Math.abs(getDesiredEncoderCount() - currentEncoderCount) <getEncoderTolerance()) {
+                // movement is complete
+                return true;
+            } else {
+                // movement is not finished yet
+                return false;
+            }
         } else {
+            // The motor is not moving to a position so there cannot be a point when the rotation is
+            // complete
             return false;
         }
+
+    }
+
+    public void setupStallDetection(double stallTimeLimit) {
+        setStallDetectionEnabled(true);
+        setStallTimeLimit(stallTimeLimit);
+        stallTimer.reset();
+        this.lastEncoderValue = FTCDcMotor.getCurrentPosition();
     }
 
     public boolean isStalled() {
+        if (currentMotorState == MotorState.MOVING && isStallDetectionEnabled()) {
+            // if the motor has not moved since the last time the position was read
+            if (Math.abs(this.getCurrentPosition() - lastEncoderValue) < stallDetectionTolerance) {
+                // motor has not moved, checking to see how long the motor has been stalled for
+                if (stallTimer.time() > stallTimeLimit) {
+                    // it has been stalled for more than the time limit
+                    return true;
+                }
+            } else {
+                // reset the timer because the motor is not stalled
+                stallTimer.reset();
+            }
+        }
         return false;
     }
 
@@ -500,7 +593,7 @@ public class DcMotor8863 {
     //*********************************************************************************************
 
     public MotorState updateMotor() {
-        switch(currentMotorState) {
+        switch(getCurrentMotorState()) {
             case IDLE:
                 break;
             case MOVING:
@@ -525,7 +618,7 @@ public class DcMotor8863 {
             case FLOATING:
                 break;
         }
-        return currentMotorState;
+        return getCurrentMotorState();
     }
 
     //*********************************************************************************************

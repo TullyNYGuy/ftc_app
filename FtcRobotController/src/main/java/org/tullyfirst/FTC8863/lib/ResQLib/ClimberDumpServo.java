@@ -3,6 +3,7 @@ package org.tullyfirst.FTC8863.lib.ResQLib;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
 
@@ -53,8 +54,8 @@ public class ClimberDumpServo {
     // from it
     //*********************************************************************************************
 
-    public ClimberDumpServo(HardwareMap hardwareMap) {
-        climberDumpServo = new Servo8863(RobotConfigMapping.getClimberDumpServoName(), hardwareMap, dumpHomePosition, dumpUpPosition, dumpDownPosition, dumpInitPosition, Servo.Direction.FORWARD);
+    public ClimberDumpServo(HardwareMap hardwareMap, Telemetry telemetry) {
+        climberDumpServo = new Servo8863(RobotConfigMapping.getClimberDumpServoName(), hardwareMap, telemetry, dumpHomePosition, dumpUpPosition, dumpDownPosition, dumpInitPosition, Servo.Direction.FORWARD);
     }
 
 

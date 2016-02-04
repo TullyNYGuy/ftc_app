@@ -34,6 +34,7 @@ package org.tullyfirst.FTC8863.opmodes.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.tullyfirst.FTC8863.lib.ResQLib.BarGrabberServo;
 import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 
 /**
@@ -52,12 +53,14 @@ import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
  */
 public class TestBarGrabber extends OpMode {
 
-    public ResQRobot robot;
+    public BarGrabberServo barGrabberServo;
+
+/*    public ResQRobot robot;
     double position = 0;
     double position_increment = .05;
     double position_max = 1.0;
     ElapsedTime timer;
-    double timeLimit = 3.0;
+    double timeLimit = 3.0;*/
 
 
     //public Servo barGrabberServo;
@@ -76,19 +79,22 @@ public class TestBarGrabber extends OpMode {
 	 */
 	@Override
 	public void init() {
-        robot = ResQRobot.ResQRobotTeleop(hardwareMap);
-        timer = new ElapsedTime();
+        barGrabberServo = new BarGrabberServo(hardwareMap, telemetry);
     }
 
     @Override
     public void start() {
-        timer.reset();
-        robot.barGrabberServo.setPosition(position);
-        telemetry.addData("servo", "cmd position" + String.format("%.2f", position));
+      //  timer.reset();
+      //  robot.barGrabberServo.setPosition(position);
+       // telemetry.addData("servo", "cmd position" + String.format("%.2f", position));
+      barGrabberServo.setupCalibration();
+
     }
 
 	@Override
 	public void loop() {
+
+        barGrabberServo.updateCalibration();
 
 /*		if (gamepad1.b) {
 			robot.barGrabberServo.goHome();
@@ -105,13 +111,13 @@ public class TestBarGrabber extends OpMode {
 /*        if (gamepad1.dpad_down) {
             // go at servo direct
         }*/
-        if( timer.time() > timeLimit && position <= position_max) {
+/*        if( timer.time() > timeLimit && position <= position_max) {
             position = position + position_increment;
             robot.barGrabberServo.setPosition(position);
             timer.reset();
         }
         telemetry.addData("servo cmd", "position" + String.format("%.2f", position));
-        telemetry.addData("servo actual", "position" + String.format("%.2f", robot.barGrabberServo.getPosition()));
+        telemetry.addData("servo actual", "position" + String.format("%.2f", robot.barGrabberServo.getPosition()));*/
 
     }
 
