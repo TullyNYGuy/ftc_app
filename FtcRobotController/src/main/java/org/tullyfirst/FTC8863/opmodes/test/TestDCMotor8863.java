@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.DcMotor8863;
+import org.tullyfirst.FTC8863.lib.ResQLib.RobotConfigMapping;
 
 
 /**
@@ -45,7 +46,7 @@ import org.tullyfirst.FTC8863.lib.FTCLib.DcMotor8863;
 public class TestDCMotor8863 extends OpMode {
 
     // This declaration refers to my DcMotor8863 class
-    DcMotor8863 motorRight;
+    DcMotor8863 sweeperMotor;
 
 	/**
 	 * Constructor
@@ -62,34 +63,28 @@ public class TestDCMotor8863 extends OpMode {
 	public void init() {
 
         // Instantiate and initialize a motor
-        motorRight = new DcMotor8863("rightDriveMotor", hardwareMap);
-        motorRight.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
-        motorRight.setUnitsPerRev(360);
-        motorRight.setEncoderTolerance(5);
-        motorRight.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);
-        motorRight.setMinMotorPower(-1);
-        motorRight.setMaxMotorPower(1);
-
-        // DcMotor8863 contains a DcMotor object: FTCDcMotor. That object give us access to the
-        // motor.
-/*		motorRight.FTCDcMotor.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
-        motorRight.setCountsPerRevForMotorType(DcMotor8863.MotorType.ANDYMARK_40);
-        motorRight.setCmPerRev(10);
-        motorRight.setEncoderTolerance(10);
-        motorRight.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);*/
+        sweeperMotor = new DcMotor8863(RobotConfigMapping.getSweeperMotorName(), hardwareMap);
+        sweeperMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
+        sweeperMotor.setUnitsPerRev(360);
+        sweeperMotor.setDesiredEncoderCount(0);
+        sweeperMotor.setEncoderTolerance(5);
+        sweeperMotor.setNextMotorState(DcMotor8863.NextMotorState.FLOAT);
+        sweeperMotor.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);
+        sweeperMotor.setMinMotorPower(-1);
+        sweeperMotor.setMaxMotorPower(1);
 
 	}
 
     @Override
     public void start() {
+        sweeperMotor.runUsingEncoder(.5);
+        sweeperMotor.setupStallDetection(5);
     }
 
 	@Override
 	public void loop() {
 
-		//
+		/*
 		double motorPower = .5;
 
 		// rotate the motor one revolution and then coast
@@ -100,13 +95,13 @@ public class TestDCMotor8863 extends OpMode {
 //            motorRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 //            motorRight.setPower(motorPower);
 
-            motorRight.rotateToDistance(motorPower, -360, DcMotor8863.NextMotorState.HOLD);
+            sweeperMotor.rotateToDistance(motorPower, -360, DcMotor8863.NextMotorState.HOLD);
         }
         if (gamepad1.a) {
             // if the A button is pushed on gamepad1, the motor stops
             //motorRight.setPowerFloat();
             //motorRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-            motorRight.resetEncoder(true);
+            sweeperMotor.resetEncoder(true);
 
         }
 
@@ -117,14 +112,22 @@ public class TestDCMotor8863 extends OpMode {
 		 * will return a null value. The legacy NXT-compatible motor controllers
 		 * are currently write only.
 		 */
-        if (motorRight.isRotationComplete()){
+
+        if (sweeperMotor.isStalled()) {
+            telemetry.addData("Status", "is stalled");
+        }
+            else {
+            telemetry.addData("Status",  "is not stalled");
+        }
+
+        /*if (sweeperMotor.isRotationComplete()){
             telemetry.addData("Status",  "rotation complete");
         } else {
             telemetry.addData("Status",  "still going");
         }
-        telemetry.addData("Encoder",  "Encoder: " + String.format("%d", motorRight.getCurrentPosition()));
+        telemetry.addData("Encoder",  "Encoder: " + String.format("%d", sweeperMotor.getCurrentPosition()));
         //telemetry.addData("left Y scaled", "joy Y: " + String.format("%.2f", left));
-
+*/
 
 	}
 

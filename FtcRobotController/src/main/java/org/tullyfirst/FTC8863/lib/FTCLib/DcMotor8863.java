@@ -267,7 +267,6 @@ public class DcMotor8863 {
      */
     private void initMotorDefaults(){
         setMotorType(MotorType.ANDYMARK_40);
-        setCountsPerRevForMotorType(MotorType.ANDYMARK_40);
         setUnitsPerRev(0);
         setStallDetectionEnabled(false);
         setDesiredEncoderCount(0);
@@ -278,6 +277,7 @@ public class DcMotor8863 {
         setMinMotorPower(-1);
         setMaxMotorPower(1);
         setStallDetectionTolerance(5);
+        setStallTimeLimit(0);
     }
 
     //*********************************************************************************************
