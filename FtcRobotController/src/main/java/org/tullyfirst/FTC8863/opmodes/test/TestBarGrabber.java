@@ -37,97 +37,37 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.tullyfirst.FTC8863.lib.ResQLib.BarGrabberServo;
 import org.tullyfirst.FTC8863.lib.ResQLib.ResQRobot;
 
-/**
- * TestJoyStick is meant to provide the driver wtih a way to test the various joystick control
- * methods.
- * Differential drive - one joystick for both speed and direction - use gamepad2 left joystick
- * Tank drive - two joysticks, one for left motor speed and one for right - use gamepad2 left
- *  and right joystick
- * Turn deadband compensation on or off (toggle) - gamepad2 left bumper
- *
- * It also allows the driver to control a repel servo
- *  gamepad2 a button = down
- *  gamepad2 y button = up
- *  gamepad2 x button = .5 (halfway)
- * <p>
- */
 public class TestBarGrabber extends OpMode {
 
     public BarGrabberServo barGrabberServo;
 
-/*    public ResQRobot robot;
-    double position = 0;
-    double position_increment = .05;
-    double position_max = 1.0;
-    ElapsedTime timer;
-    double timeLimit = 3.0;*/
-
-
-    //public Servo barGrabberServo;
-
-	/**
-	 * Constructor
-	 */
 	public TestBarGrabber() {
 
 	}
 
-	/*
-	 * Code to run when the op mode is first enabled goes here
-	 * 
-	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-	 */
 	@Override
 	public void init() {
         barGrabberServo = new BarGrabberServo(hardwareMap, telemetry);
+        barGrabberServo.goInit();
     }
 
     @Override
     public void start() {
-      //  timer.reset();
-      //  robot.barGrabberServo.setPosition(position);
-       // telemetry.addData("servo", "cmd position" + String.format("%.2f", position));
       barGrabberServo.setupCalibration();
 
     }
 
+
+
 	@Override
 	public void loop() {
-
+        barGrabberServo.goGrabBar();
         barGrabberServo.updateCalibration();
-
-/*		if (gamepad1.b) {
-			robot.barGrabberServo.goHome();
-		}
-
-		if (gamepad1.a) {
-			robot.barGrabberServo.goGrabBar();
-		}*/
-        // a comment
-        //if (gamepad1.dpad_up) {
-            // go at servo direct
-        //}
-
-/*        if (gamepad1.dpad_down) {
-            // go at servo direct
-        }*/
-/*        if( timer.time() > timeLimit && position <= position_max) {
-            position = position + position_increment;
-            robot.barGrabberServo.setPosition(position);
-            timer.reset();
-        }
-        telemetry.addData("servo cmd", "position" + String.format("%.2f", position));
-        telemetry.addData("servo actual", "position" + String.format("%.2f", robot.barGrabberServo.getPosition()));*/
-
     }
 
-	/*
-	 * Code to run when the op mode is first disabled goes here
-	 * 
-	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#stop()
-	 */
 	@Override
 	public void stop() {
+        barGrabberServo.goHome();
 
     }
 }

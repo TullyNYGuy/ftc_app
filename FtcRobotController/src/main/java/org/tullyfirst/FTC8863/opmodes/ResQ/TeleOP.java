@@ -51,7 +51,8 @@ public class TeleOP extends OpMode {
     @Override
     public void loop(){
 
-        updateTelemetry();
+
+        //updateTelemetry();
 
         sweeperDirectionToggle(gamepad2.a);
         sweeperRun();
