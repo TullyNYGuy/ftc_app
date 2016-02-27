@@ -1,13 +1,13 @@
 package org.tullyfirst.FTC8863.lib.ResQLib;
 
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.robocol.Telemetry;
 
-import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
+import org.tullyfirst.FTC8863.lib.FTCLib.DcMotor8863;
 
-public class RampServo {
+public class Sweeper {
 
     //*********************************************************************************************
     //          ENUMERATED TYPES
@@ -16,6 +16,9 @@ public class RampServo {
     //
     //*********************************************************************************************
 
+    private enum SweeperState {
+        FORWARD, BACKWARD, STOP
+    }
 
     //*********************************************************************************************
     //          PRIVATE DATA FIELDS
@@ -24,23 +27,10 @@ public class RampServo {
     // getter and setter methods
     //*********************************************************************************************
 
-    private Servo8863 rampServo;
-
-    private double rampHomePosition = 0.00;
-
-    private double rampDumpPosition = 0.60;
-
-    private double rampInitPosition = 0.00;
-
-    private double calStartPosition = 0.0;
-    private double calEndPosition = 1.0;
-    private double calPositionIncrement = 0.05;
-    private double calTimeBetweenPositions = 3.0;
-
-    private double wiggleStartPosition = 0.6;
-    private double wiggleDelta = 0.1;
-    private double wiggleTime = 5.0;
-    private double wiggleDelay = 0.2;
+    private DcMotor8863 sweeperMotor;
+    private double reversePower = -.8;
+    private double forwardPower = .8;
+    private SweeperState sweeperState = SweeperState.STOP;
 
 
     //*********************************************************************************************
@@ -58,15 +48,18 @@ public class RampServo {
     // from it
     //*********************************************************************************************
 
-
-    public RampServo(HardwareMap hardwareMap, Telemetry telemetry) {
-        rampServo = new Servo8863(RobotConfigMapping.getRampServoName(),hardwareMap, telemetry, rampHomePosition, rampDumpPosition, rampHomePosition, rampInitPosition, Servo.Direction.FORWARD);
-        rampServo.goInitPosition();
-        rampServo.goDown();
-        rampServo.setupWiggle(wiggleStartPosition, wiggleDelay, wiggleDelta, wiggleTime);
+    public Sweeper(HardwareMap hardwareMap, Telemetry telemetry) {
+        sweeperMotor = new DcMotor8863(RobotConfigMapping.getSweeperMotorName(), hardwareMap);
+        sweeperMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_20);
+        sweeperMotor.setUnitsPerRev(360);
+        sweeperMotor.setDesiredEncoderCount(0);
+        sweeperMotor.setEncoderTolerance(5);
+        sweeperMotor.setNextMotorState(DcMotor8863.NextMotorState.FLOAT);
+        sweeperMotor.setMotorMoveType(DcMotor8863.MotorMoveType.RELATIVE);
+        sweeperMotor.setMinMotorPower(-1);
+        sweeperMotor.setMaxMotorPower(1);
+        sweeperMotor.setDirection(DcMotor.Direction.REVERSE);
     }
-
-
     //*********************************************************************************************
     //          Helper Methods
     //
@@ -80,28 +73,28 @@ public class RampServo {
     // public methods that give the class its functionality
     //*********************************************************************************************
 
-    public void goDown() {rampServo.goDown(); }
-
-    public void goHome() {rampServo.goHome();}
-
-    public void goInit() {
-        rampServo.goInitPosition();
+    public void stop() {
+        sweeperMotor.stopMotor();
+        sweeperState = SweeperState.STOP;
     }
 
-    public void setupCalibration(){
-        rampServo.setUpServoCalibration(calStartPosition, calEndPosition, calPositionIncrement, calTimeBetweenPositions);
+    public void forward() {
+        sweeperMotor.runUsingEncoder(forwardPower);
+        sweeperState = SweeperState.FORWARD;
+
     }
 
-    public void updateCalibration() {
-        rampServo.updateServoCalibration();
+    public void backward() {
+        sweeperMotor.runUsingEncoder(reversePower);
+        sweeperState = SweeperState.BACKWARD;
+
     }
 
-    public void startWiggle() {
-        rampServo.startWiggle();
-    }
+    public void updateSweeper() {
+        if (sweeperMotor.updateMotor() == DcMotor8863.MotorState.STALLED && sweeperState == SweeperState.FORWARD) {
+            sweeperMotor.rotateNumberOfDegrees(reversePower, 100, DcMotor8863.NextMotorState.HOLD);
+        }
 
-    public void updateWiggle() {
-        rampServo.updateWiggle();
     }
 
 }

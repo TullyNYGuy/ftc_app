@@ -33,11 +33,11 @@ package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.tullyfirst.FTC8863.lib.ResQLib.BarGrabberServo;
+import org.tullyfirst.FTC8863.lib.ResQLib.RampServo;
 
 public class TestRampServo extends OpMode {
 
-    public BarGrabberServo barGrabberServo;
+    public RampServo rampServo;
 
 	public TestRampServo() {
 
@@ -45,13 +45,15 @@ public class TestRampServo extends OpMode {
 
 	@Override
 	public void init() {
-        barGrabberServo = new BarGrabberServo(hardwareMap, telemetry);
-        barGrabberServo.goInit();
+        rampServo = new RampServo(hardwareMap, telemetry);
+        rampServo.goInit();
+
     }
 
     @Override
     public void start() {
-      barGrabberServo.setupCalibration();
+        rampServo.startWiggle();
+    //  rampServo.setupCalibration();
 
     }
 
@@ -59,13 +61,13 @@ public class TestRampServo extends OpMode {
 
 	@Override
 	public void loop() {
-        barGrabberServo.goGrabBar();
-        barGrabberServo.updateCalibration();
+        rampServo.updateWiggle();
+       // rampServo.updateCalibration();
     }
 
 	@Override
 	public void stop() {
-        barGrabberServo.goHome();
+        rampServo.goHome();
 
     }
 }

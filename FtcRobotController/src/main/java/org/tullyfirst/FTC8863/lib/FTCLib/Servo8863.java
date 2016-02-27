@@ -28,7 +28,7 @@ public class Servo8863 {
     /**
      * The state of the servo wiggle.
      */
-    public enum ServoWiggleState{
+    private enum ServoWiggleState{
         WIGGLECOMPLETE, STARTPOSITION, WIGGLEPOSITION, NOWIGGLE
     }
 

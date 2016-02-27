@@ -47,6 +47,9 @@ public class TestDCMotor8863 extends OpMode {
 
     // This declaration refers to my DcMotor8863 class
     DcMotor8863 sweeperMotor;
+    int stallDetectionTolerance = 5;
+    double stallTimeLimit = 5;
+    DcMotor8863.MotorState currentMotorState = DcMotor8863.MotorState.IDLE;
 
 	/**
 	 * Constructor
@@ -64,7 +67,7 @@ public class TestDCMotor8863 extends OpMode {
 
         // Instantiate and initialize a motor
         sweeperMotor = new DcMotor8863(RobotConfigMapping.getSweeperMotorName(), hardwareMap);
-        sweeperMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_40);
+        sweeperMotor.setMotorType(DcMotor8863.MotorType.ANDYMARK_20);
         sweeperMotor.setUnitsPerRev(360);
         sweeperMotor.setDesiredEncoderCount(0);
         sweeperMotor.setEncoderTolerance(5);
@@ -77,8 +80,8 @@ public class TestDCMotor8863 extends OpMode {
 
     @Override
     public void start() {
-        sweeperMotor.runUsingEncoder(.5);
-        sweeperMotor.setupStallDetection(5);
+        sweeperMotor.runUsingEncoder(.15);
+        sweeperMotor.setupStallDetection(stallTimeLimit, stallDetectionTolerance);
     }
 
 	@Override
@@ -113,12 +116,10 @@ public class TestDCMotor8863 extends OpMode {
 		 * are currently write only.
 		 */
 
-        if (sweeperMotor.isStalled()) {
-            telemetry.addData("Status", "is stalled");
-        }
-            else {
-            telemetry.addData("Status",  "is not stalled");
-        }
+        currentMotorState = sweeperMotor.updateMotor();
+        telemetry.addData("State", currentMotorState.toString());
+        telemetry.addData("encoder value", sweeperMotor.getCurrentPosition());
+
 
         /*if (sweeperMotor.isRotationComplete()){
             telemetry.addData("Status",  "rotation complete");

@@ -462,7 +462,7 @@ public class DcMotor8863 {
      *
      * @return true if movement complete
      */
-    public boolean isRotationComplete() {
+    private boolean isRotationComplete() {
         if (FTCDcMotor.getMode() == DcMotorController.RunMode.RUN_TO_POSITION) {
             // The motor is moving to a certain encoder position so it will complete movement at
             // some point.
@@ -484,17 +484,19 @@ public class DcMotor8863 {
 
     }
 
-    public void setupStallDetection(double stallTimeLimit) {
+    public void setupStallDetection(double stallTimeLimit, int stallDetectionTolerance) {
         setStallDetectionEnabled(true);
+        setStallDetectionTolerance(stallDetectionTolerance);
         setStallTimeLimit(stallTimeLimit);
         stallTimer.reset();
-        this.lastEncoderValue = FTCDcMotor.getCurrentPosition();
+        this.lastEncoderValue = this.getCurrentPosition();
     }
 
-    public boolean isStalled() {
+    private boolean isStalled() {
+        int currentEncoderValue = this.getCurrentPosition();
         if (currentMotorState == MotorState.MOVING && isStallDetectionEnabled()) {
             // if the motor has not moved since the last time the position was read
-            if (Math.abs(this.getCurrentPosition() - lastEncoderValue) < stallDetectionTolerance) {
+            if (Math.abs(currentEncoderValue - lastEncoderValue) < stallDetectionTolerance) {
                 // motor has not moved, checking to see how long the motor has been stalled for
                 if (stallTimer.time() > stallTimeLimit) {
                     // it has been stalled for more than the time limit
@@ -505,8 +507,19 @@ public class DcMotor8863 {
                 stallTimer.reset();
             }
         }
+        this.lastEncoderValue = currentEncoderValue;
         return false;
     }
+
+    // How much does the encoder change in one cycle of the loop?
+
+    // Example: motor is moving at 150 RPM, loop is 20 mSec.
+    // 150 Rev / min * 1 min / 60 sec = 2.5 rev / sec.
+    // An andymark 40 motor has 1120 encoder counts per rev so
+    // 2.5 rev / sec * 1120 counts / rev = 2800 counts / sec
+    // 2800 counts / sec * 1 sec / 1000 mSec = 2.8 counts / mSec
+    // 2.8 counts / mSec * 20 mSec = 58 counts per loop
+    // RESULT - encoder changes 58 counts in one cycle of the loop.
 
     //*********************************************************************************************
     //          Methods for rotating the motor at a constant speed
@@ -589,7 +602,7 @@ public class DcMotor8863 {
     }
 
     //*********************************************************************************************
-    //          Control Methods
+    //          State Machine
     //*********************************************************************************************
 
     public MotorState updateMotor() {

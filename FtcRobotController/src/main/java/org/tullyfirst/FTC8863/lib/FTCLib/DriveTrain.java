@@ -119,14 +119,14 @@ public class DriveTrain {
         rightDriveMotor.rotateToDistance(power, distance, DcMotor8863.NextMotorState.HOLD);
     }
 
-    public boolean isRotationComplete() {
+/*    public boolean isRotationComplete() {
         if(rightDriveMotor.isRotationComplete() && leftDriveMotor.isRotationComplete()) {
             return true;
         } else {
             return false;
         }
 
-    }
+    }*/
 
     //*********************************************************************************************
     //          MAJOR METHODS
