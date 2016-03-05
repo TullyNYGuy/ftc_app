@@ -33,6 +33,7 @@ package org.tullyfirst.FTC8863.opmodes.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
 import org.tullyfirst.FTC8863.lib.ResQLib.RampServo;
 
 public class TestRampServo extends OpMode {
@@ -61,7 +62,10 @@ public class TestRampServo extends OpMode {
 
 	@Override
 	public void loop() {
-        rampServo.updateWiggle();
+       if(rampServo.updateWiggle()== Servo8863.ServoWiggleState.WIGGLECOMPLETE){
+           rampServo.goHome();
+       }
+
        // rampServo.updateCalibration();
     }
 

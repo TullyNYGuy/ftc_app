@@ -28,7 +28,7 @@ public class Servo8863 {
     /**
      * The state of the servo wiggle.
      */
-    private enum ServoWiggleState{
+    public enum ServoWiggleState{
         WIGGLECOMPLETE, STARTPOSITION, WIGGLEPOSITION, NOWIGGLE
     }
 
@@ -394,11 +394,11 @@ public class Servo8863 {
      * This method needs to be called each time through the robot loop so that the wiggle is
      * controlled. It uses a state machine to keep track of things.
      */
-    public void updateWiggle() {
+    public ServoWiggleState updateWiggle() {
 
         // if there is no wiggle started or ongoing, just return because there is nothing to do
         if(getServoWiggleState() == ServoWiggleState.NOWIGGLE){
-            return;
+            return servoWiggleState;
         }
         // check to see if the total time the servo is supposed to wiggle has been exceeded.
         // if it has, the wiggle is done
@@ -449,6 +449,7 @@ public class Servo8863 {
                 // there has not been a servo wiggle started. Don't do anything
                 break;
         }
+        return servoWiggleState;
     }
 
     /**

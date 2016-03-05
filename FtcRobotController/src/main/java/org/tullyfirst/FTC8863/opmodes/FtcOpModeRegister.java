@@ -7,7 +7,6 @@ import org.tullyfirst.FTC8863.opmodes.ResQ.TeleOP;
 import org.tullyfirst.FTC8863.opmodes.test.IMU8863test;
 import org.tullyfirst.FTC8863.opmodes.test.IMUtest;
 import org.tullyfirst.FTC8863.opmodes.test.SweeperTest;
-import org.tullyfirst.FTC8863.opmodes.test.TestAimingServo;
 import org.tullyfirst.FTC8863.opmodes.test.TestBarGrabber;
 import org.tullyfirst.FTC8863.opmodes.test.TestLeftZipLineServo;
 import org.tullyfirst.FTC8863.opmodes.test.TestLinearSlide;
@@ -17,6 +16,7 @@ import org.tullyfirst.FTC8863.opmodes.test.TestTrapDoor;
 import org.tullyfirst.FTC8863.opmodes.test.ToggleButtonTest;
 import org.tullyfirst.FTC8863.opmodes.test.TestDCMotor8863;
 import org.tullyfirst.FTC8863.opmodes.test.TestRampServo;
+import org.tullyfirst.FTC8863.opmodes.test.TestAimingServo;
 
 /**
  * Register Op Modes

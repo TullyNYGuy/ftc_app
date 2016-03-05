@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.robocol.Telemetry;
 
 import org.tullyfirst.FTC8863.lib.FTCLib.Servo8863;
 
-public class RampServo {
+public class AimingServo {
 
     //*********************************************************************************************
     //          ENUMERATED TYPES
@@ -24,23 +24,20 @@ public class RampServo {
     // getter and setter methods
     //*********************************************************************************************
 
-    private Servo8863 rampServo;
+    private Servo8863 aimingServo;
 
-    private double rampHomePosition = 0.00;
+    private double aimingHomePosition = 0.65;
 
-    private double rampDumpPosition = 0.60;
+    private double aimingDownPosition = 0.00;
 
-    private double rampInitPosition = 0.00;
+    private double aimingUpPosition = 0.65;
+
+    private double aimingInitPosition = 0.65;
 
     private double calStartPosition = 0.0;
     private double calEndPosition = 1.0;
     private double calPositionIncrement = 0.05;
     private double calTimeBetweenPositions = 3.0;
-
-    private double wiggleStartPosition = 0.6;
-    private double wiggleDelta = 0.1;
-    private double wiggleTime = 5.0;
-    private double wiggleDelay = 0.2;
 
 
     //*********************************************************************************************
@@ -59,11 +56,9 @@ public class RampServo {
     //*********************************************************************************************
 
 
-    public RampServo(HardwareMap hardwareMap, Telemetry telemetry) {
-        rampServo = new Servo8863(RobotConfigMapping.getRampServoName(),hardwareMap, telemetry, rampHomePosition, rampDumpPosition, rampHomePosition, rampInitPosition, Servo.Direction.FORWARD);
-        rampServo.goInitPosition();
-        rampServo.goDown();
-        rampServo.setupWiggle(wiggleStartPosition, wiggleDelay, wiggleDelta, wiggleTime);
+    public AimingServo(HardwareMap hardwareMap, Telemetry telemetry) {
+        aimingServo = new Servo8863(RobotConfigMapping.getTapeMeasureAimingServoName(),hardwareMap, telemetry, aimingHomePosition, aimingDownPosition, aimingUpPosition, aimingInitPosition, Servo.Direction.REVERSE);
+        aimingServo.goInitPosition();
     }
 
 
@@ -80,28 +75,22 @@ public class RampServo {
     // public methods that give the class its functionality
     //*********************************************************************************************
 
-    public void goDown() {rampServo.goDown(); }
+    public void goDown() {
+        aimingServo.goDown(); }
 
-    public void goHome() {rampServo.goHome();}
+    public void goHome() {
+        aimingServo.goHome();}
 
     public void goInit() {
-        rampServo.goInitPosition();
+        aimingServo.goInitPosition();
     }
 
     public void setupCalibration(){
-        rampServo.setUpServoCalibration(calStartPosition, calEndPosition, calPositionIncrement, calTimeBetweenPositions);
+        aimingServo.setUpServoCalibration(calStartPosition, calEndPosition, calPositionIncrement, calTimeBetweenPositions);
     }
 
     public void updateCalibration() {
-        rampServo.updateServoCalibration();
-    }
-
-    public void startWiggle() {
-        rampServo.startWiggle();
-    }
-
-    public Servo8863.ServoWiggleState updateWiggle() {
-       return rampServo.updateWiggle();
+        aimingServo.updateServoCalibration();
     }
 
 }
